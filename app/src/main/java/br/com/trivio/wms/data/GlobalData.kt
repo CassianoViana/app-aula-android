@@ -1,7 +1,25 @@
 package br.com.trivio.wms.data
 
-val globalData: GlobalData = GlobalData()
+import android.content.Context
+import android.preference.PreferenceManager
+import br.com.trivio.wms.data.model.UserDetails
 
 class GlobalData {
-  var token: String? = null
+
+  lateinit var userDetails: UserDetails
+  lateinit var appContext: Context
+
+  var token: String?
+    set(token) {
+      editor(appContext).putString("token", token).commit()
+    }
+    get(): String? {
+      return sharedPreferences(appContext).getString("token", null)
+    }
+
+  private fun editor(context: Context) =
+    sharedPreferences(context).edit()
+
+  private fun sharedPreferences(context: Context) =
+    PreferenceManager.getDefaultSharedPreferences(context)
 }

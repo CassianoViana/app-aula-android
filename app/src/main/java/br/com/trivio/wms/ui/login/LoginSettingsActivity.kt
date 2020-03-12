@@ -3,10 +3,8 @@ package br.com.trivio.wms.ui.login
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import br.com.trivio.wms.R
-import br.com.trivio.wms.api.api
 
 class LoginSettingsActivity : AppCompatActivity() {
 

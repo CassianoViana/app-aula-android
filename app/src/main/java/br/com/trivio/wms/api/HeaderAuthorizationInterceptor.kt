@@ -1,6 +1,6 @@
 package br.com.trivio.wms.api
 
-import br.com.trivio.wms.data.globalData
+import br.com.trivio.wms.globalData
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

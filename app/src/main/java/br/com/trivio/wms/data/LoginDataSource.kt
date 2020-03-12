@@ -1,8 +1,9 @@
 package br.com.trivio.wms.data
 
+import br.com.trivio.wms.api
 import br.com.trivio.wms.api.UsernamePassword
-import br.com.trivio.wms.api.api
 import br.com.trivio.wms.data.model.UserDetails
+import br.com.trivio.wms.globalData
 import java.io.IOException
 
 /**

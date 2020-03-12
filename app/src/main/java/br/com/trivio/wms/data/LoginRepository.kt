@@ -1,5 +1,6 @@
 package br.com.trivio.wms.data
 
+import android.content.Context
 import br.com.trivio.wms.data.model.UserDetails
 
 /**
@@ -10,8 +11,7 @@ import br.com.trivio.wms.data.model.UserDetails
 class LoginRepository(val dataSource: LoginDataSource) {
 
   // in-memory cache of the loggedInUser object
-  var userDetails: UserDetails? = null
-    private set
+  private var userDetails: UserDetails? = null
 
   val isLoggedIn: Boolean
     get() = userDetails != null
@@ -28,13 +28,10 @@ class LoginRepository(val dataSource: LoginDataSource) {
   }
 
   fun login(username: String, password: String): Result<UserDetails> {
-    // handle login
     val result = dataSource.login(username, password)
-
     if (result is Result.Success) {
       setLoggedInUser(result.data)
     }
-
     return result
   }
 

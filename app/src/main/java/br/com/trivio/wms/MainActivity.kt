@@ -2,29 +2,34 @@ package br.com.trivio.wms
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import androidx.preference.PreferenceManager
-import br.com.trivio.wms.api.RetrofitConfig
-import br.com.trivio.wms.api.api
+import br.com.trivio.wms.data.model.UserDetails
 import br.com.trivio.wms.ui.login.LoginActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+
 
 class MainActivity : AppCompatActivity() {
 
+  private lateinit var exitAppHandler: ExitAppHandler
   private lateinit var appBarConfiguration: AppBarConfiguration
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    if (globalData.token.isNullOrEmpty()) {
+      openLogin()
+    }
     setContentView(R.layout.activity_main)
     val toolbar: Toolbar = findViewById(R.id.toolbar)
     setSupportActionBar(toolbar)
@@ -36,29 +41,50 @@ class MainActivity : AppCompatActivity() {
     }
     val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
     val navView: NavigationView = findViewById(R.id.nav_view)
+
     val navController = findNavController(R.id.nav_host_fragment)
     // Passing each menu ID as a set of Ids because each
     // menu should be considered as top level destinations.
     appBarConfiguration = AppBarConfiguration(
       setOf(
         R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-        R.id.nav_tools, R.id.nav_share, R.id.nav_send
+        R.id.nav_tools, R.id.nav_share, R.id.nav_exit
       ), drawerLayout
     )
+    exitAppHandler = ExitAppHandler(this)
+    navController.addOnDestinationChangedListener(exitAppHandler)
     setupActionBarWithNavController(navController, appBarConfiguration)
     navView.setupWithNavController(navController)
-
-    if (!logged())
-      openLogin()
   }
 
-  private fun logged(): Boolean {
-    // implement validation
-    return false
+  override fun onResume() {
+    lifecycleScope.launchWhenResumed {
+      checkLogin()
+    }
+    super.onResume()
+  }
+
+  private suspend fun checkLogin() {
+    val userDetails = loadUserDetails()
+    if (userDetails == null) {
+      openLogin()
+    } else {
+      updateHeaderUserDetailsUI(userDetails)
+    }
   }
 
   private fun openLogin() {
+    finish()
     startActivity(Intent(this, LoginActivity::class.java))
+  }
+
+  override fun onBackPressed() {
+    exitAppHandler.confirmExit(this)
+  }
+
+  private fun updateHeaderUserDetailsUI(userDetails: UserDetails) {
+    val headerTitle = findViewById<TextView>(R.id.nav_header_title)
+    headerTitle.text = userDetails.name
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

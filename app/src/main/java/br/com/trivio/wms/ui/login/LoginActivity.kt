@@ -2,11 +2,7 @@ package br.com.trivio.wms.ui.login
 
 import android.app.Activity
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
@@ -17,12 +13,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import kotlinx.coroutines.async
-import androidx.preference.PreferenceManager
-
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import br.com.trivio.wms.MainActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.api.api
-import kotlinx.coroutines.GlobalScope
+import br.com.trivio.wms.loadApiSettingsFromPreferences
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
     setContentView(R.layout.activity_login)
 
     val username = findViewById<EditText>(R.id.username)
@@ -44,15 +40,12 @@ class LoginActivity : AppCompatActivity() {
     loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
       val loginState = it ?: return@Observer
 
-      // disable login button unless both username / password is valid
       login.isEnabled = loginState.isDataValid
 
-      if (loginState.usernameError != null) {
-        username.error = getString(loginState.usernameError)
-      }
-      if (loginState.passwordError != null) {
-        password.error = getString(loginState.passwordError)
-      }
+      fun getErrorOrNull(value: Int?): String? =
+        if (value == null) null else this.getString(value)
+      username.error = getErrorOrNull(loginState.usernameError)
+      password.error = getErrorOrNull(loginState.passwordError)
     })
 
     loginViewModel.loginResult.observe(this@LoginActivity, Observer {
@@ -69,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
       setResult(Activity.RESULT_OK)
 
       //Complete and destroy login activity once successful
+      startMainActivity()
       finish()
     })
 
@@ -105,6 +99,15 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
+  private fun startMainActivity() {
+    startActivity(Intent(this, MainActivity::class.java))
+  }
+
+  override fun onResume() {
+    super.onResume()
+    loadApiSettingsFromPreferences(this)
+  }
+
   private fun updateUiWithUser(model: LoggedInUserView) {
     val welcome = getString(R.string.welcome)
     val displayName = model.displayName
@@ -133,16 +136,6 @@ class LoginActivity : AppCompatActivity() {
     return super.onOptionsItemSelected(item)
   }
 
-  override fun onResume() {
-    super.onResume()
-    updateSettings()
-  }
-
-  private fun updateSettings() {
-    val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-    val address = preferences.getString("server_url", null)
-    api.config(address)
-  }
 }
 
 /**

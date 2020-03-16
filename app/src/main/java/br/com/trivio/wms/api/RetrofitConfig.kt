@@ -1,6 +1,10 @@
 package br.com.trivio.wms.api
 
+import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.UserDetails
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -9,16 +13,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.io.IOException
 
+
 class RetrofitConfig {
-  private lateinit var api: WmsApi
+  private lateinit var api: Api
 
   fun config(baseUrl: String) {
+
+    val mapper = ObjectMapper()
+//      .registerModule(ParameterNamesModule())
+//      .registerModule(Jdk8Module())
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .registerModule(JavaTimeModule())
+
     val retrofit = Retrofit.Builder()
-      .addConverterFactory(JacksonConverterFactory.create())
+      .addConverterFactory(JacksonConverterFactory.create(mapper))
       .baseUrl(baseUrl)
       .client(buildHttpClient())
       .build()
-    api = retrofit.create(WmsApi::class.java)
+    api = retrofit.create(Api::class.java)
   }
 
   private fun buildHttpClient(): OkHttpClient {
@@ -44,6 +56,22 @@ class RetrofitConfig {
       val execute = userDetailsCall.execute()
       if (execute.isSuccessful) {
         val userDetails: UserDetails = execute.body()!!
+        userDetails
+      } else {
+        throw IOException(execute.errorBody()?.string())
+      }
+    } catch (t: Throwable) {
+      t.printStackTrace()
+      throw t
+    }
+  }
+
+  fun getTasksByUser(userId: Long): List<TaskDto> {
+    return try {
+      val userDetailsCall: Call<List<TaskDto>> = api.getTasksByUser(userId)
+      val execute = userDetailsCall.execute()
+      if (execute.isSuccessful) {
+        val userDetails: List<TaskDto> = execute.body()!!
         userDetails
       } else {
         throw IOException(execute.errorBody()?.string())

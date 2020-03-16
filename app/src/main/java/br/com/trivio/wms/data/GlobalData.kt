@@ -6,20 +6,41 @@ import br.com.trivio.wms.data.model.UserDetails
 
 class GlobalData {
 
-  lateinit var userDetails: UserDetails
+  var userDetails: UserDetails? = null
+    set(value) {
+      value?.let {
+        editor().putLong("userDetails_id", value.id).commit()
+        editor().putLong("userDetails_ownerId", value.ownerId).commit()
+        editor().putString("userDetails_name", value.name).commit()
+        editor().putString("userDetails_username", value.username).commit()
+      }
+      field = value
+    }
+  get() {
+    if(field == null){
+      val prefs = sharedPreferences()
+      field = UserDetails(
+        id = prefs.getLong("userDetails_id", 0),
+        ownerId = prefs.getLong("userDetails_ownerId", 0),
+        name = prefs.getString("userDetails_name", "")!!,
+        username = prefs.getString("userDetails_username", "")!!
+      )
+    }
+    return field
+  }
   lateinit var appContext: Context
 
   var token: String?
     set(token) {
-      editor(appContext).putString("token", token).commit()
+      editor().putString("token", token).commit()
     }
     get(): String? {
-      return sharedPreferences(appContext).getString("token", null)
+      return sharedPreferences().getString("token", null)
     }
 
-  private fun editor(context: Context) =
-    sharedPreferences(context).edit()
+  private fun editor() =
+    sharedPreferences().edit()
 
-  private fun sharedPreferences(context: Context) =
-    PreferenceManager.getDefaultSharedPreferences(context)
+  private fun sharedPreferences() =
+    PreferenceManager.getDefaultSharedPreferences(appContext)
 }

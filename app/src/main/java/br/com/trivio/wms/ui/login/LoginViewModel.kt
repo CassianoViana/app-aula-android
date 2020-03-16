@@ -1,6 +1,5 @@
 package br.com.trivio.wms.ui.login
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,8 +10,10 @@ import br.com.trivio.wms.data.Result
 
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.model.UserDetails
+import br.com.trivio.wms.getErrorMessageCode
+import br.com.trivio.wms.globalData
+import br.com.trivio.wms.loadUserDetails
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -26,14 +27,16 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
   fun login(username: String, password: String) {
     viewModelScope.launch {
-      val result = withContext(Dispatchers.IO) {
+      val result: Result<UserDetails> = withContext(Dispatchers.IO) {
         loginRepository.login(username, password)
       }
       if (result is Result.Success) {
-        _loginResult.value =
-          LoginResult(success = LoggedInUserView(displayName = result.data.name))
+        _loginResult.value = LoginResult(success = LoggedInUserView(displayName = result.data.name))
       } else {
-        _loginResult.value = LoginResult(error = R.string.login_failed)
+        if (result is Result.Error) {
+          val errorMessageCode = getErrorMessageCode("login", result.throwable)
+          _loginResult.value = LoginResult(error = errorMessageCode)
+        }
       }
     }
   }

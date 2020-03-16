@@ -20,6 +20,9 @@ import androidx.lifecycle.ViewModelProviders
 import br.com.trivio.wms.MainActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.loadApiSettingsFromPreferences
+import br.com.trivio.wms.loadUserDetails
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
     val login = findViewById<Button>(R.id.login)
     val loading = findViewById<ProgressBar>(R.id.loading)
 
-    loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
+    loginViewModel = ViewModelProviders.of(this, ViewModelFactory())
       .get(LoginViewModel::class.java)
 
     loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
@@ -61,7 +64,6 @@ class LoginActivity : AppCompatActivity() {
       }
       setResult(Activity.RESULT_OK)
 
-      //Complete and destroy login activity once successful
       startMainActivity()
       finish()
     })

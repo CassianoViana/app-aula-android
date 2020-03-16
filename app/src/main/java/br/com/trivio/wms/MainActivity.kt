@@ -30,15 +30,14 @@ class MainActivity : AppCompatActivity() {
     if (globalData.token.isNullOrEmpty()) {
       openLogin()
     }
+    lifecycleScope.launchWhenCreated() {
+      checkLogin()
+    }
+    super.onResume()
     setContentView(R.layout.activity_main)
     val toolbar: Toolbar = findViewById(R.id.toolbar)
     setSupportActionBar(toolbar)
 
-    val fab: FloatingActionButton = findViewById(R.id.fab)
-    fab.setOnClickListener { view ->
-      Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        .setAction("Action", null).show()
-    }
     val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
     val navView: NavigationView = findViewById(R.id.nav_view)
 
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
   private suspend fun checkLogin() {
     val userDetails = loadUserDetails()
-    if (userDetails == null) {
+    if (userDetails.isNotLoaded()) {
       openLogin()
     } else {
       updateHeaderUserDetailsUI(userDetails)

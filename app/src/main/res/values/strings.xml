@@ -18,7 +18,7 @@
   <string name="prompt_password">Senha</string>
   <string name="action_sign_in">Entrar</string>
   <string name="action_sign_in_short">Entrar</string>
-  <string name="welcome">"Welcome !"</string>
+  <string name="welcome">"Bem-vindo"</string>
   <string name="invalid_username">Usuário inválido</string>
   <string name="invalid_password">A senha está inválida</string>
   <string name="login_failed">"Verifique o usuário e a senha"</string>
@@ -29,7 +29,7 @@
   <string name="sync_header">Sync</string>
 
   <!-- Messages Preferences -->
-  <string name="server_url">URL do servidor</string>
+  <string name="server_url">Endereço de conexão</string>
   <string name="reply_title">Default reply action</string>
 
   <!-- Sync Preferences -->
@@ -42,4 +42,7 @@
   <string name="yes">Sim</string>
   <string name="no">Não</string>
   <string name="confirm_exit">Fechar o aplicativo?</string>
+  <string name="connection_failed">Erro de conexão</string>
+  <string name="default_error_message">Ocorreu um erro. Informe o suporte</string>
+  <string name="could_not_retrieve_token">Não foi possível buscar o token do servidor</string>
 </resources>

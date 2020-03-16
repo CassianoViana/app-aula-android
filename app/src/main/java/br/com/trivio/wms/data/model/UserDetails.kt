@@ -8,4 +8,6 @@ data class UserDetails(
   val ownerId: Long = 0,
   val name: String = "",
   val username: String = ""
-)
+) {
+  fun isNotLoaded() = this.id == 0L
+}

@@ -8,6 +8,8 @@ import br.com.trivio.wms.data.GlobalData
 import br.com.trivio.wms.data.model.UserDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.lang.IllegalStateException
 
 val globalData: GlobalData = GlobalData()
 val api = RetrofitConfig()
@@ -27,7 +29,7 @@ fun loadApiSettingsFromPreferences(context: Context) {
     api.config(address)
 }
 
-suspend fun loadUserDetails(): UserDetails? {
+suspend fun loadUserDetails(): UserDetails {
   return withContext(Dispatchers.IO) {
     try {
       val userDetails = api.getUserDetails()
@@ -36,7 +38,18 @@ suspend fun loadUserDetails(): UserDetails? {
     } catch (e: Exception) {
       //Toast.makeText(this@MainActivity, e.localizedMessage.toString(), Toast.LENGTH_LONG).show()
       e.printStackTrace()
-      null
+      UserDetails()
     }
+  }
+}
+
+fun getErrorMessageCode(context: String, throwable: Throwable): Int {
+  return when (context) {
+    "login" -> when (throwable) {
+      is IOException -> R.string.connection_failed
+      is IllegalStateException -> R.string.could_not_retrieve_token
+      else -> R.string.login_failed
+    }
+    else -> R.string.default_error_message
   }
 }

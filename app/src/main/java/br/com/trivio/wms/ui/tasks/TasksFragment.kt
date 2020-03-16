@@ -1,4 +1,4 @@
-package br.com.trivio.wms.ui.home
+package br.com.trivio.wms.ui.tasks
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,9 +15,9 @@ import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.ui.login.ViewModelFactory
 
-class HomeFragment : Fragment() {
+class TasksFragment : Fragment() {
 
-  private lateinit var viewModel: HomeViewModel
+  private lateinit var viewModel: TasksViewModel
   private lateinit var loading: ProgressBar
   private lateinit var tasksList: RecyclerView
 
@@ -26,10 +26,10 @@ class HomeFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    val root = inflater.inflate(R.layout.fragment_home, container, false)
+    val root = inflater.inflate(R.layout.fragment_tasks, container, false)
     tasksList = root.findViewById(R.id.tasks_recycler_view)
     loading = root.findViewById(R.id.progressBarTasks)
-    viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(HomeViewModel::class.java)
+    viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(TasksViewModel::class.java)
     bindDataModel()
     loadTasks()
     return root

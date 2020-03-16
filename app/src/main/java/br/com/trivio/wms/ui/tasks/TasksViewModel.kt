@@ -1,4 +1,4 @@
-package br.com.trivio.wms.ui.home
+package br.com.trivio.wms.ui.tasks
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
+class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
 
   val tasks = MutableLiveData<List<TaskDto>>()
 

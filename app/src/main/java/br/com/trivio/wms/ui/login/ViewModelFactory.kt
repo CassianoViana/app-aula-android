@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.trivio.wms.data.LoginDataSource
 import br.com.trivio.wms.data.LoginRepository
 import br.com.trivio.wms.repository.TasksRepository
-import br.com.trivio.wms.ui.home.HomeViewModel
+import br.com.trivio.wms.ui.tasks.TasksViewModel
 
 class ViewModelFactory : ViewModelProvider.Factory {
 
@@ -19,8 +19,8 @@ class ViewModelFactory : ViewModelProvider.Factory {
       ) as T
     }
 
-    if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-      return HomeViewModel(
+    if (modelClass.isAssignableFrom(TasksViewModel::class.java)) {
+      return TasksViewModel(
         tasksRepository = TasksRepository()
       ) as T
     }

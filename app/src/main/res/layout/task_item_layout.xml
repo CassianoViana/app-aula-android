@@ -1,13 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:padding="@dimen/padding"
-  android:orientation="vertical">
+  android:padding="@dimen/padding">
 
   <TextView
     android:id="@+id/task_name_text"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="TextView" />
-</LinearLayout>
+    android:text="Conferência"
+    android:textColor="@color/colorDark"
+    android:textSize="@dimen/medium"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/task_code"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:drawableStart="@drawable/pound_box_black_18_dp"
+    android:drawableLeft="@drawable/pound_box_black_18_dp"
+    android:text="code"
+    android:textColor="@color/lightGrey"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/task_name_text" />
+
+  <TextView
+    android:id="@+id/task_date"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:drawableStart="@drawable/ic_calendar_star_black_18dp"
+    android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
+    android:text="date"
+    android:textColor="@color/lightGrey"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/task_code" />
+
+  <TextView
+    android:id="@+id/task_status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded"
+    android:paddingLeft="5dp"
+    android:paddingTop="2dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="2dp"
+    android:text="status"
+    android:textColor="@color/colorWhite"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

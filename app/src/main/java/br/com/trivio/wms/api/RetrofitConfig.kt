@@ -4,6 +4,7 @@ import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.UserDetails
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -13,17 +14,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.io.IOException
 
-
 class RetrofitConfig {
   private lateinit var api: Api
 
   fun config(baseUrl: String) {
 
+    val module = SimpleModule()
+    //myModule.addDeserializer(TaskStatus::class.java, TaskStatusDeserializer())
+
     val mapper = ObjectMapper()
-//      .registerModule(ParameterNamesModule())
-//      .registerModule(Jdk8Module())
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .registerModule(JavaTimeModule())
+      .registerModule(module)
 
     val retrofit = Retrofit.Builder()
       .addConverterFactory(JacksonConverterFactory.create(mapper))
@@ -68,11 +70,11 @@ class RetrofitConfig {
 
   fun getTasksByUser(userId: Long): List<TaskDto> {
     return try {
-      val userDetailsCall: Call<List<TaskDto>> = api.getTasksByUser(userId)
-      val execute = userDetailsCall.execute()
+      val tasks: Call<List<TaskDto>> = api.getTasksByUser(userId)
+      val execute = tasks.execute()
       if (execute.isSuccessful) {
-        val userDetails: List<TaskDto> = execute.body()!!
-        userDetails
+        val tasks = execute.body()!!
+        tasks
       } else {
         throw IOException(execute.errorBody()?.string())
       }

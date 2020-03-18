@@ -1,6 +1,5 @@
 package br.com.trivio.wms
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
@@ -14,10 +13,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import br.com.trivio.wms.data.model.UserDetails
-import br.com.trivio.wms.ui.login.LoginActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,15 +24,8 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    if (globalData.token.isNullOrEmpty()) {
-      openLogin()
-    }
-    lifecycleScope.launchWhenCreated() {
-      checkLogin()
-    }
-    super.onResume()
     setContentView(R.layout.activity_main)
-    val toolbar: Toolbar = findViewById(R.id.toolbar)
+    val toolbar: Toolbar = findViewById(R.id.toolbar_main)
     setSupportActionBar(toolbar)
 
     val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -54,27 +44,11 @@ class MainActivity : AppCompatActivity() {
     navController.addOnDestinationChangedListener(exitAppHandler)
     setupActionBarWithNavController(navController, appBarConfiguration)
     navView.setupWithNavController(navController)
-  }
 
-  override fun onResume() {
-    lifecycleScope.launchWhenResumed {
-      checkLogin()
+    lifecycleScope.launchWhenCreated {
+      delay(500L)
+      globalData.userDetails?.let { updateHeaderUserDetailsUI(it) }
     }
-    super.onResume()
-  }
-
-  private suspend fun checkLogin() {
-    val userDetails = loadUserDetails()
-    if (userDetails.isNotLoaded()) {
-      openLogin()
-    } else {
-      updateHeaderUserDetailsUI(userDetails)
-    }
-  }
-
-  private fun openLogin() {
-    finish()
-    startActivity(Intent(this, LoginActivity::class.java))
   }
 
   override fun onBackPressed() {
@@ -82,8 +56,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun updateHeaderUserDetailsUI(userDetails: UserDetails) {
-    val headerTitle = findViewById<TextView>(R.id.nav_header_title)
-    headerTitle.text = userDetails.name
+    findViewById<TextView>(R.id.nav_header_title)?.apply {
+      text = userDetails.name
+    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

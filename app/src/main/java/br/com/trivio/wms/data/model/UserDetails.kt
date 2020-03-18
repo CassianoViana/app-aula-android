@@ -9,5 +9,5 @@ data class UserDetails(
   val name: String = "",
   val username: String = ""
 ) {
-  fun isNotLoaded() = this.id == 0L
+  fun isInvalid() = this.id == 0L
 }

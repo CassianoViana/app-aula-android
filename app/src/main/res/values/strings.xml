@@ -1,8 +1,9 @@
 <resources>
   <string name="app_name">Wms</string>
+  <string name="loading_app">Por favor, aguarde...</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
-  <string name="nav_header_title">Android Studio</string>
+  <string name="nav_header_title">Siad</string>
   <string name="nav_header_subtitle">android.studio@android.com</string>
   <string name="nav_header_desc">Navigation header</string>
   <string name="action_settings">Configurações</string>
@@ -42,7 +43,9 @@
   <string name="yes">Sim</string>
   <string name="no">Não</string>
   <string name="confirm_exit">Fechar o aplicativo?</string>
-  <string name="connection_failed">Erro de conexão</string>
+  <string name="connection_failed">Não foi possível conectar. Tente mais tarde</string>
   <string name="default_error_message">Ocorreu um erro. Informe o suporte</string>
   <string name="could_not_retrieve_token">Não foi possível buscar o token do servidor</string>
+  <string name="enter">Entrar</string>
+  <string name="order">Pedido:</string>
 </resources>

@@ -15,14 +15,11 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import br.com.trivio.wms.MainActivity
-import br.com.trivio.wms.R
-import br.com.trivio.wms.loadApiSettingsFromPreferences
-import br.com.trivio.wms.loadUserDetails
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import androidx.lifecycle.lifecycleScope
+import br.com.trivio.wms.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -31,6 +28,9 @@ class LoginActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_login)
+    val toolbar: Toolbar = findViewById(R.id.toolbar_login)
+    toolbar.title = getString(R.string.enter)
+    setSupportActionBar(toolbar)
 
     val username = findViewById<EditText>(R.id.username)
     val password = findViewById<EditText>(R.id.password)
@@ -63,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
         updateUiWithUser(loginResult.success)
       }
       setResult(Activity.RESULT_OK)
-
       startMainActivity()
       finish()
     })

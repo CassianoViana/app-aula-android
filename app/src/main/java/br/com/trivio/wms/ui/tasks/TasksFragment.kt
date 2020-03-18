@@ -1,18 +1,22 @@
 package br.com.trivio.wms.ui.tasks
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.trivio.wms.R
+import br.com.trivio.wms.*
+import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.data.model.TaskType
 import br.com.trivio.wms.ui.login.ViewModelFactory
 
 class TasksFragment : Fragment() {
@@ -41,16 +45,32 @@ class TasksFragment : Fragment() {
   }
 
   private fun bindDataModel() {
-    val adapter = TasksAdapter()
+    val adapter = TasksAdapter(object : OnTaskClickListener {
+      override fun onClick(task: TaskDto) {
+        val intent = Intent(activity, TaskDetailsActivity::class.java)
+        intent.putExtra(TaskDetailsActivity.TASK_ID, task.id)
+        startActivity(intent)
+      }
+    })
     tasksList.adapter = adapter
     tasksList.layoutManager = LinearLayoutManager(activity)
-    viewModel.tasks.observe(this, Observer {
-      adapter.tasks = it
-      loading.visibility = View.GONE
+    viewModel.tasksResult.observe(this, Observer {
+      when (it) {
+        is Result.Success -> {
+          adapter.tasks = it.data.sortedByDescending { task -> task.createdAt }
+          loading.visibility = View.GONE
+        }
+        is Result.Error -> {
+          val throwable = it.throwable
+          Toast.makeText(activity, throwable.message, Toast.LENGTH_LONG).show()
+          throwable.printStackTrace()
+        }
+      }
     })
   }
 
-  class TasksAdapter : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
+  class TasksAdapter(private val onTaskClickListener: OnTaskClickListener) :
+    RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
     var tasks: List<TaskDto> = mutableListOf()
       set(value) {
         field = value
@@ -59,8 +79,21 @@ class TasksFragment : Fragment() {
 
     class ViewHolder(val layout: View) : RecyclerView.ViewHolder(layout) {
       private var taskNameText: TextView = layout.findViewById(R.id.task_name_text)
-      fun bind(taskDto: TaskDto) {
+      private var taskRefCode: TextView = layout.findViewById(R.id.task_code)
+      private var taskStatus: TextView = layout.findViewById(R.id.task_status)
+      private var taskDate: TextView = layout.findViewById(R.id.task_date)
+      fun bind(
+        taskDto: TaskDto,
+        onTaskClickListener: OnTaskClickListener
+      ) {
         taskNameText.text = taskDto.name
+        taskStatus.text = taskDto.statusJson?.name
+        taskStatus.setTagBackground(taskDto.statusJson?.color)
+        taskRefCode.text = taskDto.id.toString()
+        taskDate.text = taskDto.createdAt?.formatTo("dd/MM/yyyy HH:mm")
+        layout.setOnClickListener {
+          onTaskClickListener.onClick(taskDto)
+        }
       }
     }
 
@@ -73,7 +106,12 @@ class TasksFragment : Fragment() {
     override fun getItemCount() = tasks.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-      holder.bind(tasks[position])
+      holder.layout.setStripeColor(position)
+      holder.bind(tasks[position], onTaskClickListener)
     }
+  }
+
+  interface OnTaskClickListener {
+    fun onClick(task: TaskDto)
   }
 }

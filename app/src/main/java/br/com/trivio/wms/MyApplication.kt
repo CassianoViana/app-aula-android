@@ -6,17 +6,19 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.RetrofitConfig
 import br.com.trivio.wms.data.GlobalData
-import br.com.trivio.wms.data.model.TaskType
+import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.model.UserDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -82,4 +84,37 @@ fun View.setStripeColor(position: Int) {
   val white = context.getColor(R.color.colorWhite)
   val gray = context.getColor(R.color.lighterGray)
   setBackgroundColor(if (position % 2 == 0) gray else white)
+}
+
+fun <T : Any> threatResult(
+  result: Result<T>,
+  always: ((result: Result<T>) -> Unit)? = null,
+  onError: ((result: Result.Error) -> Unit)? = null,
+  onSuccess: (result: Result.Success<T>) -> Unit
+) {
+  when (result) {
+    is Result.Success -> {
+      onSuccess(result)
+    }
+    is Result.Error -> {
+      onError?.let {
+        it(result)
+      }
+      showErrorMessage(result)
+    }
+  }
+  always?.let { it(result) }
+}
+
+fun showErrorMessage(it: Result.Error) {
+  val throwable = it.throwable
+  Toast.makeText(globalData.appContext, throwable.message, Toast.LENGTH_LONG).show()
+  throwable.printStackTrace()
+}
+
+fun AppCompatActivity.handleHomeClickFinish(item: MenuItem?) {
+  when (item?.itemId) {
+    android.R.id.home ->
+      finish()
+  }
 }

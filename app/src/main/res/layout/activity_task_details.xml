@@ -6,4 +6,25 @@
   android:layout_height="match_parent"
   tools:context=".TaskDetailsActivity">
 
+  <include
+    android:id="@+id/toolbar_task_activity"
+    layout="@layout/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp" />
+
+  <TextView
+    android:id="@+id/task_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="168dp"
+    android:text="Conferência"
+    android:textStyle="bold"
+    android:textColor="@color/colorDark"
+    android:textSize="@dimen/large"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

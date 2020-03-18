@@ -35,6 +35,22 @@ class RetrofitConfig {
     api = retrofit.create(Api::class.java)
   }
 
+  private fun <T> getResultOrExceptionFrom(call: Call<T>): T {
+    val response = call.execute()
+    return if (response.isSuccessful) {
+      response.body()!!
+    } else {
+      throw IOException(
+        """
+          API call error:
+          Code: ${response.code()}
+          Message: ${response.message()}
+          ErrorBody: ${response.errorBody()?.string()}
+        """
+      )
+    }
+  }
+
   private fun buildHttpClient(): OkHttpClient {
     val headerAuthorizationInterceptor = HeaderAuthorizationInterceptor()
     return OkHttpClient.Builder()
@@ -53,34 +69,14 @@ class RetrofitConfig {
   }
 
   fun getUserDetails(): UserDetails {
-    return try {
-      val userDetailsCall: Call<UserDetails> = api.userDetails
-      val execute = userDetailsCall.execute()
-      if (execute.isSuccessful) {
-        val userDetails: UserDetails = execute.body()!!
-        userDetails
-      } else {
-        throw IOException(execute.errorBody()?.string())
-      }
-    } catch (t: Throwable) {
-      t.printStackTrace()
-      throw t
-    }
+    return getResultOrExceptionFrom(api.userDetails)
   }
 
   fun getTasksByUser(userId: Long): List<TaskDto> {
-    return try {
-      val tasks: Call<List<TaskDto>> = api.getTasksByUser(userId)
-      val execute = tasks.execute()
-      if (execute.isSuccessful) {
-        val tasks = execute.body()!!
-        tasks
-      } else {
-        throw IOException(execute.errorBody()?.string())
-      }
-    } catch (t: Throwable) {
-      t.printStackTrace()
-      throw t
-    }
+    return getResultOrExceptionFrom(api.getTasksByUser(userId))
+  }
+
+  fun getTask(id: Long): TaskDto {
+    return getResultOrExceptionFrom(api.getTask(id))
   }
 }

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
-import br.com.trivio.wms.data.model.TaskType
 import br.com.trivio.wms.ui.login.ViewModelFactory
 
 class TasksFragment : Fragment() {
@@ -55,17 +53,14 @@ class TasksFragment : Fragment() {
     tasksList.adapter = adapter
     tasksList.layoutManager = LinearLayoutManager(activity)
     viewModel.tasksResult.observe(this, Observer {
-      when (it) {
-        is Result.Success -> {
-          adapter.tasks = it.data.sortedByDescending { task -> task.createdAt }
+      threatResult(it,
+        onSuccess = { success ->
+          adapter.tasks = success.data.sortedByDescending { task -> task.createdAt }
+        },
+        always = {
           loading.visibility = View.GONE
         }
-        is Result.Error -> {
-          val throwable = it.throwable
-          Toast.makeText(activity, throwable.message, Toast.LENGTH_LONG).show()
-          throwable.printStackTrace()
-        }
-      }
+      )
     })
   }
 

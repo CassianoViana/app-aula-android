@@ -1,7 +1,5 @@
 package br.com.trivio.wms.api;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 
 import br.com.trivio.wms.data.dto.TaskDto;
@@ -24,4 +22,6 @@ interface Api {
   @GET("tasks/byUser/{userId}")
   Call<List<TaskDto>> getTasksByUser(@Path("userId") Long userId);
 
+  @GET("tasks/{id}")
+  Call<TaskDto> getTask(@Path("id") Long id);
 }

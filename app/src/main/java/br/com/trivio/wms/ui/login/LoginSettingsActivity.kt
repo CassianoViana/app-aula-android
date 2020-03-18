@@ -5,6 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import br.com.trivio.wms.R
+import br.com.trivio.wms.handleHomeClickFinish
 
 class LoginSettingsActivity : AppCompatActivity() {
 
@@ -22,10 +23,7 @@ class LoginSettingsActivity : AppCompatActivity() {
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    when (item?.itemId) {
-      android.R.id.home ->
-        finish()
-    }
+    this.handleHomeClickFinish(item)
     return super.onOptionsItemSelected(item)
   }
 

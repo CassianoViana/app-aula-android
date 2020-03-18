@@ -15,4 +15,11 @@ class TasksRepository {
     }
   }
 
+  fun loadTask(id: Long): Result<TaskDto> {
+    return try {
+      Result.Success(api.getTask(id))
+    } catch (e: Exception) {
+      Result.Error(e)
+    }
+  }
 }

@@ -18,8 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.lifecycleScope
-import br.com.trivio.wms.*
+import br.com.trivio.wms.MainActivity
+import br.com.trivio.wms.R
+import br.com.trivio.wms.loadApiSettingsFromPreferences
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_login)
-    val toolbar: Toolbar = findViewById(R.id.toolbar_login)
+    val toolbar: Toolbar = findViewById(R.id.toolbar)
     toolbar.title = getString(R.string.enter)
     setSupportActionBar(toolbar)
 

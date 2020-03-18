@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
   package="br.com.trivio.wms">
-
   <uses-permission android:name="android.permission.INTERNET" />
-
   <application
     android:name=".MyApplication"
     android:allowBackup="true"
@@ -13,13 +12,14 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true">
-    <activity android:name=".TaskDetailsActivity"></activity>
+    <activity
+      android:name=".TaskDetailsActivity"
+      android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".LaunchActivity"
       android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>

@@ -48,4 +48,8 @@
   <string name="could_not_retrieve_token">Não foi possível buscar o token do servidor</string>
   <string name="enter">Entrar</string>
   <string name="order">Pedido:</string>
+  <string name="open">Abrir</string>
+  <string name="start">Iniciar</string>
+  <string name="continue_task">Continuar</string>
+  <string name="task">Tarefa</string>
 </resources>

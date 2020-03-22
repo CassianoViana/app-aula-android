@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.*
-import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.ui.login.ViewModelFactory
 
@@ -82,8 +81,7 @@ class TasksFragment : Fragment() {
         onTaskClickListener: OnTaskClickListener
       ) {
         taskNameText.text = taskDto.name
-        taskStatus.text = taskDto.statusJson?.name
-        taskStatus.setTagBackground(taskDto.statusJson?.color)
+        UiUtils.setTaskStatusStyle(taskStatus, taskDto)
         taskRefCode.text = taskDto.id.toString()
         taskDate.text = taskDto.createdAt?.formatTo("dd/MM/yyyy HH:mm")
         layout.setOnClickListener {

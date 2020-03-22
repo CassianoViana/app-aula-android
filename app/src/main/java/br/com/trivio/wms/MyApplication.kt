@@ -15,6 +15,7 @@ import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.RetrofitConfig
 import br.com.trivio.wms.data.GlobalData
 import br.com.trivio.wms.data.Result
+import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.UserDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -116,5 +117,12 @@ fun AppCompatActivity.handleHomeClickFinish(item: MenuItem?) {
   when (item?.itemId) {
     android.R.id.home ->
       finish()
+  }
+}
+
+object UiUtils {
+  fun setTaskStatusStyle(textView: TextView, taskDto: TaskDto) {
+    textView.text = taskDto.statusDto?.name
+    textView.setTagBackground(taskDto.statusDto?.color)
   }
 }

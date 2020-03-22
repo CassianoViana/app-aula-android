@@ -20,11 +20,34 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="168dp"
     android:text="Conferência"
-    android:textStyle="bold"
     android:textColor="@color/colorDark"
+    android:textSize="@dimen/large"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/label_task_status"
+    style="@style/TagTextWhite"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:text="Pendente"
     android:textSize="@dimen/large"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toBottomOf="@+id/task_name" />
+
+  <Button
+    android:id="@+id/btn_task_action"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="100dp"
+    android:text="Iniciar"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/label_task_status" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

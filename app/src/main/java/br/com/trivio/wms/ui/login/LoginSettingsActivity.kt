@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import br.com.trivio.wms.R
 import br.com.trivio.wms.handleHomeClickFinish
+import br.com.trivio.wms.setupToolbar
 
 class LoginSettingsActivity : AppCompatActivity() {
 
@@ -19,7 +20,7 @@ class LoginSettingsActivity : AppCompatActivity() {
         SettingsFragment()
       )
       .commit()
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    setupToolbar()
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {

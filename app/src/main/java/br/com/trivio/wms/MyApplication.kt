@@ -10,7 +10,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.RetrofitConfig
 import br.com.trivio.wms.data.GlobalData
@@ -118,6 +120,14 @@ fun AppCompatActivity.handleHomeClickFinish(item: MenuItem?) {
     android.R.id.home ->
       finish()
   }
+}
+
+fun AppCompatActivity.setupToolbar(resourceStringTitle: Int = 0, showHomeButton: Boolean = true) {
+  val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
+  if (resourceStringTitle != 0)
+    toolbar.title = this.getString(resourceStringTitle)
+  this.setSupportActionBar(toolbar)
+  this.supportActionBar?.setDisplayHomeAsUpEnabled(showHomeButton)
 }
 
 object UiUtils {

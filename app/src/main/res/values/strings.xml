@@ -52,4 +52,5 @@
   <string name="start">Iniciar</string>
   <string name="continue_task">Continuar</string>
   <string name="task">Tarefa</string>
+  <string name="cargo_conference">Conferência de carga</string>
 </resources>

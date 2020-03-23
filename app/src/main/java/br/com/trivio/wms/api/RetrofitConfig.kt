@@ -13,6 +13,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.io.IOException
+import java.lang.IllegalStateException
 
 class RetrofitConfig {
   private lateinit var api: Api
@@ -38,7 +39,12 @@ class RetrofitConfig {
   private fun <T> getResultOrExceptionFrom(call: Call<T>): T {
     val response = call.execute()
     return if (response.isSuccessful) {
-      response.body()!!
+      val result = response.body()
+      if (result != null) {
+        return result
+      } else {
+        throw IllegalStateException("Null result on getResultOrExceptionFrom")
+      }
     } else {
       throw IOException(
         """

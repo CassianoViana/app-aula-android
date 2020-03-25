@@ -1,20 +1,21 @@
-package br.com.trivio.wms
+package br.com.trivio.wms.ui.tasks
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import br.com.trivio.wms.*
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
-import br.com.trivio.wms.ui.tasks.TaskDetailsViewModel
+import br.com.trivio.wms.databinding.ActivityTaskDetailsBinding
+import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
 import kotlinx.android.synthetic.main.app_bar.*
 
 class TaskDetailsActivity : AppCompatActivity() {
@@ -23,40 +24,53 @@ class TaskDetailsActivity : AppCompatActivity() {
     const val TASK_ID: String = "task_id"
   }
 
+  private lateinit var binding: ActivityTaskDetailsBinding
+  private val viewModel: TaskDetailsViewModel by viewModels()
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    binding = ActivityTaskDetailsBinding.inflate(layoutInflater)
     setContentView(R.layout.activity_task_details)
-    val viewModel: TaskDetailsViewModel by viewModels()
-
-    val taskName = findViewById<TextView>(R.id.task_name)
-    val taskStatus = findViewById<TextView>(R.id.label_task_status)
-    val btnTaskAction = findViewById<Button>(R.id.btn_task_action)
-
     setupToolbar()
+
     viewModel.task.observe(this, Observer {
-      threatResult(it) { success ->
-        val task: TaskDto = success.data
-        val name = task.name
-        toolbar.title = getString(R.string.task) + " " + task.id
-        UiUtils.setTaskStatusStyle(taskStatus, task)
-        taskName.text = name
-        btnTaskAction.text = getActionTextFromTask(task)
-      }
+      threatResult(it,
+        onSuccess = { success ->
+          val task = success.data
+          val name = task.name
+          toolbar.title = getString(R.string.task) + " " + task.id
+          UiUtils.setTaskStatusStyle(binding.labelTaskStatus, task)
+          binding.taskName.text = name
+          binding.btnTaskAction.text = getActionTextFromTask(task)
+          binding.executorsLabel.text = task.currentExecutorsNames
+        },
+        always = {
+          Log.i("endloading", "endloading")
+          endLoading()
+        },
+        onError = {
+          finish()
+        }
+      )
     })
 
-    btnTaskAction.setOnClickListener {
+    binding.labelTaskStatus.setOnClickListener {
       startActivity(Intent(this, getActivityClassFromTask(viewModel.task)))
     }
 
     val id = intent.getLongExtra(TASK_ID, 0)
     lifecycleScope.launchWhenCreated {
-      viewModel.loadTask(id)
+      loadTask(id)
     }
   }
 
+  private fun loadTask(id: Long) {
+    startLoading()
+    viewModel.loadTask(id)
+  }
+
   private fun getActivityClassFromTask(task: MutableLiveData<Result<TaskDto>>): Class<*>? {
-    val taskResult: Result<TaskDto>? = task.value
-    return when (taskResult) {
+    return when (val taskResult = task.value) {
       is Result.Success -> when (taskResult.data.type) {
         TaskType.CARGO_CONFERENCE -> CargoConferenceActivity::class.java
         else -> null

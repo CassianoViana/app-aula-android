@@ -1,8 +1,11 @@
-package br.com.trivio.wms
+package br.com.trivio.wms.ui.conference.cargo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import br.com.trivio.wms.R
+import br.com.trivio.wms.handleHomeClickFinish
+import br.com.trivio.wms.setupToolbar
 
 class CargoConferenceActivity : AppCompatActivity() {
 

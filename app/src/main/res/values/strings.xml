@@ -1,6 +1,6 @@
 <resources>
   <string name="app_name">Wms</string>
-  <string name="loading_app">Por favor, aguarde...</string>
+  <string name="loading_app">Iniciando aplicativo</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
   <string name="nav_header_title">Siad</string>
@@ -53,4 +53,7 @@
   <string name="continue_task">Continuar</string>
   <string name="task">Tarefa</string>
   <string name="cargo_conference">Conferência de carga</string>
+  <string name="items_to_count">itens para contar</string>
+  <string name="search_product">Buscar produto</string>
+  <string name="barcode">Código de barras</string>
 </resources>

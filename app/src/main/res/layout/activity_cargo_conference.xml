@@ -4,12 +4,55 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".CargoConferenceActivity">
+  tools:context=".ui.conference.cargo.CargoConferenceActivity">
 
   <include
     android:id="@+id/app_bar_layout_cargo_conference"
     layout="@layout/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:padding="@dimen/padding"
+    android:layout_height="238dp"
+    android:layout_marginTop="76dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+      android:id="@+id/qtd_items_to_count"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="22/40"
+      android:textSize="@dimen/large"
+      android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/character"
+      android:text="@string/items_to_count" />
+
+    <EditText
+      android:layout_marginTop="16sp"
+      android:gravity="center"
+      android:inputType="number"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/barcode"
+      android:textSize="@dimen/large" />
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16sp"
+      android:drawableLeft="@drawable/ic_search_black_24dp"
+      android:text="@string/search_product" />
+  </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@ class RetrofitConfig {
 
   private fun <T> getResultOrExceptionFrom(call: Call<T>): T {
     val response = call.execute()
-    return if (response.isSuccessful) {
+    if (response.isSuccessful) {
       val result = response.body()
       if (result != null) {
         return result
@@ -67,7 +67,7 @@ class RetrofitConfig {
 
   @Throws(IOException::class)
   fun login(usernamePassword: UsernamePassword?): String? {
-    var token: String? = ""
+    val token: String?
     val login = api.login(usernamePassword)
     val execute: Response<ResponseBody> = login.execute()
     token = execute.body()?.string()

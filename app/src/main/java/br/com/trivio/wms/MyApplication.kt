@@ -8,11 +8,12 @@ import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.RetrofitConfig
 import br.com.trivio.wms.data.GlobalData
@@ -135,4 +136,25 @@ object UiUtils {
     textView.text = taskDto.statusDto?.name
     textView.setTagBackground(taskDto.statusDto?.color)
   }
+}
+
+@SuppressLint("WrongViewCast")
+fun AppCompatActivity.getProgressBarLayout(): FrameLayout? {
+  return findViewById(R.id.layout_progress_bar)
+}
+
+fun AppCompatActivity.startLoading() {
+  getProgressBarLayout()?.visibility = View.VISIBLE
+}
+
+fun AppCompatActivity.endLoading() {
+  getProgressBarLayout()?.visibility = View.GONE
+}
+
+fun Fragment.startLoading() {
+  (activity as AppCompatActivity).startLoading()
+}
+
+fun Fragment.endLoading() {
+  (activity as AppCompatActivity).endLoading()
 }

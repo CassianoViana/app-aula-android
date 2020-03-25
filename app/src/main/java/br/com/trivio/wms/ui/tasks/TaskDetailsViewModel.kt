@@ -15,6 +15,12 @@ class TaskDetailsViewModel(private val tasksRepository: TasksRepository = TasksR
 
   val task = MutableLiveData<Result<TaskDto>>()
 
+  fun clear() {
+    task.apply {
+      value = Result.Success(TaskDto())
+    }
+  }
+
   fun loadTask(id: Long) {
     viewModelScope.launch {
       task.apply {

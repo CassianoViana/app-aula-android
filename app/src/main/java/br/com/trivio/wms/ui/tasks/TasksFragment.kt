@@ -29,7 +29,7 @@ class TasksFragment : Fragment() {
   ): View? {
     val root = inflater.inflate(R.layout.fragment_tasks, container, false)
     tasksList = root.findViewById(R.id.tasks_recycler_view)
-    loading = root.findViewById(R.id.progressBarTasks)
+    loading = root.findViewById(R.id.progress_bar)
     viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(TasksViewModel::class.java)
     bindDataModel()
     loadTasks()
@@ -37,7 +37,7 @@ class TasksFragment : Fragment() {
   }
 
   private fun loadTasks() {
-    loading.visibility = View.VISIBLE
+    startLoading()
     viewModel.loadTasks()
   }
 
@@ -57,7 +57,7 @@ class TasksFragment : Fragment() {
           adapter.tasks = success.data.sortedByDescending { task -> task.createdAt }
         },
         always = {
-          loading.visibility = View.GONE
+          endLoading()
         }
       )
     })

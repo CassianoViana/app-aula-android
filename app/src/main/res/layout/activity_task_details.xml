@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".TaskDetailsActivity">
+  tools:context=".ui.tasks.TaskDetailsActivity">
 
   <include
     android:id="@+id/toolbar_task_activity"
@@ -40,14 +40,30 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/task_name" />
 
+  <TextView
+    android:id="@+id/executors_label"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:text="Cassiano, Ricardo e Edson"
+    android:textSize="@dimen/large"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/label_task_status" />
+
   <Button
     android:id="@+id/btn_task_action"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="100dp"
+    android:layout_marginTop="50dp"
     android:text="Iniciar"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/label_task_status" />
+    app:layout_constraintTop_toBottomOf="@+id/executors_label" />
+
+  <include
+    layout="@layout/progress_bar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

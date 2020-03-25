@@ -13,12 +13,8 @@
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="36dp" />
 
-  <ProgressBar
-    android:id="@+id/progressBarTasks"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="wrap_content"
-    android:visibility="gone"
-    android:layout_height="wrap_content"
+  <include
+    layout="@layout/progress_bar"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

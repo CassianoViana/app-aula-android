@@ -14,10 +14,10 @@
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true">
     <activity
-      android:name=".CargoConferenceActivity"
+      android:name=".ui.conference.cargo.CargoConferenceActivity"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
-      android:name=".TaskDetailsActivity"
+      android:name=".ui.tasks.TaskDetailsActivity"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".LaunchActivity"

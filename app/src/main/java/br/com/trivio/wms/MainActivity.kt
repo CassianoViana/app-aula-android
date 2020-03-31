@@ -2,6 +2,7 @@ package br.com.trivio.wms
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,6 +19,10 @@ import kotlinx.coroutines.delay
 
 
 class MainActivity : AppCompatActivity() {
+
+  companion object {
+    const val LOGGING = "LOGGING"
+  }
 
   private lateinit var exitAppHandler: ExitAppHandler
   private lateinit var appBarConfiguration: AppBarConfiguration
@@ -47,7 +52,9 @@ class MainActivity : AppCompatActivity() {
 
     lifecycleScope.launchWhenCreated {
       delay(500L)
-      globalData.userDetails?.let { updateHeaderUserDetailsUI(it) }
+      globalData.userDetails?.let {
+        updateHeaderUserDetailsUI(it)
+      }
     }
   }
 

@@ -1,15 +1,14 @@
 package br.com.trivio.wms.repository
 
-import br.com.trivio.wms.api
+import br.com.trivio.wms.backend
 import br.com.trivio.wms.data.Result
+import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.TaskDto
-import kotlinx.coroutines.delay
-import java.util.*
 
 class TasksRepository {
   fun loadTasks(userId: Long): Result<List<TaskDto>> {
     return try {
-      Result.Success(api.getTasksByUser(userId))
+      Result.Success(backend.getTasksByUser(userId))
     } catch (e: Exception) {
       Result.Error(e)
     }
@@ -17,7 +16,7 @@ class TasksRepository {
 
   fun loadTask(id: Long): Result<TaskDto> {
     return try {
-      Result.Success(api.getTask(id))
+      Result.Success(backend.getTask(id))
     } catch (e: Exception) {
       Result.Error(e)
     }

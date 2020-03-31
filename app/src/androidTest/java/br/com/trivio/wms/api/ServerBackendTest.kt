@@ -4,10 +4,10 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 
-class RetrofitConfigTest {
+class ServerBackendTest {
 
   private val apiAddress = "http://192.168.15.7:8080"
-  var retrofitConfig = RetrofitConfig()
+  var retrofitConfig = ServerBackend()
 
   @Before
   fun config() {

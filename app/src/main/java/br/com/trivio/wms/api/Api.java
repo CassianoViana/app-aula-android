@@ -2,6 +2,8 @@ package br.com.trivio.wms.api;
 
 import java.util.List;
 
+import br.com.trivio.wms.data.dto.CargoConferenceDto;
+import br.com.trivio.wms.data.dto.CargoConferenceItemDto;
 import br.com.trivio.wms.data.dto.TaskDto;
 import br.com.trivio.wms.data.model.UserDetails;
 import okhttp3.ResponseBody;
@@ -24,4 +26,10 @@ interface Api {
 
   @GET("tasks/{id}")
   Call<TaskDto> getTask(@Path("id") Long id);
+
+  @GET("cargoConference/{id}")
+  Call<CargoConferenceDto> getCargoConference(@Path("id") Long id);
+
+  @POST("cargoConference/countItem")
+  Call<ResponseBody> countCargoItem(@Body CargoConferenceItemDto item);
 }

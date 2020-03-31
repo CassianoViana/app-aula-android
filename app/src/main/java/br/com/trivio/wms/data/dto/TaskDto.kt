@@ -5,7 +5,7 @@ import br.com.trivio.wms.data.model.TaskType
 import java.time.LocalDateTime
 
 data class TaskDto(
-  var id: Long? = null,
+  var id: Long = 0,
   var orderReferenceCode: String? = null,
   var name: String? = null,
   var status: TaskStatus? = null,

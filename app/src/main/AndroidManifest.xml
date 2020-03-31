@@ -14,6 +14,10 @@
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true">
     <activity
+      android:name=".ui.conference.cargo.ConferenceItemsActivity"
+      android:theme="@style/AppTheme.NoActionBar"
+      android:windowSoftInputMode="adjustResize" />
+    <activity
       android:name=".ui.conference.cargo.CargoConferenceActivity"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity

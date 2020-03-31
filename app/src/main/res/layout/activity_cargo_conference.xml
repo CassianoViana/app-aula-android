@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.conference.cargo.CargoConferenceActivity">
@@ -13,40 +14,54 @@
     android:layout_height="wrap_content" />
 
   <LinearLayout
+    android:id="@+id/totals_to_count"
     android:layout_width="match_parent"
-    android:padding="@dimen/padding"
-    android:layout_height="238dp"
-    android:layout_marginTop="76dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/app_bar_layout_cargo_conference"
+    android:background="@color/colorBlueAccent"
     android:gravity="center"
     android:orientation="vertical"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:padding="@dimen/padding_half"
+    app:layout_constraintTop_toBottomOf="@id/app_bar_layout_cargo_conference">
 
     <TextView
       android:id="@+id/qtd_items_to_count"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="22/40"
+      android:text="22 de 40"
+      android:textColor="@color/colorWhite"
       android:textSize="@dimen/large"
       android:textStyle="bold" />
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="@dimen/character"
-      android:text="@string/items_to_count" />
+      android:text="@string/counted_itens"
+      android:textColor="@color/colorWhite" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/totals_to_count"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/padding">
+
 
     <EditText
-      android:layout_marginTop="16sp"
-      android:gravity="center"
-      android:inputType="number"
+      android:id="@+id/barcode"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginTop="16sp"
+      android:gravity="center"
       android:hint="@string/barcode"
+      android:inputType="number"
       android:textSize="@dimen/large" />
 
     <Button
+      android:id="@+id/btn_search_product"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16sp"
@@ -54,5 +69,10 @@
       android:text="@string/search_product" />
   </LinearLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+  <include
+    layout="@layout/progress_bar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/app_bar_layout_cargo_conference"
+    android:visibility="gone" />
+</RelativeLayout>

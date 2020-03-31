@@ -5,9 +5,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-  viewBinding {
-    enabled = true
-  }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -60,6 +57,7 @@ dependencies {
   implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
   implementation 'androidx.activity:activity-ktx:1.2.0-alpha02'
   implementation 'org.projectlombok:lombok:1.18.4'
+  implementation 'me.xdrop:fuzzywuzzy:1.2.0'
   annotationProcessor 'org.projectlombok:lombok:1.18.4'
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'androidx.test.ext:junit:1.1.0'

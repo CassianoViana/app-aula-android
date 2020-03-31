@@ -45,7 +45,7 @@
   <string name="confirm_exit">Fechar o aplicativo?</string>
   <string name="connection_failed">Não foi possível conectar. Tente mais tarde</string>
   <string name="default_error_message">Ocorreu um erro. Informe o suporte</string>
-  <string name="could_not_retrieve_token">Não foi possível buscar o token do servidor</string>
+  <string name="could_not_retrieve_token">Erro de verificação de usuário e/ou senha</string>
   <string name="enter">Entrar</string>
   <string name="order">Pedido:</string>
   <string name="open">Abrir</string>
@@ -53,7 +53,22 @@
   <string name="continue_task">Continuar</string>
   <string name="task">Tarefa</string>
   <string name="cargo_conference">Conferência de carga</string>
-  <string name="items_to_count">itens para contar</string>
+  <string name="counted_itens">itens contados</string>
   <string name="search_product">Buscar produto</string>
   <string name="barcode">Código de barras</string>
+  <string name="products">Produtos</string>
+  <string name="inform_qtd">Informe a quantidade</string>
+  <string name="cancel">Cancelar</string>
+  <string name="ok">OK</string>
+  <string name="quantity">Quantidade</string>
+  <string name="counted_success">Contagem realizada com sucesso</string>
+  <string name="filter_per_code">Filtrar por código</string>
+  <string name="please_check_the_quantity">Verifique a quantidade informada</string>
+  <string name="of">de</string>
+  <string name="counted_qtd">Quantidade contada</string>
+  <string name="counted_qtd_abbreviated">Qtd contada</string>
+  <string name="items">itens</string>
+  <string name="xItens">%1$ itens</string>
+  <string name="no_gtin">Gtin não informado</string>
+  <string name="search">Pesquisa</string>
 </resources>

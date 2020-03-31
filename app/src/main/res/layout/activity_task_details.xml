@@ -10,56 +10,48 @@
     android:id="@+id/toolbar_task_activity"
     layout="@layout/app_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp" />
+    android:layout_height="wrap_content" />
 
-  <TextView
-    android:id="@+id/task_name"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="168dp"
-    android:text="Conferência"
-    android:textColor="@color/colorDark"
-    android:textSize="@dimen/large"
-    android:textStyle="bold"
-    app:layout_constraintEnd_toEndOf="parent"
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar_task_activity">
 
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+      android:id="@+id/task_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Conferência"
+      android:textColor="@color/colorDark"
+      android:textSize="@dimen/large"
+      android:textStyle="bold" />
 
-  <TextView
-    android:id="@+id/label_task_status"
-    style="@style/TagTextWhite"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:text="Pendente"
-    android:textSize="@dimen/large"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/task_name" />
+    <TextView
+      android:id="@+id/label_task_status"
+      style="@style/TagTextWhite"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:text="Pendente"
+      android:textSize="@dimen/large" />
 
-  <TextView
-    android:id="@+id/executors_label"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:text="Cassiano, Ricardo e Edson"
-    android:textSize="@dimen/large"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/label_task_status" />
+    <TextView
+      android:id="@+id/executors_label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:text="Cassiano, Ricardo e Edson"
+      android:textSize="@dimen/large" />
 
-  <Button
-    android:id="@+id/btn_task_action"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="50dp"
-    android:text="Iniciar"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/executors_label" />
+    <Button
+      android:id="@+id/btn_task_action"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:text="Iniciar" />
+  </LinearLayout>
 
   <include
     layout="@layout/progress_bar"

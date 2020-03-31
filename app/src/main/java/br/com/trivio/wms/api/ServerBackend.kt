@@ -1,5 +1,7 @@
 package br.com.trivio.wms.api
 
+import br.com.trivio.wms.data.dto.CargoConferenceDto
+import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.UserDetails
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -15,7 +17,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import java.io.IOException
 import java.lang.IllegalStateException
 
-class RetrofitConfig {
+class ServerBackend {
   private lateinit var api: Api
 
   fun config(baseUrl: String) {
@@ -36,25 +38,36 @@ class RetrofitConfig {
     api = retrofit.create(Api::class.java)
   }
 
-  private fun <T> getResultOrExceptionFrom(call: Call<T>): T {
+  private fun <T> executeAndReturn(call: Call<T>): T {
     val response = call.execute()
     if (response.isSuccessful) {
       val result = response.body()
       if (result != null) {
         return result
       } else {
-        throw IllegalStateException("Null result on getResultOrExceptionFrom")
+        throw IllegalStateException("Não foi possível buscar os dados")
       }
     } else {
-      throw IOException(
-        """
-          API call error:
-          Code: ${response.code()}
-          Message: ${response.message()}
-          ErrorBody: ${response.errorBody()?.string()}
-        """
-      )
+      throw buildApiFormattedError(response)
     }
+  }
+
+  private fun <T> execute(call: Call<T>) {
+    val response = call.execute()
+    if (!response.isSuccessful) {
+      throw buildApiFormattedError(response)
+    }
+  }
+
+  private fun <T> buildApiFormattedError(response: Response<T>): IOException {
+    return IOException(
+      """
+            API call error:
+            Code: ${response.code()}
+            Message: ${response.message()}
+            ErrorBody: ${response.errorBody()?.string()}
+          """
+    )
   }
 
   private fun buildHttpClient(): OkHttpClient {
@@ -75,14 +88,22 @@ class RetrofitConfig {
   }
 
   fun getUserDetails(): UserDetails {
-    return getResultOrExceptionFrom(api.userDetails)
+    return executeAndReturn(api.userDetails)
   }
 
   fun getTasksByUser(userId: Long): List<TaskDto> {
-    return getResultOrExceptionFrom(api.getTasksByUser(userId))
+    return executeAndReturn(api.getTasksByUser(userId))
   }
 
   fun getTask(id: Long): TaskDto {
-    return getResultOrExceptionFrom(api.getTask(id))
+    return executeAndReturn(api.getTask(id))
+  }
+
+  fun getCargoConference(id: Long): CargoConferenceDto {
+    return executeAndReturn(api.getCargoConference(id))
+  }
+
+  fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto) {
+    return execute(api.countCargoItem(cargoConferenceItemDto))
   }
 }

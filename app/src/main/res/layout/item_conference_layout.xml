@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?android:attr/selectableItemBackground"
+  android:padding="@dimen/padding">
+
+  <TextView
+    android:id="@+id/product_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:text="Ábaco"
+    android:textColor="@color/colorDark"
+    android:textSize="@dimen/medium" />
+
+  <TextView
+    android:id="@+id/gtin_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/product_name"
+    android:text="71231231231"
+    android:textColor="@color/lightGrey" />
+
+
+  <TextView
+    android:id="@+id/counted_qtd"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBaseline="@id/label_items"
+    android:layout_toEndOf="@id/label_items"
+    android:text="10"
+    android:textColor="@color/colorDark"
+    android:textSize="@dimen/medium"
+    android:textStyle="bold" />
+
+  <TextView
+    android:id="@+id/label_items"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/gtin_text"
+    android:layout_marginRight="@dimen/character"
+    android:text="@string/counted_qtd_abbreviated"
+    android:textColor="@color/colorDark"
+    android:textSize="@dimen/medium"
+    android:textStyle="bold" />
+
+</RelativeLayout>

@@ -60,9 +60,7 @@ class LoginActivity : AppCompatActivity() {
         showLoginFailed(loginResult.error)
         return@Observer
       }
-      if (loginResult.success != null) {
-        updateUiWithUser(loginResult.success)
-      }
+      showLoginSuccess(loginResult.success)
       setResult(Activity.RESULT_OK)
       startMainActivity()
       finish()
@@ -110,19 +108,17 @@ class LoginActivity : AppCompatActivity() {
     loadApiSettingsFromPreferences(this)
   }
 
-  private fun updateUiWithUser(model: LoggedInUserView) {
-    val welcome = getString(R.string.welcome)
-    val displayName = model.displayName
-    // TODO : initiate successful logged in experience
-    Toast.makeText(
-      applicationContext,
-      "$welcome $displayName",
-      Toast.LENGTH_LONG
-    ).show()
-  }
-
   private fun showLoginFailed(@StringRes errorString: Int) {
     Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+  }
+
+  private fun showLoginSuccess(model: LoggedInUserView?) {
+    model?.let {
+      val welcome = getString(R.string.welcome)
+      val displayName = model.displayName
+      val message = "$welcome $displayName"
+      Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

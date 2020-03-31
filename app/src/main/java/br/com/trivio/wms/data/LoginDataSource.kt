@@ -1,6 +1,6 @@
 package br.com.trivio.wms.data
 
-import br.com.trivio.wms.api
+import br.com.trivio.wms.backend
 import br.com.trivio.wms.api.UsernamePassword
 import br.com.trivio.wms.data.model.UserDetails
 import br.com.trivio.wms.globalData
@@ -29,7 +29,7 @@ class LoginDataSource {
   }
 
   private fun fetchToken(usernamePassword: UsernamePassword): String? {
-    return api.login(usernamePassword)
+    return backend.login(usernamePassword)
   }
 
   fun logout() {

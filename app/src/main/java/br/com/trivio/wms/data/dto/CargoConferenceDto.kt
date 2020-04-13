@@ -1,11 +1,13 @@
 package br.com.trivio.wms.data.dto
 
+import br.com.trivio.wms.data.model.TaskStatus
+import br.com.trivio.wms.getPercent
 import br.com.trivio.wms.matchFilter
-import br.com.trivio.wms.stringSimilarity
 
 class CargoConferenceDto(
   val id: Long = 0,
-  val items: MutableList<CargoConferenceItemDto> = mutableListOf()
+  val items: MutableList<CargoConferenceItemDto> = mutableListOf(),
+  val taskStatus: TaskStatus = TaskStatus.PENDING
 ) {
   fun getTotalCountedItems(): Int {
     return items.filter {
@@ -38,5 +40,15 @@ class CargoConferenceDto(
         STATUS_COUNTING_NONE_COUNTED
       }
     }
+  }
+
+  fun getPercentProgress(): Int {
+    return getPercent(getTotalCountedItems(), items.size)
+  }
+
+  fun getTotalDivergentItems(): Int {
+    return items.filter {
+      it.mismatchQuantity()
+    }.count()
   }
 }

@@ -3,6 +3,7 @@ package br.com.trivio.wms
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.Log
@@ -15,6 +16,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -34,6 +36,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
+import kotlin.math.roundToInt
 
 val globalData: GlobalData = GlobalData()
 val backend = ServerBackend()
@@ -181,13 +184,13 @@ fun ViewGroup.inflateToViewHolder(resourceId: Int): View {
 
 fun AppCompatActivity.hideKeyboard(editText: EditText) {
   val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-  imm.hideSoftInputFromWindow(editText.windowToken, 0);
+  imm.hideSoftInputFromWindow(editText.windowToken, 0)
 }
 
 fun AppCompatActivity.showKeyboard(editText: EditText? = null) {
   val imm: InputMethodManager =
     getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-  imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+  imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
   editText?.requestFocus()
   editText?.selectAll()
 }
@@ -202,7 +205,7 @@ fun AppCompatActivity.showMessage(
   colorResource: Int
 ) {
   val message = Toast.makeText(this, text, length)
-  colorResource?.let {
+  colorResource.let {
     message.view.findViewById<TextView>(android.R.id.message)
       .setTextColor(getColor(R.color.colorWhite))
     message.view.setBackgroundColor(getColor(colorResource))
@@ -258,7 +261,42 @@ fun stringSimilarity(originalString: String, comparisonString: String): Int {
 
 fun matchFilter(originalString: String, comparisonString: String): Boolean {
   //return originalString.contains(comparisonString)
-  val a = originalString.toUpperCase().replace(".", " ")
-  val b = comparisonString.toUpperCase()
+  val a = originalString.toUpperCase(Locale.getDefault()).replace(".", " ")
+  val b = comparisonString.toUpperCase(Locale.getDefault())
   return stringSimilarity(a, b) >= 80 || a.contains(b)
+}
+
+fun setProgressGradient(v: View, percent: Int, colorStart: Int, colorEnd: Int) {
+  val colors = mutableListOf<Int>()
+  repeat((0..1000).count()) {
+    colors.add(
+      if (it < percent * 10) {
+        colorStart
+      } else {
+        colorEnd
+      }
+    )
+  }
+  val linearGradient = GradientDrawable(
+    GradientDrawable.Orientation.LEFT_RIGHT,
+    colors.toIntArray()
+  )
+  v.background = linearGradient
+}
+
+fun getPercent(a: Int, b: Int): Int {
+  return ((a.toFloat() / b) * 100).roundToInt()
+}
+
+fun AppCompatActivity.showFinishTaskDialog(
+  message: Int,
+  listener: DialogInterface.OnClickListener
+) {
+  AlertDialog.Builder(this)
+    .setCancelable(false)
+    .setTitle(R.string.finish_task_label)
+    .setMessage(message)
+    .setPositiveButton(R.string.finish_task_label, listener)
+    .setNegativeButton(R.string.cancel, null)
+    .show()
 }

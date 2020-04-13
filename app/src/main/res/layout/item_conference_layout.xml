@@ -21,7 +21,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/product_name"
+    android:drawableLeft="@drawable/ic_barcode_black_18dp"
     android:text="71231231231"
+    android:textColor="@color/lightGrey" />
+
+
+  <TextView
+    android:id="@+id/sku_text"
+    android:drawableLeft="@drawable/pound_box_black_18_dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/gtin_text"
+    android:text="12312"
     android:textColor="@color/lightGrey" />
 
 
@@ -40,7 +51,7 @@
     android:id="@+id/label_items"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@id/gtin_text"
+    android:layout_below="@id/sku_text"
     android:layout_marginRight="@dimen/character"
     android:text="@string/counted_qtd_abbreviated"
     android:textColor="@color/colorDark"

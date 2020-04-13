@@ -16,5 +16,9 @@ public enum TaskStatus {
     this.name = name;
     this.color = color;
   }
+
+  public boolean isEnded() {
+    return this == DONE || this == CANCELLED;
+  }
 }
 

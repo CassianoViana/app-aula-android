@@ -17,25 +17,43 @@ import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
 import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.coroutines.launch
 
 class TaskDetailsActivity : AppCompatActivity() {
 
   companion object {
     const val TASK_ID: String = "task_id"
+    const val RESULT_TASK_CHANGED = 100
+    const val REQUEST_TASK_CHANGE = 100
   }
 
+  private lateinit var taskHint: TextView
+  private lateinit var executorsLabel: TextView
+  private lateinit var taskName: TextView
+  private lateinit var btnTaskAction: Button
+  private lateinit var labelTaskStatus: TextView
   private val viewModel: TaskDetailsViewModel by viewModels()
+  private var taskId: Long = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_task_details)
     setupToolbar()
 
-    val labelTaskStatus = findViewById<TextView>(R.id.label_task_status)
-    val btnTaskAction = findViewById<Button>(R.id.btn_task_action)
-    val taskName = findViewById<TextView>(R.id.task_name)
-    val executorsLabel = findViewById<TextView>(R.id.executors_label)
+    labelTaskStatus = findViewById(R.id.label_task_status)
+    btnTaskAction = findViewById(R.id.btn_task_action)
+    taskName = findViewById(R.id.task_name)
+    executorsLabel = findViewById(R.id.executors_label)
+    taskHint = findViewById(R.id.task_hint)
 
+    this.taskId = intent.getLongExtra(TASK_ID, 0)
+
+    observeViewModel()
+    onClickBtnStartTask()
+    loadTask(taskId)
+  }
+
+  private fun observeViewModel() {
     viewModel.task.observe(this, Observer {
       threatResult(
         it, always = {
@@ -46,27 +64,28 @@ class TaskDetailsActivity : AppCompatActivity() {
         },
         onSuccess = { success ->
           val task = success.data
-          val name = task.name
-          toolbar.title = getString(R.string.task) + " " + task.id
-          UiUtils.setTaskStatusStyle(labelTaskStatus, task)
-          taskName.text = name
-          btnTaskAction.text = getActionTextFromTask(task)
-          executorsLabel.text = task.currentExecutorsNames
+          updateUi(task)
         }
       )
     })
+  }
 
+  private fun onClickBtnStartTask() {
     btnTaskAction.setOnClickListener {
       getIntentFromTask(viewModel.task)?.let {
-        startActivity(it)
+        startActivityForResult(it, REQUEST_TASK_CHANGE)
       }
-
     }
+  }
 
-    val id = intent.getLongExtra(TASK_ID, 0)
-    lifecycleScope.launchWhenCreated {
-      loadTask(id)
-    }
+  private fun updateUi(task: TaskDto) {
+    val name = task.name
+    toolbar.title = getString(R.string.task) + " " + task.id
+    UiUtils.setTaskStatusStyle(labelTaskStatus, task)
+    taskName.text = name
+    btnTaskAction.text = getActionTextFromTask(task)
+    executorsLabel.text = task.currentExecutorsNames
+    taskHint.text = task.hint
   }
 
   private fun loadTask(id: Long) {
@@ -101,6 +120,13 @@ class TaskDetailsActivity : AppCompatActivity() {
       TaskStatus.DOING -> getString(R.string.continue_task)
       else -> getString(R.string.open)
     }
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    if (resultCode == RESULT_TASK_CHANGED) {
+      loadTask(taskId)
+    }
+    super.onActivityResult(requestCode, resultCode, data)
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -64,11 +64,17 @@
   <string name="counted_success">Contagem realizada com sucesso</string>
   <string name="filter_per_code">Filtrar por código</string>
   <string name="please_check_the_quantity">Verifique a quantidade informada</string>
-  <string name="of">de</string>
+  <string name="conted_itens_label">Itens contados: %d de %d</string>
   <string name="counted_qtd">Quantidade contada</string>
   <string name="counted_qtd_abbreviated">Qtd contada</string>
   <string name="items">itens</string>
   <string name="xItens">%1$ itens</string>
   <string name="no_gtin">Gtin não informado</string>
   <string name="search">Pesquisa</string>
+  <string name="finish_task_label">Finalizar tarefa</string>
+  <string name="counting_finished_message">Todos os itens foram contados. Deseja finalizar a tarefa?</string>
+  <string name="divergent_itens">itens divergentes: %d</string>
+  <string name="every_items_counted_correct">Todos os itens foram contados corretamente</string>
+  <string name="no_sku">Código não informado</string>
+  <string name="counting_finished">A contagem foi finalizada</string>
 </resources>

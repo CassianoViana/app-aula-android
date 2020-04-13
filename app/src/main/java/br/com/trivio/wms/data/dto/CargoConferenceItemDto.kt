@@ -14,4 +14,8 @@ data class CargoConferenceItemDto(
   fun getSearchString(): String {
     return "$name, $gtin, $sku, $expectedQuantity, $countedQuantity"
   }
+
+  fun mismatchQuantity(): Boolean {
+    return countedQuantity != null && expectedQuantity != countedQuantity
+  }
 }

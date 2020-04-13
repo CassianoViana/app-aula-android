@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
+import br.com.trivio.wms.data.model.TaskStatus
 
 class ConferenceItemsActivity : AppCompatActivity() {
 
@@ -26,9 +27,13 @@ class ConferenceItemsActivity : AppCompatActivity() {
     const val SUCCESS: Int = 1
   }
 
+  private lateinit var cargoStatus: TaskStatus
   private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
     override fun onClick(item: CargoConferenceItemDto) {
-      selectItemAndFinish(item)
+      if (!cargoStatus.isEnded)
+        selectItemAndFinish(item)
+      else
+        showMessageError(R.string.counting_finished)
     }
   })
 
@@ -64,6 +69,7 @@ class ConferenceItemsActivity : AppCompatActivity() {
         endLoading()
       },
         onSuccess = { success ->
+          cargoStatus = success.data.taskStatus
           cargoItemsAdapter.items = success.data.items
         })
     })
@@ -100,13 +106,24 @@ class CargoItemsAdapter(private val onClickCargoItem: OnClickCargoItem) :
   class CargoItemCountViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     private var productName = view.findViewById<TextView>(R.id.product_name)
     private var gtin = view.findViewById<TextView>(R.id.gtin_text)
+    private var sku = view.findViewById<TextView>(R.id.sku_text)
     private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
     fun bind(
       item: CargoConferenceItemDto,
       onClickCargoItem: OnClickCargoItem
     ) {
+      var color = 0;
+      if (item.countedQuantity != null) {
+        color = R.color.green_transparent
+      }
+      if (item.mismatchQuantity()) {
+        color = R.color.red_transparent
+      }
+      if (color != 0)
+        view.setBackgroundColor(view.context.getColor(color))
       productName.text = item.name
       gtin.text = coalesce(item.gtin, R.string.no_gtin)
+      sku.text = coalesce(item.sku, R.string.no_sku)
       countedQtd.text = formatNumber(item.countedQuantity)
       view.setOnClickListener {
         onClickCargoItem.onClick(item)

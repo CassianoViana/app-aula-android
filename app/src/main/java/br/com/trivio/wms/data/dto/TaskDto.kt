@@ -14,5 +14,6 @@ data class TaskDto(
   var typeDto: TaskTypeDto? = null,
   var currentExecutorsNames: String? = null,
   var createdAt: LocalDateTime? = null,
-  var finishedAt: LocalDateTime? = null
+  var finishedAt: LocalDateTime? = null,
+  var hint: String? = null
 )

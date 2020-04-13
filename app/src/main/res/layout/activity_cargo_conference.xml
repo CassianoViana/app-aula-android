@@ -34,21 +34,29 @@
       android:textStyle="bold" />
 
     <TextView
+      android:id="@+id/label_status_counting"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/counted_itens"
       android:textColor="@color/colorWhite" />
   </LinearLayout>
 
+  <include
+    android:id="@+id/layout_btn_finish"
+    layout="@layout/button_finish_task"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/totals_to_count"
+    android:visibility="gone" />
+
   <LinearLayout
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/totals_to_count"
+    android:layout_below="@id/layout_btn_finish"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/padding">
-
 
     <EditText
       android:id="@+id/barcode"
@@ -67,6 +75,8 @@
       android:layout_marginTop="16sp"
       android:drawableLeft="@drawable/ic_search_black_24dp"
       android:text="@string/search_product" />
+
+
   </LinearLayout>
 
   <include

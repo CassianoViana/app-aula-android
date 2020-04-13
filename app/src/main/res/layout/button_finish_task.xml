@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/btn_finish_task"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:drawableRight="@drawable/ic_check_white_24dp"
+  android:drawableTint="@color/success"
+  android:padding="@dimen/padding"
+  android:text="@string/finish_task_label"
+  android:textColor="@color/success"
+  android:textSize="@dimen/large" />

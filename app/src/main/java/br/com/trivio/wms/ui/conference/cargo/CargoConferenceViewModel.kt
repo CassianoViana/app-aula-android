@@ -7,20 +7,21 @@ import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.repository.CargoConferenceRepository
-import br.com.trivio.wms.stringSimilarity
+import br.com.trivio.wms.repository.TasksRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.IllegalStateException
 import java.math.BigDecimal
 
 class CargoConferenceViewModel(
-  private val repository: CargoConferenceRepository = CargoConferenceRepository()
+  private val repository: CargoConferenceRepository = CargoConferenceRepository(),
+  private val taskRepository: TasksRepository = TasksRepository()
 ) :
   ViewModel() {
 
   val task = MutableLiveData<Result<CargoConferenceDto>>()
   val cargoItem = MutableLiveData<Result<CargoConferenceItemDto>>()
+  val finishStatus = MutableLiveData<Result<Boolean>>()
 
   fun loadTask(id: Long) {
     viewModelScope.launch {
@@ -62,6 +63,14 @@ class CargoConferenceViewModel(
     return when (val value: Result<CargoConferenceDto>? = task.value) {
       is Result.Success -> value.data.filteredItems(search)
       else -> listOf()
+    }
+  }
+
+  fun finishTask(taskId: Long) {
+    viewModelScope.launch {
+      finishStatus.value = withContext(Dispatchers.IO) {
+        taskRepository.finishTask(taskId)
+      }
     }
   }
 }

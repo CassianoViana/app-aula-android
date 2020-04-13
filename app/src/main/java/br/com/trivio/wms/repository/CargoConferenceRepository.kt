@@ -17,7 +17,7 @@ class CargoConferenceRepository {
   fun countItem(cargoItem: CargoConferenceItemDto): Result<CargoConferenceItemDto> {
     return try {
       backend.countCargoItem(cargoItem)
-      Result.Success(cargoItem);
+      Result.Success(cargoItem)
     } catch (e: Exception) {
       Result.Error(e);
     }

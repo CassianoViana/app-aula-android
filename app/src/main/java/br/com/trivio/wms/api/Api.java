@@ -27,6 +27,9 @@ interface Api {
   @GET("tasks/{id}")
   Call<TaskDto> getTask(@Path("id") Long id);
 
+  @POST("tasks/finish/{id}")
+  Call<ResponseBody> finishTask(@Path("id") Long id);
+
   @GET("cargoConference/{id}")
   Call<CargoConferenceDto> getCargoConference(@Path("id") Long id);
 

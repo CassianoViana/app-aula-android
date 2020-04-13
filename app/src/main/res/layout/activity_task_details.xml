@@ -29,11 +29,21 @@
       android:textStyle="bold" />
 
     <TextView
+      android:id="@+id/task_hint"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/padding"
+      android:text="Placa ABC8080, Motorista: João"
+      android:textAlignment="center"
+      android:textSize="@dimen/medium"
+      android:textStyle="bold|italic" />
+
+    <TextView
       android:id="@+id/label_task_status"
       style="@style/TagTextWhite"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="@dimen/padding"
       android:text="Pendente"
       android:textSize="@dimen/large" />
 
@@ -41,7 +51,7 @@
       android:id="@+id/executors_label"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="@dimen/padding"
       android:text="Cassiano, Ricardo e Edson"
       android:textSize="@dimen/large" />
 
@@ -49,8 +59,9 @@
       android:id="@+id/btn_task_action"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="@dimen/padding"
       android:text="Iniciar" />
+
   </LinearLayout>
 
   <include

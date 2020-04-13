@@ -13,5 +13,7 @@
   <color name="success">#009648</color>
   <color name="error">#B60C00</color>
   <color name="colorBlueAccent">#006AEC</color>
+  <color name="green_transparent">#8600DB6A</color>
+  <color name="red_transparent">#88F44336</color>
 </resources>
 

@@ -3,6 +3,7 @@ package br.com.trivio.wms.api
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.UserDetails
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -62,19 +63,18 @@ class ServerBackend {
   private fun <T> buildApiFormattedError(response: Response<T>): IOException {
     return IOException(
       """
-            API call error:
-            Code: ${response.code()}
-            Message: ${response.message()}
-            ErrorBody: ${response.errorBody()?.string()}
-          """
+        API call error:
+        Code: ${response.code()}
+        Message: ${response.message()}
+        ErrorBody: ${response.errorBody()?.string()}
+      """
     )
   }
 
   private fun buildHttpClient(): OkHttpClient {
     val headerAuthorizationInterceptor = HeaderAuthorizationInterceptor()
     return OkHttpClient.Builder()
-      .addInterceptor(headerAuthorizationInterceptor) // This is used to add ApplicationInterceptor.
-      .addNetworkInterceptor(headerAuthorizationInterceptor) //This is used to add NetworkInterceptor.
+      .addInterceptor(headerAuthorizationInterceptor)
       .build()
   }
 
@@ -105,5 +105,9 @@ class ServerBackend {
 
   fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto) {
     return execute(api.countCargoItem(cargoConferenceItemDto))
+  }
+
+  fun finishTask(taskId: Long) {
+    return execute(api.finishTask(taskId))
   }
 }

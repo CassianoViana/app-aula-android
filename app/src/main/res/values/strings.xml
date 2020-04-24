@@ -77,4 +77,5 @@
   <string name="every_items_counted_correct">Todos os itens foram contados corretamente</string>
   <string name="no_sku">Código não informado</string>
   <string name="counting_finished">A contagem foi finalizada</string>
+  <string name="connection_type">Tipo de conexão</string>
 </resources>

@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <PreferenceCategory app:title="@string/connection">
 
@@ -7,14 +8,18 @@
       app:title="@string/server_url"
       app:useSimpleSummaryProvider="true" />
 
-    <!--<ListPreference
-      app:defaultValue="reply"
-      app:entries="@array/reply_entries"
-      app:entryValues="@array/reply_values"
-      app:key="reply"
-      app:title="@string/reply_title"
-      app:useSimpleSummaryProvider="true" />-->
+  </PreferenceCategory>
 
+  <PreferenceCategory app:title="Avançado">
+    <CheckBoxPreference
+      app:key="developer_mode"
+      app:title="Modo desenvolvedor" />
+
+    <EditTextPreference
+      android:shouldDisableView="true"
+      app:key="local_url"
+      app:title="Endereço API local"
+      app:useSimpleSummaryProvider="true" />
   </PreferenceCategory>
 
   <!--<PreferenceCategory app:title="@string/sync_header">

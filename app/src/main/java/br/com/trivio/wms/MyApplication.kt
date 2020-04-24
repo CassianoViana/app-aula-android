@@ -39,7 +39,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 val globalData: GlobalData = GlobalData()
-val backend = ServerBackend()
+val serverBackend = ServerBackend()
 
 class MyApplication : Application() {
   override fun onCreate() {
@@ -51,16 +51,18 @@ class MyApplication : Application() {
 
 fun loadApiSettingsFromPreferences(context: Context) {
   val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-  val address = preferences.getString("server_url", null)
+  val isDevMode = preferences.getBoolean("developer_mode", false)
+  val addressPrefKey = if (isDevMode) "local_url" else "server_url"
+  val address = preferences.getString(addressPrefKey, "https://api.wms.trivio.com.br")
   if (address != null)
-    backend.config(address)
+    serverBackend.config(address)
 }
 
 suspend fun loadUserDetails(): UserDetails {
   Log.i("LoadUserDetails", "loadUserDetails")
   return withContext(Dispatchers.IO) {
     try {
-      val userDetails = backend.getUserDetails()
+      val userDetails = serverBackend.getUserDetails()
       globalData.userDetails = userDetails
       userDetails
     } catch (e: Exception) {

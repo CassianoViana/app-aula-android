@@ -2,6 +2,7 @@ package br.com.trivio.wms.api
 
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
+import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.UserDetails
@@ -105,6 +106,10 @@ class ServerBackend {
 
   fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto) {
     return execute(api.countCargoItem(cargoConferenceItemDto))
+  }
+
+  fun registerDamage(damageDto: DamageDto){
+    return execute(api.registerDamage(damageDto))
   }
 
   fun finishTask(taskId: Long) {

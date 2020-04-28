@@ -1,8 +1,9 @@
 package br.com.trivio.wms.ui.conference.cargo
 
-import android.content.DialogInterface.BUTTON_POSITIVE
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -10,21 +11,21 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import br.com.trivio.wms.*
-import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
+import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
+
 
 class CargoConferenceActivity : AppCompatActivity() {
 
@@ -69,9 +70,13 @@ class CargoConferenceActivity : AppCompatActivity() {
           showMessageSuccess(R.string.counted_success)
           loadTask()
         },
-        always = {
-          endLoading()
-        })
+        always = { endLoading() })
+    })
+    viewModel.damageRegistration.observe(this, Observer {
+      threatResult(it,
+        onSuccess = { showMessageSuccess(R.string.damage_was_registered) },
+        onError = { showMessageError(R.string.error_while_register_damage) }
+      )
     })
     viewModel.task.observe(this, Observer {
       threatResult(it, onSuccess = { result ->
@@ -219,33 +224,73 @@ class CargoConferenceActivity : AppCompatActivity() {
     }
   }
 
-  private fun requestQuantity(item: CargoConferenceItemDto) {
-    val input = inflate<EditText>(R.layout.input_quantity)
-    val resetBarcode = fun() {
-      hideKeyboard(input)
-      showKeyboard(editBarcode)
-      editBarcode.setText("")
-    }
-    val dialog = AlertDialog.Builder(this)
-      .setTitle(R.string.inform_qtd)
-      .setMessage(item.name)
-      .setView(input)
-      .setCancelable(false)
-      .setPositiveButton(R.string.ok, null)
-      .setNegativeButton(R.string.cancel) { _, _ ->
-        resetBarcode()
-      }.show()
+  private fun resetBarcode() {
+    showKeyboard(editBarcode)
+    editBarcode.setText("")
+  }
 
-    dialog.getButton(BUTTON_POSITIVE).setOnClickListener {
-      val value: String = input.text.toString()
+  private fun requestQuantity(item: CargoConferenceItemDto) {
+
+    val reportDamageButtons = createButton(getString(R.string.report_damage))
+    val buttonsList = listOf(reportDamageButtons)
+
+    startRequestValue(
+      firstTitle = item.name,
+      secondTitle = getString(R.string.how_many_items_were_conted),
+      inputValue = item.countedQuantity,
+      closeAction = {
+        resetBarcode()
+        showMessageInfo(R.string.cancelled_operation)
+      },
+      viewsToAdd = buttonsList
+    ) { dialog: Dialog, value: String ->
       validateCountQuantity(value) { quantity ->
-        startLoading()
         viewModel.countItem(item, quantity)
         resetBarcode()
-        dialog.dismiss()
+        dialog.hide()
       }
     }
-    showKeyboard(input)
+
+    reportDamageButtons.setOnClickListener {
+      reportDamage(item)
+    }
+  }
+
+  private fun reportDamage(item: CargoConferenceItemDto) {
+
+    var dialogDescriptionDialog: Dialog? = null
+    var dialogQuantityDialog: Dialog? = null
+
+    val damageDto = item.damageDto ?: DamageDto()
+
+    // Page 2
+    dialogDescriptionDialog = startRequestValue(
+      firstTitle = getString(R.string.describe_damage),
+      secondTitle = getString(R.string.describe_the_damage_template, item.name),
+      keepClosedOnCreate = true,
+      inputType = InputType.TYPE_CLASS_TEXT,
+      inputValue = damageDto.description,
+      hint = getString(R.string.damage_example),
+      positiveAction = { _, value ->
+        damageDto.description = value
+        damageDto.cargoItemId = item.cargoItemId
+        viewModel.registerDamage(damageDto)
+        dialogQuantityDialog?.hide()
+        dialogDescriptionDialog?.hide()
+      }
+    )
+
+    // Page 1
+    dialogQuantityDialog = startRequestValue(
+      firstTitle = getString(R.string.count_the_damage),
+      secondTitle = getString(R.string.how_many_items_were_damaged_template, item.name),
+      inputValue = damageDto.quantity
+    ) { _, value: String ->
+      validateCountQuantity(value) {
+        damageDto.quantity = it
+        dialogDescriptionDialog.show()
+      }
+    }
   }
 
   private fun validateCountQuantity(value: String, onSuccess: (value: BigDecimal) -> Any) {

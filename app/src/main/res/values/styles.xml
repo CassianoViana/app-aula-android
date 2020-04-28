@@ -5,11 +5,31 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+
+    <item name="android:textColor">@color/colorDark</item>
+    <item name="android:editTextColor">@color/colorDark</item>
+    <!--<item name="android:textColorPrimary">@color/colorPrimary</item>
+    <item name="android:textColorSecondary">@color/colorPrimary</item>
+    <item name="android:textColorTertiary">@color/colorPrimary</item>
+    <item name="android:textColorPrimaryInverse">@color/colorPrimary</item>
+    <item name="android:textColorSecondaryInverse">@color/colorPrimary</item>
+    <item name="android:textColorTertiaryInverse">@color/colorPrimary</item>-->
+    <item name="android:buttonStyle">@style/buttonStyle</item>
   </style>
 
-  <style name="AppTheme.NoActionBar">
+  <style name="AppTheme.NoActionBar" parent="AppTheme">
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="buttonStyle">
+    <item name="android:background">@drawable/button_selector</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textColor">@color/colorPrimary</item>
+    <item name="android:gravity">center</item>
+    <item name="android:paddingHorizontal">13sp</item>
+    <item name="android:paddingVertical">13sp</item>
   </style>
 
   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -22,5 +42,18 @@
     <item name="android:paddingVertical">3dp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/colorWhite</item>
+  </style>
+
+  <style name="DialogAnimation">
+    <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+    <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
+  </style>
+
+  <style name="full_screen_dialog">
+    <item name="android:windowBackground">@null</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    <item name="android:windowSoftInputMode">adjustResize</item>
   </style>
 </resources>

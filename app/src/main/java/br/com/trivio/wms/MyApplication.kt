@@ -2,23 +2,23 @@ package br.com.trivio.wms
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.WithHint
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.ServerBackend
@@ -97,7 +97,7 @@ fun LocalDateTime.formatTo(s: String): CharSequence? {
 
 fun View.setStripeColor(position: Int) {
   val white = context.getColor(R.color.colorWhite)
-  val gray = context.getColor(R.color.lighterGray)
+  val gray = context.getColor(R.color.lighterGray2)
   setBackgroundColor(if (position % 2 == 0) gray else white)
 }
 
@@ -242,6 +242,12 @@ fun AppCompatActivity.showMessageError(
   showMessage(text, colorResource = R.color.error)
 }
 
+fun AppCompatActivity.showMessageInfo(
+  resource: Int
+) {
+  showMessage(getString(resource), colorResource = R.color.info)
+}
+
 fun formatNumber(number: BigDecimal?): String {
   if (number == null) return "0"
   return NumberFormat.getInstance().format(number)
@@ -301,4 +307,64 @@ fun AppCompatActivity.showFinishTaskDialog(
     .setPositiveButton(R.string.finish_task_label, listener)
     .setNegativeButton(R.string.cancel, null)
     .show()
+}
+
+fun AppCompatActivity.startRequestValue(
+  firstTitle: String,
+  secondTitle: String,
+  closeAction: () -> Unit = {},
+  viewsToAdd: List<View> = listOf(),
+  keepClosedOnCreate: Boolean = false,
+  inputType: Int = InputType.TYPE_CLASS_NUMBER,
+  inputValue: Any? = null,
+  hint: String = "0,00",
+  positiveAction: (dialog: Dialog, value: String) -> Unit
+): Dialog {
+  val layout = inflate<View>(R.layout.activity_input_number)
+  val confirmButton = layout.findViewById<Button>(R.id.confirm_button)
+  val inputValueEditText = layout.findViewById<EditText>(R.id.input_value)
+  val btnClose = layout.findViewById<Button>(R.id.close_btn)
+  val layoutAddViews = layout.findViewById<LinearLayout>(R.id.more_views_to_add)
+
+  inputValueEditText.inputType = inputType
+  inputValueEditText.hint = hint
+  inputValue?.let {
+    inputValueEditText.setText(it.toString())
+  }
+
+  val firstTextView = layout.findViewById<TextView>(R.id.first_title)
+  val secondTextView = layout.findViewById<TextView>(R.id.second_title)
+  secondTextView.text = secondTitle
+  firstTextView.text = firstTitle
+
+  val dialog = Dialog(this, R.style.full_screen_dialog)
+  dialog.setContentView(layout)
+
+  if (!keepClosedOnCreate) {
+    dialog.show()
+  }
+
+  confirmButton.setOnClickListener {
+    positiveAction(dialog, inputValueEditText.text.toString())
+  }
+
+  btnClose.setOnClickListener {
+    closeAction()
+    dialog.hide()
+  }
+
+  viewsToAdd.forEach { layoutAddViews.addView(it) }
+
+  showKeyboard(inputValueEditText)
+
+  return dialog
+}
+
+fun AppCompatActivity.createButton(name: String, onClick: (() -> Unit) = {}): Button {
+  val button = inflate<Button>(R.layout.button)
+  button.text = name
+  button.setOnClickListener {
+    onClick()
+  }
+  return button
 }

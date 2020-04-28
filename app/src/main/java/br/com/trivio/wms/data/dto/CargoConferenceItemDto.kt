@@ -5,11 +5,13 @@ import java.math.BigDecimal
 
 data class CargoConferenceItemDto(
   val id: Long = 0,
+  val cargoItemId: Long = 0,
   val name: String = "",
   val gtin: String = "",
   val sku: String = "",
   val expectedQuantity: BigDecimal? = BigDecimal("0"),
-  var countedQuantity: BigDecimal? = BigDecimal("0")
+  var countedQuantity: BigDecimal? = BigDecimal("0"),
+  var damageDto: DamageDto? = null
 ) {
   fun getSearchString(): String {
     return "$name, $gtin, $sku, $expectedQuantity, $countedQuantity"

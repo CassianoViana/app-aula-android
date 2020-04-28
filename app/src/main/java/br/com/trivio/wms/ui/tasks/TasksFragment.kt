@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.ui.login.ViewModelFactory
@@ -22,6 +23,7 @@ class TasksFragment : Fragment() {
   private lateinit var viewModel: TasksViewModel
   private lateinit var loading: ProgressBar
   private lateinit var tasksList: RecyclerView
+  private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
   private val adapter = TasksAdapter(object : OnTaskClickListener {
     override fun onClick(task: TaskDto) {
@@ -37,19 +39,39 @@ class TasksFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     val root = inflater.inflate(R.layout.fragment_tasks, container, false)
+    associateComponents(root)
+    setupViewModel()
+    bindListAdapter()
+    addRefreshListener()
+    return root
+  }
+
+  override fun onResume() {
+    super.onResume()
+    loadTasks()
+  }
+
+  private fun associateComponents(root: View) {
     tasksList = root.findViewById(R.id.tasks_recycler_view)
     loading = root.findViewById(R.id.progress_bar)
+    swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_tasks)
+  }
+
+  private fun setupViewModel() {
     viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(TasksViewModel::class.java)
-    bindListAdapter()
     observeViewModel()
-    loadTasks()
-    return root
   }
 
   private fun bindListAdapter() {
     val activity = activity as AppCompatActivity
     tasksList.layoutManager = LinearLayoutManager(activity)
     tasksList.adapter = adapter
+  }
+
+  private fun addRefreshListener() {
+    swipeRefreshLayout.setOnRefreshListener {
+      viewModel.loadTasks()
+    }
   }
 
   private fun observeViewModel() {
@@ -60,6 +82,7 @@ class TasksFragment : Fragment() {
         },
         always = {
           endLoading()
+          swipeRefreshLayout.isRefreshing = false
         }
       )
     })

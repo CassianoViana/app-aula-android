@@ -61,7 +61,7 @@
   <string name="cancel">Cancelar</string>
   <string name="ok">OK</string>
   <string name="quantity">Quantidade</string>
-  <string name="counted_success">Contagem realizada com sucesso</string>
+  <string name="counted_success">Contagem realizada com sucesso. Leia o próximo produto.</string>
   <string name="filter_per_code">Filtrar por código</string>
   <string name="please_check_the_quantity">Verifique a quantidade informada</string>
   <string name="conted_itens_label">Itens contados: %d de %d</string>
@@ -78,4 +78,16 @@
   <string name="no_sku">Código não informado</string>
   <string name="counting_finished">A contagem foi finalizada</string>
   <string name="connection_type">Tipo de conexão</string>
+  <string name="confirm">Confirmar</string>
+  <string name="report_damage">Reportar avaria</string>
+  <string name="read_next_product">Leia o próximo produto</string>
+  <string name="cancelled_operation">Operação cancelada</string>
+  <string name="how_many_items_were_conted">Quantos itens foram contados?</string>
+  <string name="how_many_items_were_damaged_template">Quantos %s itens estão avariados?</string>
+  <string name="describe_the_damage_template">O que aconteceu com o produto %s</string>
+  <string name="count_the_damage">Conte a avaria</string>
+  <string name="damage_example">Está quebrado</string>
+  <string name="describe_damage">Descreva a avaria</string>
+  <string name="damage_was_registered">A avaria foi registrada</string>
+  <string name="error_while_register_damage">Falha ao registrar avaria</string>
 </resources>

@@ -90,4 +90,7 @@
   <string name="describe_damage">Descreva a avaria</string>
   <string name="damage_was_registered">A avaria foi registrada</string>
   <string name="error_while_register_damage">Falha ao registrar avaria</string>
+  <string name="loading_string">…</string>
+  <string name="loading_task">Carregando tarefa…</string>
+  <string name="error_while_loading_task">Erro ao carregar tarefa</string>
 </resources>

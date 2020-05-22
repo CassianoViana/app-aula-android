@@ -46,8 +46,20 @@ class CargoConferenceActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_cargo_conference)
-    this.setupToolbar(R.string.cargo_conference)
+    setupToolbar(R.string.cargo_conference)
+    associateViewComponents()
+    observeViewModel()
+    setupEvents()
+    loadData()
+  }
 
+  private fun setupEvents() {
+    onClickSearchOpenItemsActivity()
+    onBarcodeChangeSearchProduct()
+    onClickFinishTaskEndActivity()
+  }
+
+  private fun associateViewComponents() {
     cargoConferenceId = intent.getLongExtra(CARGO_ID, 0)
     editBarcode = findViewById(R.id.barcode)
     btnSearchProduct = findViewById(R.id.btn_search_product)
@@ -55,12 +67,6 @@ class CargoConferenceActivity : AppCompatActivity() {
     btnFinishTask = findViewById(R.id.layout_btn_finish)
     labelQtdItemsToCount = findViewById(R.id.qtd_items_to_count)
     labelCountingStatus = findViewById(R.id.label_status_counting)
-
-    observeViewModel()
-    onClickSearchOpenItemsActivity()
-    onBarcodeChangeSearchProduct()
-    onClickFinishTaskEndActivity()
-    loadTaskOnCreate()
   }
 
   private fun observeViewModel() {
@@ -81,6 +87,9 @@ class CargoConferenceActivity : AppCompatActivity() {
     viewModel.task.observe(this, Observer {
       threatResult(it, onSuccess = { result ->
         updateUi(result.data)
+      }, onError = {
+        showMessageError(R.string.error_while_loading_task)
+        //finish()
       })
     })
     viewModel.finishStatus.observe(this, Observer {
@@ -117,7 +126,7 @@ class CargoConferenceActivity : AppCompatActivity() {
       }
   }
 
-  private fun loadTaskOnCreate() {
+  private fun loadData() {
     lifecycleScope.launchWhenCreated {
       loadTask()
     }

@@ -95,6 +95,7 @@ class TasksFragment : Fragment() {
 
   class TasksAdapter(private val onTaskClickListener: OnTaskClickListener) :
     RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
+
     var tasks: List<TaskDto> = mutableListOf()
       set(value) {
         field = value.sortedByDescending { task -> task.createdAt }

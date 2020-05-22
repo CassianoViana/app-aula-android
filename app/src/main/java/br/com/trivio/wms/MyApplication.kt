@@ -164,8 +164,13 @@ fun AppCompatActivity.getProgressBarLayout(): FrameLayout? {
   return findViewById(R.id.layout_progress_bar)
 }
 
-fun AppCompatActivity.startLoading() {
-  getProgressBarLayout()?.visibility = View.VISIBLE
+fun AppCompatActivity.startLoading(loadingStringId: Int? = null) {
+  getProgressBarLayout()?.let { layout ->
+    layout.visibility = View.VISIBLE
+    loadingStringId?.let {
+      layout.findViewById<TextView>(R.id.loading_text).text = getString(it)
+    }
+  }
 }
 
 fun AppCompatActivity.endLoading() {

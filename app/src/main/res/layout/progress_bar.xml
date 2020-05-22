@@ -4,14 +4,30 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:layout_gravity="center"
-  android:background="@color/translucent"
+  android:background="@color/colorWhite"
   android:translationZ="2dp">
 
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="wrap_content"
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center" />
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ProgressBar
+      android:id="@+id/progress_bar"
+      style="?android:attr/progressBarStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+
+    <TextView
+      android:id="@+id/loading_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:text="Carregando..."
+      android:textColor="@color/colorAccent" />
+  </LinearLayout>
+
 </FrameLayout>
 

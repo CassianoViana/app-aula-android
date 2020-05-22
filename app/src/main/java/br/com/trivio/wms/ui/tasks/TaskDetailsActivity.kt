@@ -39,18 +39,19 @@ class TaskDetailsActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_task_details)
     setupToolbar()
+    associateComponents()
+    this.taskId = intent.getLongExtra(TASK_ID, 0)
+    observeViewModel()
+    onClickBtnStartTask()
+    loadTask(taskId)
+  }
 
+  private fun associateComponents() {
     labelTaskStatus = findViewById(R.id.label_task_status)
     btnTaskAction = findViewById(R.id.btn_task_action)
     taskName = findViewById(R.id.task_name)
     executorsLabel = findViewById(R.id.executors_label)
     taskHint = findViewById(R.id.task_hint)
-
-    this.taskId = intent.getLongExtra(TASK_ID, 0)
-
-    observeViewModel()
-    onClickBtnStartTask()
-    loadTask(taskId)
   }
 
   private fun observeViewModel() {
@@ -89,7 +90,7 @@ class TaskDetailsActivity : AppCompatActivity() {
   }
 
   private fun loadTask(id: Long) {
-    startLoading()
+    startLoading(R.string.loading_task)
     viewModel.loadTask(id)
   }
 

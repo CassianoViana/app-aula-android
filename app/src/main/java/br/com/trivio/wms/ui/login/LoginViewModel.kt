@@ -26,6 +26,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
   val loginResult: LiveData<LoginResult> = _loginResult
 
   fun login(username: String, password: String) {
+    globalData.token = ""
     viewModelScope.launch {
       val result: Result<UserDetails> = withContext(Dispatchers.IO) {
         loginRepository.login(username, password)

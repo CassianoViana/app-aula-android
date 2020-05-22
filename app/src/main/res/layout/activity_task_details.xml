@@ -13,6 +13,7 @@
     android:layout_height="wrap_content" />
 
   <LinearLayout
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -23,7 +24,7 @@
       android:id="@+id/task_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Conferência"
+      android:text="@string/loading_string"
       android:textColor="@color/colorDark"
       android:textSize="@dimen/large"
       android:textStyle="bold" />
@@ -33,7 +34,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/padding"
-      android:text="Placa ABC8080, Motorista: João"
+      android:text="@string/loading_string"
       android:textAlignment="center"
       android:textSize="@dimen/medium"
       android:textStyle="bold|italic" />
@@ -44,7 +45,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/padding"
-      android:text="Pendente"
+      android:text="@string/loading_string"
       android:textSize="@dimen/large" />
 
     <TextView
@@ -52,7 +53,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/padding"
-      android:text="Cassiano, Ricardo e Edson"
+      android:text="@string/loading_string"
       android:textSize="@dimen/large" />
 
     <Button
@@ -60,13 +61,14 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/padding"
-      android:text="Iniciar" />
+      android:text="@string/loading_string" />
 
   </LinearLayout>
 
   <include
     layout="@layout/progress_bar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="600dp"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar_task_activity"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

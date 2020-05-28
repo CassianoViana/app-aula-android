@@ -1,12 +1,16 @@
 package br.com.trivio.wms
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +22,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.appcompat.widget.WithHint
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.ServerBackend
@@ -26,6 +29,7 @@ import br.com.trivio.wms.data.GlobalData
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.UserDetails
+import br.com.trivio.wms.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.xdrop.fuzzywuzzy.FuzzySearch
@@ -40,12 +44,63 @@ import kotlin.math.roundToInt
 
 val globalData: GlobalData = GlobalData()
 val serverBackend = ServerBackend()
+val lifecycleCallback = LifecycleCallbacks()
+
+class LifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+  private val activities = mutableSetOf<MyAppCompatActivity>()
+  override fun onActivityPaused(activity: Activity?) {
+    printLog("onActivityPaused", activity)
+  }
+
+  override fun onActivityResumed(activity: Activity?) {
+    printLog("onActivityResumed", activity)
+  }
+
+  override fun onActivityStarted(activity: Activity?) {
+    printLog("onActivityStarted", activity)
+    activity?.let {
+      if (activity is MyAppCompatActivity)
+        activities.add(activity)
+    }
+  }
+
+  override fun onActivityDestroyed(activity: Activity?) {
+    printLog("onActivityDestroyed", activity)
+    activity?.let {
+      if (activity is MyAppCompatActivity)
+        activities.remove(activity)
+    }
+  }
+
+  override fun onActivitySaveInstanceState(activity: Activity?, p1: Bundle?) {
+    printLog("onActivitySaveInstanceState", activity)
+  }
+
+  override fun onActivityStopped(activity: Activity?) {
+    printLog("onActivityStopped", activity)
+  }
+
+  override fun onActivityCreated(activity: Activity?, p1: Bundle?) {
+    printLog("onActivityCreated", activity)
+  }
+
+  fun closeAllActivities() {
+    activities.forEach { it.finish() }
+  }
+
+  private fun printLog(methodName: String, activity: Activity?) {
+    Log.i("lifecycle", activities.joinToString(",") { it.localClassName })
+    Log.i("lifecycle", "onActivityCreated: ${activity?.localClassName}")
+  }
+
+}
 
 class MyApplication : Application() {
   override fun onCreate() {
     super.onCreate()
     globalData.appContext = applicationContext
     loadApiSettingsFromPreferences(this)
+    registerActivityLifecycleCallbacks(lifecycleCallback)
   }
 }
 
@@ -54,9 +109,21 @@ fun loadApiSettingsFromPreferences(context: Context) {
   val isDevMode = preferences.getBoolean("developer_mode", false)
   val addressPrefKey = if (isDevMode) "local_url" else "server_url"
   val address = preferences.getString(addressPrefKey, "https://api.wms.trivio.com.br")
-  if (address != null)
+  if (address != null) {
     serverBackend.config(address)
+    serverBackend.onUnauthorized = {
+      val loginActivity = LoginActivity::class.java
+      try {
+        lifecycleCallback.closeAllActivities()
+      } finally {
+        val intent = Intent(context, loginActivity)
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
+      }
+    }
+  }
 }
+
 
 suspend fun loadUserDetails(): UserDetails {
   Log.i("LoadUserDetails", "loadUserDetails")

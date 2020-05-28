@@ -1,13 +1,12 @@
 package br.com.trivio.wms.ui.conference.cargo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
 import br.com.trivio.wms.R
 import br.com.trivio.wms.showKeyboard
+import br.com.trivio.wms.MyAppCompatActivity
 
-class InputNumberActivity : AppCompatActivity() {
+class InputNumberActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

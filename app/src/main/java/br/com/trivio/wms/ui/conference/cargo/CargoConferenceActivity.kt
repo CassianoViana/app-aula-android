@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +19,7 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 
-class CargoConferenceActivity : AppCompatActivity() {
+class CargoConferenceActivity : MyAppCompatActivity() {
 
   companion object {
     const val CARGO_ID: String = "CARGO_id"

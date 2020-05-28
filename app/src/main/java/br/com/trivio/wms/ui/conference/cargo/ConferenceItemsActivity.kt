@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.model.TaskStatus
+import br.com.trivio.wms.MyAppCompatActivity
 
-class ConferenceItemsActivity : AppCompatActivity() {
+class ConferenceItemsActivity : MyAppCompatActivity() {
 
   companion object {
     const val CARGO_CONFERENCE_ID: String = "CARGO_ID"

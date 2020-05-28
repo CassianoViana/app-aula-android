@@ -6,20 +6,18 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
 import kotlinx.android.synthetic.main.app_bar.*
-import kotlinx.coroutines.launch
 
-class TaskDetailsActivity : AppCompatActivity() {
+class TaskDetailsActivity : MyAppCompatActivity() {
 
   companion object {
     const val TASK_ID: String = "task_id"

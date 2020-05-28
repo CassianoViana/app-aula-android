@@ -14,15 +14,15 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import br.com.trivio.wms.MainActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.loadApiSettingsFromPreferences
+import br.com.trivio.wms.MyAppCompatActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : MyAppCompatActivity() {
 
   private lateinit var loginViewModel: LoginViewModel
 

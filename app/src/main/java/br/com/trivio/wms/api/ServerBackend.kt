@@ -4,7 +4,6 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.dto.TaskDto
-import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.UserDetails
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -21,6 +20,7 @@ import java.lang.IllegalStateException
 
 class ServerBackend {
   private lateinit var api: Api
+  lateinit var onUnauthorized: () -> Unit
 
   fun config(baseUrl: String) {
 
@@ -50,14 +50,24 @@ class ServerBackend {
         throw IllegalStateException("Não foi possível buscar os dados")
       }
     } else {
-      throw buildApiFormattedError(response)
+      throw handleUnauthorizedAndBuildFormattedError<T>(response)
     }
   }
 
   private fun <T> execute(call: Call<T>) {
     val response = call.execute()
     if (!response.isSuccessful) {
-      throw buildApiFormattedError(response)
+      throw handleUnauthorizedAndBuildFormattedError<T>(response)
+    }
+  }
+
+  private fun <T> handleUnauthorizedAndBuildFormattedError(response: Response<T>): Throwable {
+    try {
+      return buildApiFormattedError(response)
+    } finally {
+      if (response.code() == 401) {
+        onUnauthorized()
+      }
     }
   }
 
@@ -108,7 +118,7 @@ class ServerBackend {
     return execute(api.countCargoItem(cargoConferenceItemDto))
   }
 
-  fun registerDamage(damageDto: DamageDto){
+  fun registerDamage(damageDto: DamageDto) {
     return execute(api.registerDamage(damageDto))
   }
 

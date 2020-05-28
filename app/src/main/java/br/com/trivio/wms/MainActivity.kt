@@ -2,9 +2,7 @@ package br.com.trivio.wms
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.delay
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MyAppCompatActivity() {
 
   companion object {
     const val LOGGING = "LOGGING"

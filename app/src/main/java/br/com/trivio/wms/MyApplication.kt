@@ -90,7 +90,7 @@ class LifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
   private fun printLog(methodName: String, activity: Activity?) {
     Log.i("lifecycle", activities.joinToString(",") { it.localClassName })
-    Log.i("lifecycle", "onActivityCreated: ${activity?.localClassName}")
+    Log.i("lifecycle", "$methodName: ${activity?.localClassName}")
   }
 
 }

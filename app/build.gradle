@@ -15,7 +15,7 @@ android {
     }
 
     compileSdkVersion 28
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "br.com.trivio.wms"
         minSdkVersion 26
@@ -26,7 +26,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

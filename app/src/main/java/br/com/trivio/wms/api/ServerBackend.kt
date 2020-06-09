@@ -1,5 +1,6 @@
 package br.com.trivio.wms.api
 
+import br.com.trivio.wms.api.json.deserializer.MyLocalDateTimeDeserializer
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
@@ -8,15 +9,14 @@ import br.com.trivio.wms.data.model.UserDetails
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.joda.time.LocalDateTime
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.io.IOException
-import java.lang.IllegalStateException
 
 class ServerBackend {
   private lateinit var api: Api
@@ -26,10 +26,12 @@ class ServerBackend {
 
     val module = SimpleModule()
     //myModule.addDeserializer(TaskStatus::class.java, TaskStatusDeserializer())
+    module.addDeserializer(LocalDateTime::class.java, MyLocalDateTimeDeserializer())
 
     val mapper = ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .registerModule(JavaTimeModule())
+      //.registerModule(JavaTimeModule()) NOT compatible with marshmallow
+      //.registerModule(JodaModule()) // compatible with marshmallow
       .registerModule(module)
 
     val retrofit = Retrofit.Builder()

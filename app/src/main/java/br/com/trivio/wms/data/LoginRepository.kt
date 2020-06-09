@@ -1,6 +1,5 @@
 package br.com.trivio.wms.data
 
-import android.content.Context
 import br.com.trivio.wms.data.model.UserDetails
 
 /**

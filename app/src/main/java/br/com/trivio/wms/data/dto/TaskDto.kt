@@ -2,7 +2,7 @@ package br.com.trivio.wms.data.dto
 
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
-import java.time.LocalDateTime
+import org.joda.time.LocalDateTime
 
 data class TaskDto(
   var id: Long = 0,

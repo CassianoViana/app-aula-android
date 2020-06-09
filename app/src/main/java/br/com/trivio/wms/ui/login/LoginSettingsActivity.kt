@@ -6,10 +6,10 @@ import android.webkit.URLUtil
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
-import br.com.trivio.wms.R
-import br.com.trivio.wms.handleHomeClickFinish
-import br.com.trivio.wms.setupToolbar
 import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.R
+import br.com.trivio.wms.extensions.handleHomeClickFinish
+import br.com.trivio.wms.extensions.setupToolbar
 
 class LoginSettingsActivity : MyAppCompatActivity() {
 

@@ -1,8 +1,8 @@
 package br.com.trivio.wms.repository
 
-import br.com.trivio.wms.serverBackend
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.serverBackend
 
 class TasksRepository {
   fun loadTasks(userId: Long): Result<List<TaskDto>> {

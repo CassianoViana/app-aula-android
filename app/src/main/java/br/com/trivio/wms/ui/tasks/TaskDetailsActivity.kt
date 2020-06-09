@@ -8,12 +8,18 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import br.com.trivio.wms.*
+import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.R
+import br.com.trivio.wms.UiUtils
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
-import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.extensions.endLoading
+import br.com.trivio.wms.extensions.handleHomeClickFinish
+import br.com.trivio.wms.extensions.setupToolbar
+import br.com.trivio.wms.extensions.startLoading
+import br.com.trivio.wms.threatResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
 import kotlinx.android.synthetic.main.app_bar.*
 

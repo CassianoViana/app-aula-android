@@ -28,8 +28,7 @@
     <item name="android:textAllCaps">true</item>
     <item name="android:textColor">@color/colorPrimary</item>
     <item name="android:gravity">center</item>
-    <item name="android:paddingHorizontal">13sp</item>
-    <item name="android:paddingVertical">13sp</item>
+    <item name="android:padding">13sp</item>
   </style>
 
   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -38,8 +37,10 @@
 
   <style name="TagTextWhite">
     <item name="android:background">@drawable/rounded</item>
-    <item name="android:paddingHorizontal">5dp</item>
-    <item name="android:paddingVertical">3dp</item>
+    <item name="android:paddingLeft">5dp</item>
+    <item name="android:paddingRight">5dp</item>
+    <item name="android:paddingTop">3dp</item>
+    <item name="android:paddingBottom">3dp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/colorWhite</item>
   </style>

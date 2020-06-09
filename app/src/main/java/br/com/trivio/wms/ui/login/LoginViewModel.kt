@@ -1,18 +1,16 @@
 package br.com.trivio.wms.ui.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import androidx.lifecycle.viewModelScope
+import br.com.trivio.wms.R
 import br.com.trivio.wms.data.LoginRepository
 import br.com.trivio.wms.data.Result
-
-import br.com.trivio.wms.R
 import br.com.trivio.wms.data.model.UserDetails
 import br.com.trivio.wms.getErrorMessageCode
 import br.com.trivio.wms.globalData
-import br.com.trivio.wms.loadUserDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

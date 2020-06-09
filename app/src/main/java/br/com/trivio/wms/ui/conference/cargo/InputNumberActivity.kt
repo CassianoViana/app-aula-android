@@ -2,9 +2,9 @@ package br.com.trivio.wms.ui.conference.cargo
 
 import android.os.Bundle
 import android.widget.EditText
-import br.com.trivio.wms.R
-import br.com.trivio.wms.showKeyboard
 import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.R
+import br.com.trivio.wms.extensions.showKeyboard
 
 class InputNumberActivity : MyAppCompatActivity() {
 

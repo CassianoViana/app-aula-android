@@ -18,9 +18,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import br.com.trivio.wms.MainActivity
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.loadApiSettingsFromPreferences
-import br.com.trivio.wms.MyAppCompatActivity
 
 class LoginActivity : MyAppCompatActivity() {
 

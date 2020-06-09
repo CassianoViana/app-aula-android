@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.model.TaskStatus
-import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.extensions.*
 
 class ConferenceItemsActivity : MyAppCompatActivity() {
 
@@ -112,7 +112,7 @@ class CargoItemsAdapter(private val onClickCargoItem: OnClickCargoItem) :
       item: CargoConferenceItemDto,
       onClickCargoItem: OnClickCargoItem
     ) {
-      var color = 0;
+      var color = 0
       if (item.countedQuantity != null) {
         color = R.color.green_transparent
       }

@@ -1,12 +1,11 @@
 package br.com.trivio.wms.data
 
-import br.com.trivio.wms.serverBackend
 import br.com.trivio.wms.api.UsernamePassword
 import br.com.trivio.wms.data.model.UserDetails
 import br.com.trivio.wms.globalData
 import br.com.trivio.wms.loadUserDetails
+import br.com.trivio.wms.serverBackend
 import java.io.IOException
-import java.lang.IllegalStateException
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.

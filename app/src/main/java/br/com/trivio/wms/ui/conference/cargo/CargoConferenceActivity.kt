@@ -14,12 +14,15 @@ import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import br.com.trivio.wms.*
+import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
-import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.extensions.*
+import br.com.trivio.wms.setProgressGradient
+import br.com.trivio.wms.threatResult
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -243,7 +246,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     val reportDamageButtons = createButton(getString(R.string.report_damage))
     val buttonsList = listOf(reportDamageButtons)
 
-    startRequestValue(
+    prompt(
       firstTitle = item.name,
       secondTitle = getString(R.string.how_many_items_were_conted),
       inputValue = item.countedQuantity,
@@ -273,7 +276,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     val damageDto = item.damageDto ?: DamageDto()
 
     // Page 2
-    dialogDescriptionDialog = startRequestValue(
+    dialogDescriptionDialog = prompt(
       firstTitle = getString(R.string.describe_damage),
       secondTitle = getString(R.string.describe_the_damage_template, item.name),
       keepClosedOnCreate = true,
@@ -290,7 +293,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     )
 
     // Page 1
-    dialogQuantityDialog = startRequestValue(
+    dialogQuantityDialog = prompt(
       firstTitle = getString(R.string.count_the_damage),
       secondTitle = getString(R.string.how_many_items_were_damaged_template, item.name),
       inputValue = damageDto.quantity

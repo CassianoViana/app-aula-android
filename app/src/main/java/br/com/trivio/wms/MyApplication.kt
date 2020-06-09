@@ -3,25 +3,19 @@ package br.com.trivio.wms
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.ServerBackend
@@ -29,16 +23,17 @@ import br.com.trivio.wms.data.GlobalData
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.UserDetails
+import br.com.trivio.wms.extensions.endLoading
+import br.com.trivio.wms.extensions.startLoading
 import br.com.trivio.wms.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.xdrop.fuzzywuzzy.FuzzySearch
+import org.joda.time.LocalDateTime
 import java.io.IOException
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -158,8 +153,14 @@ fun TextView.setTagBackground(color: String?) {
 
 @SuppressLint("SimpleDateFormat")
 fun LocalDateTime.formatTo(s: String): CharSequence? {
-  val out = Date.from(atZone(ZoneId.systemDefault()).toInstant())
-  return SimpleDateFormat(s).format(out)
+  val c = Calendar.getInstance();
+  c[Calendar.YEAR] = this.year
+  c[Calendar.DAY_OF_MONTH] = this.dayOfMonth
+  c[Calendar.HOUR_OF_DAY] = this.hourOfDay
+  c[Calendar.MINUTE] = this.minuteOfHour
+  c[Calendar.SECOND] = this.secondOfMinute
+  c[Calendar.MILLISECOND] = this.millisOfSecond
+  return SimpleDateFormat(s).format(c.time)
 }
 
 fun View.setStripeColor(position: Int) {
@@ -197,51 +198,11 @@ fun showErrorMessage(it: Result.Error) {
   throwable.printStackTrace()
 }
 
-fun AppCompatActivity.handleHomeClickFinish(
-  item: MenuItem?,
-  function: (() -> Unit)? = null
-) {
-  when (item?.itemId) {
-    android.R.id.home -> {
-      function?.let {
-        it()
-      }
-      finish()
-    }
-  }
-}
-
-fun AppCompatActivity.setupToolbar(resourceStringTitle: Int = 0, showHomeButton: Boolean = true) {
-  val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-  if (resourceStringTitle != 0)
-    toolbar.title = this.getString(resourceStringTitle)
-  this.setSupportActionBar(toolbar)
-  this.supportActionBar?.setDisplayHomeAsUpEnabled(showHomeButton)
-}
-
 object UiUtils {
   fun setTaskStatusStyle(textView: TextView, taskDto: TaskDto) {
     textView.text = taskDto.statusDto?.name
     textView.setTagBackground(taskDto.statusDto?.color)
   }
-}
-
-@SuppressLint("WrongViewCast")
-fun AppCompatActivity.getProgressBarLayout(): FrameLayout? {
-  return findViewById(R.id.layout_progress_bar)
-}
-
-fun AppCompatActivity.startLoading(loadingStringId: Int? = null) {
-  getProgressBarLayout()?.let { layout ->
-    layout.visibility = View.VISIBLE
-    loadingStringId?.let {
-      layout.findViewById<TextView>(R.id.loading_text).text = getString(it)
-    }
-  }
-}
-
-fun AppCompatActivity.endLoading() {
-  getProgressBarLayout()?.visibility = View.GONE
 }
 
 fun Fragment.startLoading() {
@@ -254,70 +215,6 @@ fun Fragment.endLoading() {
 
 fun ViewGroup.inflateToViewHolder(resourceId: Int): View {
   return LayoutInflater.from(this.context).inflate(resourceId, this, false)
-}
-
-fun AppCompatActivity.hideKeyboard(editText: EditText) {
-  val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-  imm.hideSoftInputFromWindow(editText.windowToken, 0)
-}
-
-fun AppCompatActivity.showKeyboard(editText: EditText? = null) {
-  val imm: InputMethodManager =
-    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-  imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-  editText?.requestFocus()
-  editText?.selectAll()
-}
-
-fun <T> AppCompatActivity.inflate(layoutResource: Int): T {
-  return layoutInflater.inflate(layoutResource, null) as T
-}
-
-fun AppCompatActivity.showMessage(
-  text: String,
-  length: Int = Toast.LENGTH_LONG,
-  colorResource: Int
-) {
-  val message = Toast.makeText(this, text, length)
-  colorResource.let {
-    message.view.findViewById<TextView>(android.R.id.message)
-      .setTextColor(getColor(R.color.colorWhite))
-    message.view.setBackgroundColor(getColor(colorResource))
-  }
-  message.show()
-}
-
-
-fun AppCompatActivity.showMessageSuccess(
-  stringResource: Int
-) {
-  val text = getString(stringResource)
-  showMessageSuccess(text)
-}
-
-fun AppCompatActivity.showMessageSuccess(
-  text: String
-) {
-  showMessage(text, colorResource = R.color.success)
-}
-
-fun AppCompatActivity.showMessageError(
-  resourceText: Int
-) {
-  val text = getString(resourceText)
-  showMessageError(text)
-}
-
-fun AppCompatActivity.showMessageError(
-  text: String
-) {
-  showMessage(text, colorResource = R.color.error)
-}
-
-fun AppCompatActivity.showMessageInfo(
-  resource: Int
-) {
-  showMessage(getString(resource), colorResource = R.color.info)
 }
 
 fun formatNumber(number: BigDecimal?): String {
@@ -368,75 +265,6 @@ fun getPercent(a: Int, b: Int): Int {
   return ((a.toFloat() / b) * 100).roundToInt()
 }
 
-fun AppCompatActivity.showFinishTaskDialog(
-  message: Int,
-  listener: DialogInterface.OnClickListener
-) {
-  AlertDialog.Builder(this)
-    .setCancelable(false)
-    .setTitle(R.string.finish_task_label)
-    .setMessage(message)
-    .setPositiveButton(R.string.finish_task_label, listener)
-    .setNegativeButton(R.string.cancel, null)
-    .show()
-}
 
-fun AppCompatActivity.startRequestValue(
-  firstTitle: String,
-  secondTitle: String,
-  closeAction: () -> Unit = {},
-  viewsToAdd: List<View> = listOf(),
-  keepClosedOnCreate: Boolean = false,
-  inputType: Int = InputType.TYPE_CLASS_NUMBER,
-  inputValue: Any? = null,
-  hint: String = "0,00",
-  positiveAction: (dialog: Dialog, value: String) -> Unit
-): Dialog {
-  val layout = inflate<View>(R.layout.activity_input_number)
-  val confirmButton = layout.findViewById<Button>(R.id.confirm_button)
-  val inputValueEditText = layout.findViewById<EditText>(R.id.input_value)
-  val btnClose = layout.findViewById<Button>(R.id.close_btn)
-  val layoutAddViews = layout.findViewById<LinearLayout>(R.id.more_views_to_add)
 
-  inputValueEditText.inputType = inputType
-  inputValueEditText.hint = hint
-  inputValue?.let {
-    inputValueEditText.setText(it.toString())
-  }
 
-  val firstTextView = layout.findViewById<TextView>(R.id.first_title)
-  val secondTextView = layout.findViewById<TextView>(R.id.second_title)
-  secondTextView.text = secondTitle
-  firstTextView.text = firstTitle
-
-  val dialog = Dialog(this, R.style.full_screen_dialog)
-  dialog.setContentView(layout)
-
-  if (!keepClosedOnCreate) {
-    dialog.show()
-  }
-
-  confirmButton.setOnClickListener {
-    positiveAction(dialog, inputValueEditText.text.toString())
-  }
-
-  btnClose.setOnClickListener {
-    closeAction()
-    dialog.hide()
-  }
-
-  viewsToAdd.forEach { layoutAddViews.addView(it) }
-
-  showKeyboard(inputValueEditText)
-
-  return dialog
-}
-
-fun AppCompatActivity.createButton(name: String, onClick: (() -> Unit) = {}): Button {
-  val button = inflate<Button>(R.layout.button)
-  button.text = name
-  button.setOnClickListener {
-    onClick()
-  }
-  return button
-}

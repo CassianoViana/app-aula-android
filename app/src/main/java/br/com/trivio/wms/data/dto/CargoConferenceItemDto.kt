@@ -1,6 +1,5 @@
 package br.com.trivio.wms.data.dto
 
-import br.com.trivio.wms.stringSimilarity
 import java.math.BigDecimal
 
 data class CargoConferenceItemDto(

@@ -122,8 +122,10 @@ class TasksFragment : Fragment() {
       }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-      ViewHolder(parent.inflateToViewHolder(R.layout.item_task_layout))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+      return ViewHolder(parent.inflateToViewHolder(R.layout.item_task_layout))
+    }
+
 
     override fun getItemCount() = tasks.size
 

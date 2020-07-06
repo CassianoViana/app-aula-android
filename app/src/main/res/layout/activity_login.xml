@@ -2,88 +2,135 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorPrimary">
-
-  <include
-    android:id="@+id/app_bar_layout_login"
-    layout="@layout/app_bar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+  android:background="@drawable/background_wms_1">
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@id/app_bar_layout_login">
+    android:layout_height="match_parent">
 
-    <EditText
-      android:id="@+id/username"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="24dp"
-      android:layout_marginTop="106dp"
-      android:layout_marginEnd="24dp"
-      android:background="@color/colorWhite"
-      android:hint="@string/prompt_email"
-
-      android:inputType="textEmailAddress"
-      android:padding="8dp"
-      android:selectAllOnFocus="true"
+    <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="152dp"
+      android:layout_height="147dp"
+      android:layout_marginTop="60dp"
+      android:contentDescription="@string/logo_siad_content_description"
+      android:src="@drawable/siad_logo_white_exported"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-      android:id="@+id/password"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="24dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginEnd="24dp"
-      android:background="@color/colorWhite"
-      android:hint="@string/prompt_password"
-
-      android:imeActionLabel="@string/action_sign_in_short"
-      android:imeOptions="actionDone"
-      android:inputType="textPassword"
-      android:padding="8dp"
-      android:selectAllOnFocus="true"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    <Button
-      android:id="@+id/login"
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="start"
-      android:layout_marginStart="24dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginEnd="24dp"
-      android:layout_marginBottom="64dp"
-      android:enabled="false"
-      android:text="@string/action_sign_in"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.781"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/password"
-      app:layout_constraintVertical_bias="0.0" />
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="60dp"
+      android:layout_marginEnd="20dp"
+      android:orientation="vertical"
+      app:layout_constraintTop_toBottomOf="@id/imageView">
+
+      <!-- usuário -->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+          style="@style/login_icon"
+          android:layout_width="@dimen/login_icon_size"
+          android:layout_height="@dimen/login_icon_size"
+          android:layout_weight="0"
+          android:contentDescription="@string/user"
+          android:src="@drawable/ic_person_white_24dp"
+          android:textAlignment="center" />
+
+        <EditText
+          android:id="@+id/username"
+          style="@style/transparent_rounded_input"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:autofillHints=""
+          android:hint="@string/prompt_email"
+          android:inputType="textEmailAddress"
+          android:selectAllOnFocus="true" />
+      </LinearLayout>
+
+      <!-- senha-->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+          style="@style/login_icon"
+          android:layout_width="@dimen/login_icon_size"
+          android:layout_height="@dimen/login_icon_size"
+          android:layout_weight="0"
+          android:contentDescription="@string/lock"
+          android:padding="10dp"
+          android:src="@drawable/ic_lock_white_24dp"
+          android:textAlignment="center" />
+
+        <EditText
+          android:id="@+id/password"
+          style="@style/transparent_rounded_input"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:autofillHints=""
+          android:hint="@string/prompt_password"
+
+          android:imeActionLabel="@string/action_sign_in_short"
+          android:imeOptions="actionDone"
+          android:inputType="textPassword"
+          android:selectAllOnFocus="true" />
+
+      </LinearLayout>
+
+      <!-- botoes -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="5dp">
+
+        <Button
+          android:id="@+id/settings"
+          style="@style/transparent_rounded_bordered_input"
+          android:layout_width="156dp"
+          android:layout_height="wrap_content"
+          android:text="@string/action_settings"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+
+        <Button
+          android:id="@+id/login"
+          style="@style/primary_rounded_input"
+          android:layout_width="138dp"
+          android:layout_height="wrap_content"
+          android:text="@string/action_sign_in"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
 
     <ProgressBar
       android:id="@+id/loading"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:layout_marginStart="32dp"
-      android:layout_marginTop="64dp"
-      android:layout_marginEnd="32dp"
-      android:layout_marginBottom="64dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/password"
-      app:layout_constraintStart_toStartOf="@+id/password"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.3" />
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

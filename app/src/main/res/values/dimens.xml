@@ -11,4 +11,5 @@
   <dimen name="large">24sp</dimen>
   <dimen name="huge">32sp</dimen>
   <dimen name="character">5sp</dimen>
+  <dimen name="login_icon_size">50dp</dimen>
 </resources>

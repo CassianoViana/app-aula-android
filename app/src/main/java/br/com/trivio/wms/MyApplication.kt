@@ -264,7 +264,3 @@ fun setProgressGradient(v: View, percent: Int, colorStart: Int, colorEnd: Int) {
 fun getPercent(a: Int, b: Int): Int {
   return ((a.toFloat() / b) * 100).roundToInt()
 }
-
-
-
-

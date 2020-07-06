@@ -1,5 +1,6 @@
 package br.com.trivio.wms.extensions
 
+import android.content.Context
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -58,3 +59,6 @@ fun AppCompatActivity.showMessageInfo(
 ) {
   showMessage(getString(resource), colorResource = R.color.info)
 }
+
+fun getErrorOrNull(context: Context, value: Int?): String? =
+  if (value == null) null else context.getString(value)

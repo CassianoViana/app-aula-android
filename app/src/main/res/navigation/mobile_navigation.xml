@@ -7,9 +7,9 @@
 
   <fragment
     android:id="@+id/nav_tasks"
-    android:name="br.com.trivio.wms.ui.tasks.TasksFragment"
+    android:name="br.com.trivio.wms.ui.tasks.TasksActivity"
     android:label="@string/menu_tasks"
-    tools:layout="@layout/fragment_tasks" />
+    tools:layout="@layout/activity_tasks" />
 
   <fragment
     android:id="@+id/nav_gallery"
@@ -38,5 +38,6 @@
   <fragment
     android:id="@+id/nav_exit"
     android:name="br.com.trivio.wms.ui.exit.ExitFragment"
-    android:label="@string/menu_exit" />
+    android:label="@string/menu_exit" >
+  </fragment>
 </navigation>

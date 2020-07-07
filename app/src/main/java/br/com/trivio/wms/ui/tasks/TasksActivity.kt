@@ -2,13 +2,10 @@ package br.com.trivio.wms.ui.tasks
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.trivio.wms.*
 import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.extensions.endLoading
+import br.com.trivio.wms.extensions.startLoading
 import br.com.trivio.wms.ui.login.ViewModelFactory
 
-class TasksFragment : Fragment() {
+class TasksActivity : MyAppCompatActivity() {
 
   private lateinit var viewModel: TasksViewModel
   private lateinit var loading: ProgressBar
@@ -27,23 +26,19 @@ class TasksFragment : Fragment() {
 
   private val adapter = TasksAdapter(object : OnTaskClickListener {
     override fun onClick(task: TaskDto) {
-      val intent = Intent(activity, TaskDetailsActivity::class.java)
+      val intent = Intent(this@TasksActivity, TaskDetailsActivity::class.java)
       intent.putExtra(TaskDetailsActivity.TASK_ID, task.id)
       startActivity(intent)
     }
   })
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    val root = inflater.inflate(R.layout.fragment_tasks, container, false)
-    associateComponents(root)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_tasks)
+    associateComponents()
     setupViewModel()
     bindListAdapter()
     addRefreshListener()
-    return root
   }
 
   override fun onResume() {
@@ -51,10 +46,10 @@ class TasksFragment : Fragment() {
     loadTasks()
   }
 
-  private fun associateComponents(root: View) {
-    tasksList = root.findViewById(R.id.tasks_recycler_view)
-    loading = root.findViewById(R.id.progress_bar)
-    swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_tasks)
+  private fun associateComponents() {
+    tasksList = findViewById(R.id.tasks_recycler_view)
+    loading = findViewById(R.id.progress_bar)
+    swipeRefreshLayout = findViewById(R.id.swipe_refresh_tasks)
   }
 
   private fun setupViewModel() {
@@ -63,8 +58,7 @@ class TasksFragment : Fragment() {
   }
 
   private fun bindListAdapter() {
-    val activity = activity as AppCompatActivity
-    tasksList.layoutManager = LinearLayoutManager(activity)
+    tasksList.layoutManager = LinearLayoutManager(this)
     tasksList.adapter = adapter
   }
 

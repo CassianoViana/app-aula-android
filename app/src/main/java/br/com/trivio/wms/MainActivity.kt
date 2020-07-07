@@ -1,52 +1,55 @@
 package br.com.trivio.wms
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.data.model.UserDetails
-import com.google.android.material.navigation.NavigationView
+import br.com.trivio.wms.ui.tasks.TasksActivity
 import kotlinx.coroutines.delay
 
+class MenuItem(
+  val name: Int,
+  val icon: Int,
+  val actionWhenClicked: () -> Any = {}
+)
 
 class MainActivity : MyAppCompatActivity() {
 
-  companion object {
-    const val LOGGING = "LOGGING"
-  }
-
   private lateinit var exitAppHandler: ExitAppHandler
-  private lateinit var appBarConfiguration: AppBarConfiguration
+  private lateinit var menusList: RecyclerView
+  private val menus = listOf(
+    MenuItem(
+      R.string.menu_tasks, R.drawable.ic_attach_file_white_24dp
+    ) { startActivity(Intent(this, TasksActivity::class.java)) },
+
+    MenuItem(R.string.arrival, R.drawable.ic_move_to_inbox_white_24dp),
+
+    MenuItem(R.string.separation, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.menu_tasks, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.arrival, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.separation, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.expedition, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.inventory, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.fillment, R.drawable.ic_person_white_24dp),
+    MenuItem(R.string.menu_exit, R.drawable.ic_person_white_24dp) {
+      globalData.token = null
+      finish()
+    }
+  )
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    val toolbar: Toolbar = findViewById(R.id.toolbar_main)
-    setSupportActionBar(toolbar)
 
-    val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-    val navView: NavigationView = findViewById(R.id.nav_view)
-
-    val navController = findNavController(R.id.nav_host_fragment)
-    // Passing each menu ID as a set of Ids because each
-    // menu should be considered as top level destinations.
-    appBarConfiguration = AppBarConfiguration(
-      setOf(
-        R.id.nav_tasks, R.id.nav_gallery, R.id.nav_slideshow,
-        R.id.nav_tools, R.id.nav_share, R.id.nav_exit
-      ), drawerLayout
-    )
-    exitAppHandler = ExitAppHandler(this)
-    navController.addOnDestinationChangedListener(exitAppHandler)
-    setupActionBarWithNavController(navController, appBarConfiguration)
-    navView.setupWithNavController(navController)
+    menusList = findViewById(R.id.menu_list)
+    menusList.adapter = MenusListAdapter(menus) { it.actionWhenClicked() }
+    menusList.layoutManager = LinearLayoutManager(this)
 
     lifecycleScope.launchWhenCreated {
       delay(500L)
@@ -54,6 +57,8 @@ class MainActivity : MyAppCompatActivity() {
         updateHeaderUserDetailsUI(it)
       }
     }
+
+    exitAppHandler = ExitAppHandler(this)
   }
 
   override fun onBackPressed() {
@@ -65,14 +70,39 @@ class MainActivity : MyAppCompatActivity() {
       text = userDetails.name
     }
   }
+}
 
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.main, menu)
-    return true
+class MenusListAdapter(
+  private val menus: List<MenuItem>,
+  private val onClickItem: (MenuItem) -> Unit
+) : RecyclerView.Adapter<MenuItemViewHolder>() {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuItemViewHolder {
+    return MenuItemViewHolder(parent.inflateToViewHolder(R.layout.item_main_menu), onClickItem)
   }
 
-  override fun onSupportNavigateUp(): Boolean {
-    val navController = findNavController(R.id.nav_host_fragment)
-    return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+  override fun getItemCount(): Int {
+    return menus.size
   }
+
+  override fun onBindViewHolder(holder: MenuItemViewHolder, position: Int) {
+    holder.bind(menus[position])
+  }
+}
+
+class MenuItemViewHolder(
+  val view: View,
+  val onClickItem: (MenuItem) -> Unit
+) : RecyclerView.ViewHolder(view) {
+
+  private var menuName: TextView = view.findViewById(R.id.menu_name)
+  private var menuIcon: ImageView = view.findViewById(R.id.menu_icon)
+
+  fun bind(menuItem: MenuItem) {
+    view.setOnClickListener {
+      onClickItem(menuItem)
+    }
+    menuName.text = view.resources.getString(menuItem.name)
+    menuIcon.setImageResource(menuItem.icon)
+  }
+
 }

@@ -9,6 +9,12 @@
   <string name="action_settings">Configurações</string>
 
   <string name="menu_tasks">Tarefas</string>
+  <string name="arrival">Recebimento</string>
+  <string name="separation">Separação</string>
+  <string name="expedition">Expedição</string>
+  <string name="inventory">Inventário</string>
+  <string name="fillment">Abastecimento</string>
+
   <string name="menu_gallery">Gallery</string>
   <string name="menu_slideshow">Slideshow</string>
   <string name="menu_tools">Tools</string>
@@ -17,6 +23,7 @@
   <string name="title_activity_login">Login</string>
   <string name="prompt_email">Usuário ou Email</string>
   <string name="prompt_password">Senha</string>
+
   <string name="action_sign_in">Entrar</string>
   <string name="action_sign_in_short">Entrar</string>
   <string name="welcome">"Bem-vindo"</string>
@@ -53,6 +60,7 @@
   <string name="continue_task">Continuar</string>
   <string name="task">Tarefa</string>
   <string name="cargo_conference">Conferência de carga</string>
+  <string name="conference">Conferência</string>
   <string name="counted_itens">itens contados</string>
   <string name="search_product">Buscar produto</string>
   <string name="barcode">Código de barras</string>

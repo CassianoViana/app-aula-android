@@ -34,5 +34,8 @@ fun LocalDateTime.formatTo(s: String): CharSequence? {
 }
 
 fun getPercent(a: Int, b: Int): Int {
-  return ((a.toFloat() / b) * 100).roundToInt()
+  return when (b) {
+      0 -> 0
+      else -> ((a.toFloat() / b) * 100).roundToInt()
+  }
 }

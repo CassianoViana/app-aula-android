@@ -7,7 +7,7 @@
 
   <fragment
     android:id="@+id/nav_tasks"
-    android:name="br.com.trivio.wms.ui.tasks.TasksActivity"
+    android:name="br.com.trivio.wms.ui.cargos.CargosActivity"
     android:label="@string/menu_tasks"
     tools:layout="@layout/activity_tasks" />
 

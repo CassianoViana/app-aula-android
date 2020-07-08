@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipe_refresh_tasks"
+  <LinearLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/tasks_recycler_view"
+    <br.com.trivio.wms.components.custom.TopBar
+      android:id="@+id/top_bar"
+      app:title="@string/menu_tasks"
+      android:layout_height="wrap_content"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      tools:ignore="MissingConstraints"
-      tools:layout_editor_absoluteX="1dp"
-      tools:layout_editor_absoluteY="36dp" />
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+      />
+
+    <br.com.trivio.wms.components.custom.RefreshableList
+      android:id="@+id/list"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+  </LinearLayout>
 
   <include
     layout="@layout/progress_bar"
+    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

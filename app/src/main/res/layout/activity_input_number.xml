@@ -33,7 +33,7 @@
       android:paddingRight="10sp"
       android:text="Quanto"
       android:textColor="@color/colorPrimary"
-      android:textSize="@dimen/large"
+      android:textSize="@dimen/large_text"
       android:textStyle="bold" />
 
     <TextView
@@ -41,7 +41,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="vocẽ quer cobrar?"
-      android:textSize="@dimen/medium" />
+      android:textSize="@dimen/medium_text" />
   </LinearLayout>
 
   <EditText
@@ -52,7 +52,7 @@
     android:layout_marginTop="20dp"
     android:hint="0,00"
     android:inputType="number"
-    android:textSize="@dimen/huge"
+    android:textSize="@dimen/huge_text"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 

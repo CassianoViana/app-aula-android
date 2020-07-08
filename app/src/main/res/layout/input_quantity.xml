@@ -6,4 +6,4 @@
   android:gravity="center"
   android:hint="@string/quantity"
   android:inputType="number"
-  android:textSize="@dimen/large" />
+  android:textSize="@dimen/large_text" />

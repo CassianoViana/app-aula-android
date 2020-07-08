@@ -7,22 +7,23 @@
   android:layout_height="match_parent"
   tools:context=".ui.conference.cargo.CargoConferenceActivity">
 
-  <include
-    android:id="@+id/app_bar_layout_cargo_conference"
-    layout="@layout/app_bar"
+  <br.com.trivio.wms.components.custom.TopBar
+    android:id="@+id/top_bar"
+    app:title="@string/cargo_conference"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    />
 
   <LinearLayout
     android:id="@+id/totals_to_count"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/app_bar_layout_cargo_conference"
+    android:layout_below="@id/top_bar"
     android:background="@color/colorBlueAccent"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/padding_half"
-    app:layout_constraintTop_toBottomOf="@id/app_bar_layout_cargo_conference">
+    app:layout_constraintTop_toBottomOf="@id/top_bar">
 
     <TextView
       android:id="@+id/qtd_items_to_count"
@@ -30,7 +31,7 @@
       android:layout_height="wrap_content"
       android:text="22 de 40"
       android:textColor="@color/colorWhite"
-      android:textSize="@dimen/large"
+      android:textSize="@dimen/large_text"
       android:textStyle="bold" />
 
     <TextView
@@ -66,7 +67,7 @@
       android:gravity="center"
       android:hint="@string/barcode"
       android:inputType="number"
-      android:textSize="@dimen/large" />
+      android:textSize="@dimen/large_text" />
 
     <Button
       android:id="@+id/btn_search_product"
@@ -83,6 +84,6 @@
     layout="@layout/progress_bar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/app_bar_layout_cargo_conference"
+    android:layout_below="@id/top_bar"
     android:visibility="gone" />
 </RelativeLayout>

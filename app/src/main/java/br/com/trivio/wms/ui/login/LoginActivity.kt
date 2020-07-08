@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -108,18 +107,6 @@ class LoginActivity : MyAppCompatActivity() {
         usernameInput.text.toString(),
         passwordInput.text.toString()
       )
-    }
-
-    // Autocomplete do android dos logins prévios
-    passwordInput.setOnEditorActionListener { _, actionId, _ ->
-      when (actionId) {
-        EditorInfo.IME_ACTION_DONE ->
-          loginViewModel.login(
-            usernameInput.text.toString(),
-            passwordInput.text.toString()
-          )
-      }
-      false
     }
   }
 

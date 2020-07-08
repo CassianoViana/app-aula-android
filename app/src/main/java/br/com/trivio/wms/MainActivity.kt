@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.data.model.UserDetails
+import br.com.trivio.wms.ui.cargos.CargosActivity
 import br.com.trivio.wms.ui.tasks.TasksActivity
 import kotlinx.coroutines.delay
 
@@ -28,18 +29,15 @@ class MainActivity : MyAppCompatActivity() {
       R.string.menu_tasks, R.drawable.ic_attach_file_white_24dp
     ) { startActivity(Intent(this, TasksActivity::class.java)) },
 
-    MenuItem(R.string.arrival, R.drawable.ic_move_to_inbox_white_24dp),
-
-    MenuItem(R.string.separation, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.menu_tasks, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.arrival, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.separation, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.expedition, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.inventory, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.fillment, R.drawable.ic_person_white_24dp),
-    MenuItem(R.string.menu_exit, R.drawable.ic_person_white_24dp) {
-      globalData.token = null
-      finish()
+    MenuItem(R.string.arrival, R.drawable.ic_archive_black_24dp) {
+      startActivity(Intent(this, CargosActivity::class.java))
+    },
+    MenuItem(R.string.separation, R.drawable.ic_shopping_cart_black_24dp),
+    MenuItem(R.string.expedition, R.drawable.ic_directions_bus_black_24dp),
+    MenuItem(R.string.inventory, R.drawable.ic_assignment_black_24dp),
+    MenuItem(R.string.fillment, R.drawable.ic_format_color_fill_black_24dp),
+    MenuItem(R.string.menu_exit, R.drawable.ic_exit_to_app_black_24dp) {
+      exitAppHandler.logout()
     }
   )
 
@@ -66,9 +64,13 @@ class MainActivity : MyAppCompatActivity() {
   }
 
   private fun updateHeaderUserDetailsUI(userDetails: UserDetails) {
-    findViewById<TextView>(R.id.nav_header_title)?.apply {
-      text = userDetails.name
+    findViewById<TextView>(R.id.username)?.apply {
+      text = getString(R.string.helloUser, userDetails.name)
     }
+    findViewById<TextView>(R.id.userFunction)?.apply {
+      text = userDetails.userFunction
+    }
+
   }
 }
 

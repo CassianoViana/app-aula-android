@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.trivio.wms.data.dto.CargoConferenceDto;
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto;
+import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.DamageDto;
 import br.com.trivio.wms.data.dto.TaskDto;
 import br.com.trivio.wms.data.model.UserDetails;
@@ -33,6 +34,9 @@ interface Api {
 
   @GET("cargoConference/{id}")
   Call<CargoConferenceDto> getCargoConference(@Path("id") Long id);
+
+  @GET("cargoConference/pending")
+  Call<List<CargoListDto>> getPendingCargos();
 
   @POST("cargoConference/countItem")
   Call<ResponseBody> countCargoItem(@Body CargoConferenceItemDto item);

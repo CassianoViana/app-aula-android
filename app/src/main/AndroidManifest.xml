@@ -37,6 +37,7 @@
     <activity
       android:name=".ui.login.LoginSettingsActivity"
       android:label="@string/action_settings" />
+    <activity android:name=".ui.cargos.CargosActivity" />
     <activity android:name=".ui.tasks.TasksActivity" />
   </application>
 

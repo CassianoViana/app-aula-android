@@ -3,9 +3,9 @@ package br.com.trivio.wms.extensions
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
+import br.com.trivio.wms.MyAppCompatActivity
 
-fun AppCompatActivity.showKeyboard(editText: EditText? = null) {
+fun MyAppCompatActivity.showKeyboard(editText: EditText? = null) {
   val imm: InputMethodManager =
     getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
   imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
@@ -13,7 +13,7 @@ fun AppCompatActivity.showKeyboard(editText: EditText? = null) {
   editText?.selectAll()
 }
 
-fun AppCompatActivity.hideKeyboard(editText: EditText) {
+fun MyAppCompatActivity.hideKeyboard(editText: EditText) {
   val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
   imm.hideSoftInputFromWindow(editText.windowToken, 0)
 }

@@ -21,7 +21,6 @@ import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
-import br.com.trivio.wms.setProgressGradient
 import br.com.trivio.wms.threatResult
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +48,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_cargo_conference)
-    setupToolbar(R.string.cargo_conference)
+    setupToolbar()
     associateViewComponents()
     observeViewModel()
     setupEvents()

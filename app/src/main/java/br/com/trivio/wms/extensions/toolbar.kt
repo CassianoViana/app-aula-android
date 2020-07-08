@@ -1,13 +1,14 @@
 package br.com.trivio.wms.extensions
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
+import br.com.trivio.wms.components.custom.TopBar
 
-fun AppCompatActivity.setupToolbar(resourceStringTitle: Int = 0, showHomeButton: Boolean = true) {
-  val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-  if (resourceStringTitle != 0)
-    toolbar.title = this.getString(resourceStringTitle)
-  this.setSupportActionBar(toolbar)
-  this.supportActionBar?.setDisplayHomeAsUpEnabled(showHomeButton)
+fun MyAppCompatActivity.setupToolbar() {
+  val topBar = findViewById<TopBar>(R.id.top_bar)
+  topBar.let {
+    topBar.onClickBack {
+      finish()
+    }
+  }
 }

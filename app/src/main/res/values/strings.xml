@@ -59,6 +59,7 @@
   <string name="start">Iniciar</string>
   <string name="continue_task">Continuar</string>
   <string name="task">Tarefa</string>
+  <string name="task_and_number">Tarefa %d</string>
   <string name="cargo_conference">Conferência de carga</string>
   <string name="conference">Conferência</string>
   <string name="counted_itens">itens contados</string>
@@ -104,4 +105,7 @@
   <string name="user">Usuário</string>
   <string name="lock">Cadeado</string>
   <string name="logo_siad_content_description">Logo siad. Armazém</string>
+  <string name="arrivals">Recebimentos</string>
+  <string name="pending_arrivals">Recebimentos pendentes</string>
+  <string name="helloUser">Olá, %s</string>
 </resources>

@@ -11,7 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
+class TasksViewModel(
+  private val tasksRepository: TasksRepository = TasksRepository()
+) :
+  ViewModel() {
 
   val tasksResult = MutableLiveData<Result<List<TaskDto>>>()
 

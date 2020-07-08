@@ -1,8 +1,8 @@
 package br.com.trivio.wms.data.dto
 
 import br.com.trivio.wms.data.model.TaskStatus
-import br.com.trivio.wms.getPercent
-import br.com.trivio.wms.matchFilter
+import br.com.trivio.wms.extensions.getPercent
+import br.com.trivio.wms.extensions.matchFilter
 
 class CargoConferenceDto(
   val id: Long = 0,

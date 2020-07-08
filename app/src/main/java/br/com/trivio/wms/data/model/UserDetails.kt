@@ -7,7 +7,8 @@ data class UserDetails(
   val id: Long = 0,
   val ownerId: Long = 0,
   val name: String = "",
-  val username: String = ""
+  val username: String = "",
+  val userFunction: String = ""
 ) {
   fun isInvalid() = this.id == 0L
 }

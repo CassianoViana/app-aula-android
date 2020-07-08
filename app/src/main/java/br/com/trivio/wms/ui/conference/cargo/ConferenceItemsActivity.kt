@@ -2,20 +2,21 @@ package br.com.trivio.wms.ui.conference.cargo
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.trivio.wms.*
+import br.com.trivio.wms.MyAppCompatActivity
+import br.com.trivio.wms.R
+import br.com.trivio.wms.components.custom.SearchInput
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
+import br.com.trivio.wms.inflateToViewHolder
+import br.com.trivio.wms.threatResult
 
 class ConferenceItemsActivity : MyAppCompatActivity() {
 
@@ -44,7 +45,7 @@ class ConferenceItemsActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_conference_items)
-    setupToolbar(R.string.products)
+    setupToolbar()
     cargoConferenceId = intent.getLongExtra(CARGO_CONFERENCE_ID, 0)
     search = intent.getStringExtra(SEARCH_PRODUCT_GTIN)
     setupSearch()
@@ -52,9 +53,9 @@ class ConferenceItemsActivity : MyAppCompatActivity() {
   }
 
   private fun setupSearch() {
-    val inputSearch = findViewById<EditText>(R.id.input_search)
-    inputSearch.addTextChangedListener {
-      search = inputSearch.text.toString()
+    val inputSearch = findViewById<SearchInput>(R.id.search_input)
+    inputSearch.addTextChangedListener { text: String ->
+      search = text
       cargoItemsAdapter.items = viewModel.filter(search)
     }
     inputSearch.setText(search)
@@ -86,11 +87,6 @@ class ConferenceItemsActivity : MyAppCompatActivity() {
     intent.putExtra(GTIN_ID, item.gtin)
     setResult(SUCCESS, intent)
     finish()
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    this.handleHomeClickFinish(item)
-    return super.onOptionsItemSelected(item)
   }
 }
 

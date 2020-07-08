@@ -1,18 +1,16 @@
 package br.com.trivio.wms.extensions
 
-import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.text.InputType
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 
-fun AppCompatActivity.prompt(
+fun MyAppCompatActivity.prompt(
   firstTitle: String,
   secondTitle: String,
   closeAction: () -> Unit = {},
@@ -61,17 +59,4 @@ fun AppCompatActivity.prompt(
   showKeyboard(inputValueEditText)
 
   return dialog
-}
-
-fun AppCompatActivity.showFinishTaskDialog(
-  message: Int,
-  listener: DialogInterface.OnClickListener
-) {
-  AlertDialog.Builder(this)
-    .setCancelable(false)
-    .setTitle(R.string.finish_task_label)
-    .setMessage(message)
-    .setPositiveButton(R.string.finish_task_label, listener)
-    .setNegativeButton(R.string.cancel, null)
-    .show()
 }

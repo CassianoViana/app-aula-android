@@ -1,21 +1,19 @@
 package br.com.trivio.wms.ui.login
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.webkit.URLUtil
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.extensions.handleHomeClickFinish
 import br.com.trivio.wms.extensions.setupToolbar
 
 class LoginSettingsActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.settings_activity)
+    setContentView(R.layout.activity_settings)
     val settingsFragment = SettingsFragment()
     settingsFragment.validateUrls()
     supportFragmentManager
@@ -26,11 +24,6 @@ class LoginSettingsActivity : MyAppCompatActivity() {
       )
       .commit()
     setupToolbar()
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    this.handleHomeClickFinish(item)
-    return super.onOptionsItemSelected(item)
   }
 
   class SettingsFragment : PreferenceFragmentCompat() {

@@ -1,10 +1,7 @@
 package br.com.trivio.wms.api
 
 import br.com.trivio.wms.api.json.deserializer.MyLocalDateTimeDeserializer
-import br.com.trivio.wms.data.dto.CargoConferenceDto
-import br.com.trivio.wms.data.dto.CargoConferenceItemDto
-import br.com.trivio.wms.data.dto.DamageDto
-import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.data.dto.*
 import br.com.trivio.wms.data.model.UserDetails
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -114,6 +111,10 @@ class ServerBackend {
 
   fun getCargoConference(id: Long): CargoConferenceDto {
     return executeAndReturn(api.getCargoConference(id))
+  }
+
+  fun listCargos(): List<CargoListDto> {
+    return executeAndReturn(api.getPendingCargos())
   }
 
   fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto) {

@@ -13,22 +13,19 @@ import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.RefreshableList
 import br.com.trivio.wms.data.dto.CargoListDto
-import br.com.trivio.wms.extensions.endLoading
-import br.com.trivio.wms.extensions.setupToolbar
-import br.com.trivio.wms.extensions.startLoading
-import br.com.trivio.wms.inflateToViewHolder
+import br.com.trivio.wms.extensions.*
+import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.threatResult
-import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 
-class CargosActivity : MyAppCompatActivity() {
+class CargosListActivity : MyAppCompatActivity() {
 
-  private val viewModel: CargoArrivalsViewModel by viewModels()
+  private val viewModel: CargoListViewModel by viewModels()
   private lateinit var loading: ProgressBar
   private lateinit var cargosList: RefreshableList
 
   private val adapter = CargosAdapter { cargoItemClicked: CargoListDto ->
-    val intent = Intent(this@CargosActivity, TaskDetailsActivity::class.java)
-    intent.putExtra(TaskDetailsActivity.TASK_ID, cargoItemClicked.taskId)
+    val intent = Intent(this@CargosListActivity, StartConferenceActivity::class.java)
+    intent.putExtra(StartConferenceActivity.CARGO_ID, cargoItemClicked.taskId)
     startActivity(intent)
   }
 
@@ -58,7 +55,7 @@ class CargosActivity : MyAppCompatActivity() {
 
   private fun addRefreshListener() {
     cargosList.setOnRefreshListener {
-      viewModel.loadTasks()
+      viewModel.loadCargos()
     }
   }
 
@@ -78,7 +75,7 @@ class CargosActivity : MyAppCompatActivity() {
 
   private fun loadTasks() {
     startLoading()
-    viewModel.loadTasks()
+    viewModel.loadCargos()
   }
 
   class CargosAdapter(
@@ -95,18 +92,21 @@ class CargosActivity : MyAppCompatActivity() {
     class ViewHolder(val layout: View) : RecyclerView.ViewHolder(layout) {
       private var cargoNameText: TextView = layout.findViewById(R.id.name_text)
       private var cargoRefCode: TextView = layout.findViewById(R.id.item_code)
-      //private var cargoStatus: TextView = layout.findViewById(R.id.cargo_status)
+      private var quantityToCount: TextView = layout.findViewById(R.id.text_view_quantity_to_count)
       private var cargoDate: TextView = layout.findViewById(R.id.item_date)
 
       fun bind(
         cargoListDto: CargoListDto,
         onClickListener: (cargoListDto: CargoListDto) -> Any
       ) {
-        cargoNameText.text = cargoListDto.toString()
-        cargoRefCode.text = cargoListDto.bonoName()
-        cargoDate.text = cargoListDto.formattedScheduledStart()
-        layout.setOnClickListener {
-          onClickListener(cargoListDto)
+        cargoListDto.apply {
+          cargoNameText.text = toString()
+          cargoRefCode.text = bonoName()
+          cargoDate.text = formattedScheduledStart()
+          quantityToCount.text = quantityItemsToCount.toString()
+          layout.setOnClickListener {
+            onClickListener(this)
+          }
         }
       }
     }

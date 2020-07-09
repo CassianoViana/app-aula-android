@@ -5,12 +5,10 @@ import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.serverBackend
 
 class DamageRepository {
-  fun registerDamage(damageDto: DamageDto): Result<DamageDto> {
-    return try {
+  fun registerDamage(damageDto: DamageDto): Result.Success<DamageDto> {
+    Result.call {
       serverBackend.registerDamage(damageDto)
-      Result.Success(damageDto)
-    } catch (e: Exception) {
-      Result.Error(e)
     }
+    return Result.Success(damageDto);
   }
 }

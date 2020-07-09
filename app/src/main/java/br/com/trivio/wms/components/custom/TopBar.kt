@@ -3,7 +3,6 @@ package br.com.trivio.wms.components.custom
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,17 +18,13 @@ class TopBar @JvmOverloads constructor(
     }
   }
 
-  fun setTitle(title: String) {
-    titleTextView.text = title
-  }
-
   private var titleTextView: TextView
   private var upIconButton: ImageButton
 
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_top_bar, this, true)
-    titleTextView = findViewById<EditText>(R.id.title_text_view)
-    upIconButton = findViewById<ImageButton>(R.id.up_icon_button)
+    titleTextView = findViewById(R.id.title_text_view)
+    upIconButton = findViewById(R.id.up_icon_button)
 
     attrs?.let {
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.TopBar)

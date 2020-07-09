@@ -9,15 +9,13 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.ServerBackend
 import br.com.trivio.wms.data.GlobalData
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.model.UserDetails
+import br.com.trivio.wms.extensions.callAsync
 import br.com.trivio.wms.extensions.showErrorMessage
 import br.com.trivio.wms.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
@@ -106,19 +104,16 @@ fun loadApiSettingsFromPreferences(context: Context) {
   }
 }
 
-
 suspend fun loadUserDetails(): UserDetails {
   Log.i("LoadUserDetails", "loadUserDetails")
-  return withContext(Dispatchers.IO) {
-    try {
-      val userDetails = serverBackend.getUserDetails()
-      globalData.userDetails = userDetails
-      userDetails
-    } catch (e: Exception) {
-      e.printStackTrace()
-      UserDetails()
-    }
+  var userDetails = UserDetails()
+  try {
+    userDetails = callAsync { serverBackend.getUserDetails() }
+    globalData.userDetails = userDetails
+  } catch (e: Exception) {
+    e.printStackTrace()
   }
+  return userDetails
 }
 
 fun getErrorMessageCode(context: String, throwable: Throwable): Int {
@@ -136,12 +131,6 @@ fun TextView.setTagBackground(color: String?) {
   color?.let {
     (background as GradientDrawable).setColor(Color.parseColor(it))
   }
-}
-
-fun View.setStripeColor(position: Int) {
-  val white = context.getColor(R.color.colorWhite)
-  val gray = context.getColor(R.color.lighterGray2)
-  setBackgroundColor(if (position % 2 == 0) gray else white)
 }
 
 fun <T : Any> threatResult(
@@ -162,8 +151,4 @@ fun <T : Any> threatResult(
     }
   }
   always?.let { it(result) }
-}
-
-fun ViewGroup.inflateToViewHolder(resourceId: Int): View {
-  return LayoutInflater.from(this.context).inflate(resourceId, this, false)
 }

@@ -10,9 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.data.model.UserDetails
-import br.com.trivio.wms.ui.cargos.CargosActivity
-import br.com.trivio.wms.ui.tasks.TasksActivity
-import kotlinx.coroutines.delay
+import br.com.trivio.wms.extensions.inflateToViewHolder
+import br.com.trivio.wms.ui.cargos.CargosListActivity
+import br.com.trivio.wms.ui.tasks.TasksListActivity
 
 class MenuItem(
   val name: Int,
@@ -27,10 +27,10 @@ class MainActivity : MyAppCompatActivity() {
   private val menus = listOf(
     MenuItem(
       R.string.menu_tasks, R.drawable.ic_attach_file_white_24dp
-    ) { startActivity(Intent(this, TasksActivity::class.java)) },
+    ) { startActivity(Intent(this, TasksListActivity::class.java)) },
 
     MenuItem(R.string.arrival, R.drawable.ic_archive_black_24dp) {
-      startActivity(Intent(this, CargosActivity::class.java))
+      startActivity(Intent(this, CargosListActivity::class.java))
     },
     MenuItem(R.string.separation, R.drawable.ic_shopping_cart_black_24dp),
     MenuItem(R.string.expedition, R.drawable.ic_directions_bus_black_24dp),
@@ -50,7 +50,6 @@ class MainActivity : MyAppCompatActivity() {
     menusList.layoutManager = LinearLayoutManager(this)
 
     lifecycleScope.launchWhenCreated {
-      delay(500L)
       globalData.userDetails?.let {
         updateHeaderUserDetailsUI(it)
       }
@@ -68,7 +67,7 @@ class MainActivity : MyAppCompatActivity() {
       text = getString(R.string.helloUser, userDetails.name)
     }
     findViewById<TextView>(R.id.userFunction)?.apply {
-      text = userDetails.userFunction
+      text = userDetails.roleDescription
     }
 
   }

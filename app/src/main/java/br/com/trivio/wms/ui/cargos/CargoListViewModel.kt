@@ -5,22 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoListDto
+import br.com.trivio.wms.extensions.callAsync
 import br.com.trivio.wms.repository.CargosRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class CargoArrivalsViewModel(
+class CargoListViewModel(
   private val cargosRepository: CargosRepository = CargosRepository()
 ) :
   ViewModel() {
 
   val cargosResult = MutableLiveData<Result<List<CargoListDto>>>()
 
-  fun loadTasks() {
+  fun loadCargos() {
     viewModelScope.launch {
       cargosResult.apply {
-        value = withContext(Dispatchers.IO) {
+        value = callAsync {
           cargosRepository.loadCargoArrivals()
         }
       }

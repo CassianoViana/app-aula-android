@@ -7,12 +7,11 @@ import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
+import br.com.trivio.wms.extensions.callAsync
 import br.com.trivio.wms.repository.CargoConferenceRepository
 import br.com.trivio.wms.repository.DamageRepository
 import br.com.trivio.wms.repository.TasksRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 class CargoConferenceViewModel(
@@ -29,7 +28,7 @@ class CargoConferenceViewModel(
 
   fun loadTask(id: Long) {
     viewModelScope.launch {
-      task.value = withContext(Dispatchers.IO) {
+      task.value = callAsync {
         repository.loadCargoConference(id)
       }
     }
@@ -37,7 +36,7 @@ class CargoConferenceViewModel(
 
   fun registerDamage(damageDto: DamageDto) {
     viewModelScope.launch {
-      damageRegistration.value = withContext(Dispatchers.IO) {
+      damageRegistration.value = callAsync {
         damageRepository.registerDamage(damageDto)
       }
     }
@@ -49,7 +48,7 @@ class CargoConferenceViewModel(
   ) {
     item.countedQuantity = quantity
     viewModelScope.launch {
-      cargoItem.value = withContext(Dispatchers.IO) {
+      cargoItem.value = callAsync {
         repository.countItem(item)
       }
     }
@@ -80,7 +79,7 @@ class CargoConferenceViewModel(
 
   fun finishTask(taskId: Long) {
     viewModelScope.launch {
-      finishStatus.value = withContext(Dispatchers.IO) {
+      finishStatus.value = callAsync {
         taskRepository.finishTask(taskId)
       }
     }

@@ -18,10 +18,10 @@ import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setupToolbar
 import br.com.trivio.wms.extensions.startLoading
-import br.com.trivio.wms.inflateToViewHolder
+import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.threatResult
 
-class TasksActivity : MyAppCompatActivity() {
+class TasksListActivity : MyAppCompatActivity() {
 
   private val viewModel: TasksViewModel by viewModels()
   private lateinit var loading: ProgressBar
@@ -29,7 +29,7 @@ class TasksActivity : MyAppCompatActivity() {
 
   private val adapter = TasksAdapter(object : OnTaskClickListener {
     override fun onClick(task: TaskDto) {
-      val intent = Intent(this@TasksActivity, TaskDetailsActivity::class.java)
+      val intent = Intent(this@TasksListActivity, TaskDetailsActivity::class.java)
       intent.putExtra(TaskDetailsActivity.TASK_ID, task.id)
       startActivity(intent)
     }

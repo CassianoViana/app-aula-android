@@ -15,7 +15,7 @@ import br.com.trivio.wms.components.custom.SearchInput
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
-import br.com.trivio.wms.inflateToViewHolder
+import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.threatResult
 
 class ConferenceItemsActivity : MyAppCompatActivity() {

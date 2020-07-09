@@ -23,9 +23,7 @@ import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.threatResult
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 
@@ -224,7 +222,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun loadItemToRequestQuantity(gtin: String) {
     lifecycleScope.launch {
-      val cargoItemResult = withContext(Dispatchers.IO) {
+      val cargoItemResult = callAsync {
         viewModel.getCargoItem(gtin)
       }
       threatResult(cargoItemResult,

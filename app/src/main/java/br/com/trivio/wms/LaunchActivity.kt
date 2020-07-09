@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.com.trivio.wms.ui.login.LoginActivity
+import kotlinx.coroutines.async
 
 class LaunchActivity : AppCompatActivity() {
 

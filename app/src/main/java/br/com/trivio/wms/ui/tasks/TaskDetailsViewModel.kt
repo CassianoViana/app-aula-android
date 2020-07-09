@@ -5,10 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.extensions.callAsync
 import br.com.trivio.wms.repository.TasksRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class TaskDetailsViewModel(private val tasksRepository: TasksRepository = TasksRepository()) :
   ViewModel() {
@@ -18,7 +17,7 @@ class TaskDetailsViewModel(private val tasksRepository: TasksRepository = TasksR
   fun loadTask(id: Long) {
     viewModelScope.launch {
       task.apply {
-        value = withContext(Dispatchers.IO) {
+        value = callAsync {
           tasksRepository.loadTask(id)
         }
       }

@@ -133,6 +133,15 @@ fun TextView.setTagBackground(color: String?) {
   }
 }
 
+suspend fun <T : Any> call(
+  result: () -> Result<T>,
+  always: ((result: Result<T>) -> Unit)? = null,
+  onError: ((result: Result.Error) -> Unit)? = null,
+  onSuccess: (result: Result.Success<T>) -> Unit
+) {
+  threatResult(callAsync { result() }, always, onError, onSuccess)
+}
+
 fun <T : Any> threatResult(
   result: Result<T>,
   always: ((result: Result<T>) -> Unit)? = null,

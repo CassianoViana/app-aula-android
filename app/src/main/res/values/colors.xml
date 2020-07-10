@@ -22,6 +22,7 @@
   <color name="colorBlueAccentPressed">#0059C6</color>
   <color name="green_transparent">#8600DB6A</color>
   <color name="red_transparent">#88F44336</color>
+  <color name="progress_bar_incomplete_part">#1e6699</color>
 </resources>
 
 

@@ -4,7 +4,17 @@
     <attr name="hint" format="string" />
   </declare-styleable>
 
+  <declare-styleable name="ProgressBar">
+    <attr name="progress" format="integer" />
+    <attr name="label_below_bar" format="string" />
+  </declare-styleable>
+
   <declare-styleable name="TopBar">
     <attr name="title" format="string" />
+  </declare-styleable>
+
+  <declare-styleable name="LabelledInfo">
+    <attr name="label_title" format="string" />
+    <attr name="label_value" format="string" />
   </declare-styleable>
 </resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/rounded_background"
+  android:orientation="vertical"
+  android:padding="@dimen/padding_half">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_half">
+
+    <Button
+      android:id="@+id/close_btn"
+      android:layout_width="25dp"
+      android:layout_height="24dp"
+      android:background="@drawable/transparent"
+      android:drawableStart="@drawable/ic_close_black_24dp"
+      android:padding="0dp" />
+
+    <LinearLayout
+      android:id="@+id/linearLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/first_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10sp"
+        android:text="Quanto"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/second_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vocẽ quer cobrar?"
+        android:textSize="@dimen/medium_text" />
+    </LinearLayout>
+
+
+    <EditText
+      android:id="@+id/input_value"
+      android:layout_width="174dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="15dp"
+      android:hint="0,00"
+      android:inputType="number"
+      android:textSize="@dimen/huge_text" />
+
+    <LinearLayout
+      android:id="@+id/more_views_to_add"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:orientation="horizontal"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/input_value" />
+
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/confirm_button"
+    style="@style/primary_rounded_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:text="@string/confirm"
+    app:layout_constraintBottom_toBottomOf="parent" />
+
+</LinearLayout>

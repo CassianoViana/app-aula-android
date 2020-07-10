@@ -6,7 +6,7 @@
   android:padding="12dp">
 
   <EditText
-    android:id="@+id/input_search"
+    android:id="@+id/custom_input_search"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"

@@ -1,28 +1,28 @@
 package br.com.trivio.wms.ui.conference.cargo
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
+import br.com.trivio.wms.call
 import br.com.trivio.wms.data.dto.CargoConferenceDto
+import br.com.trivio.wms.data.dto.CargoConferenceDto.Companion.STATUS_COUNTING_ALL_COUNTED
+import br.com.trivio.wms.data.dto.CargoConferenceDto.Companion.STATUS_COUNTING_NONE_COUNTED
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.threatResult
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
+import kotlinx.android.synthetic.main.activity_cargo_conference.*
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
@@ -30,16 +30,15 @@ import java.math.BigDecimal
 class CargoConferenceActivity : MyAppCompatActivity() {
 
   companion object {
-    const val CARGO_ID: String = "CARGO_id"
+    const val CARGO_TASK_ID: String = "CARGO_id"
   }
 
-  private lateinit var labelCountingStatus: TextView
-  private lateinit var labelQtdItemsToCount: TextView
-  private lateinit var btnFinishTask: Button
-  private lateinit var totalsToCount: LinearLayout
-  private lateinit var btnSearchProduct: Button
-  private lateinit var editBarcode: EditText
   private var cargoConferenceId: Long = 0
+  private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
+    override fun onClick(item: CargoConferenceItemDto) {
+      requestQuantity(item.gtin)
+    }
+  })
 
   private val viewModel: CargoConferenceViewModel by viewModels()
 
@@ -47,26 +46,21 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_cargo_conference)
     setupToolbar()
-    associateViewComponents()
+
+    cargoConferenceId = intent.getLongExtra(CARGO_TASK_ID, 0)
+    cargo_items_recycler_view.setAdapter(cargoItemsAdapter)
+    progress_bar.setText(getString(R.string.loading_string))
+
     observeViewModel()
-    setupEvents()
+    onBarcodeChangeSearchProduct()
+    onRefreshLoadData()
     loadData()
   }
 
-  private fun setupEvents() {
-    onClickSearchOpenItemsActivity()
-    onBarcodeChangeSearchProduct()
-    onClickFinishTaskEndActivity()
-  }
-
-  private fun associateViewComponents() {
-    cargoConferenceId = intent.getLongExtra(CARGO_ID, 0)
-    editBarcode = findViewById(R.id.barcode)
-    btnSearchProduct = findViewById(R.id.btn_search_product)
-    totalsToCount = findViewById(R.id.totals_to_count)
-    btnFinishTask = findViewById(R.id.layout_btn_finish)
-    labelQtdItemsToCount = findViewById(R.id.qtd_items_to_count)
-    labelCountingStatus = findViewById(R.id.label_status_counting)
+  private fun onRefreshLoadData() {
+    cargo_items_recycler_view.setOnRefreshListener {
+      loadData()
+    }
   }
 
   private fun observeViewModel() {
@@ -74,9 +68,11 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       threatResult(it,
         onSuccess = {
           showMessageSuccess(R.string.counted_success)
-          loadTask()
+          loadCargoConferenceTask()
         },
-        always = { endLoading() })
+        always = {
+          cargo_items_recycler_view.stopRefresh()
+        })
     })
     viewModel.damageRegistration.observe(this, Observer {
       threatResult(it,
@@ -85,12 +81,17 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       )
     })
     viewModel.task.observe(this, Observer {
-      threatResult(it, onSuccess = { result ->
-        updateUi(result.data)
-      }, onError = {
-        showMessageError(R.string.error_while_loading_task)
-        //finish()
-      })
+      threatResult(it,
+        onSuccess = { result ->
+          updateUi(result.data)
+        },
+        onError = {
+          showMessageError(R.string.error_while_loading_task)
+        },
+        always = {
+          cargo_items_recycler_view.stopRefresh()
+        }
+      )
     })
     viewModel.finishStatus.observe(this, Observer {
       threatResult(it, onSuccess = {
@@ -100,149 +101,93 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     })
   }
 
-  private fun onClickSearchOpenItemsActivity() {
-    val onClickListener = View.OnClickListener {
-      startSearchProductsActivity()
-    }
-    btnSearchProduct.setOnClickListener(onClickListener)
-    totalsToCount.setOnClickListener(onClickListener)
-  }
-
   private fun onBarcodeChangeSearchProduct() {
-    editBarcode.addTextChangedListener {
-      val gtin = it.toString()
+    barcode.addTextChangedListener {
+      val gtin = it
+      cargoItemsAdapter.items = viewModel.filter(gtin)
       if (gtin.length >= 5) {
-        loadItemToRequestQuantity(gtin)
+        requestQuantity(gtin)
       }
     }
-  }
-
-  private fun onClickFinishTaskEndActivity() {
-    btnFinishTask
-      .setOnClickListener {
-        lifecycleScope.launch {
-          viewModel.finishTask(cargoConferenceId)
-        }
-      }
   }
 
   private fun loadData() {
     lifecycleScope.launchWhenCreated {
-      loadTask()
+      loadCargoConferenceTask()
     }
   }
 
   private fun updateUi(cargoConferenceDto: CargoConferenceDto) {
+    cargoItemsAdapter.items = cargoConferenceDto.items
     updateUiLabelItemsCounted(cargoConferenceDto)
     if (cargoConferenceDto.taskStatus == TaskStatus.DONE) {
       updateUiDisableControls()
     } else {
-      updateUiShowHIdeBtnFinish(cargoConferenceDto)
+      updateBtnFinishTask(cargoConferenceDto)
       updateKeyboardStatusCargo(cargoConferenceDto)
     }
     endLoading()
   }
 
   private fun updateUiDisableControls() {
-    editBarcode.isEnabled = false
-    btnSearchProduct.isEnabled = false
+    barcode.isEnabled = false
   }
 
   private fun updateKeyboardStatusCargo(dto: CargoConferenceDto) {
-    if (dto.getStatusCounting() != CargoConferenceDto.STATUS_COUNTING_ALL_COUNTED) {
-      showKeyboard(editBarcode)
-    } else {
-      hideKeyboard(editBarcode)
-    }
+    val allCounted = dto.getStatusCounting() != STATUS_COUNTING_ALL_COUNTED
+    barcode.setKeyboardVisible(!allCounted)
   }
 
   private fun updateUiLabelItemsCounted(data: CargoConferenceDto) {
-    labelQtdItemsToCount.text =
-      getString(R.string.conted_itens_label, data.getTotalCountedItems(), data.items.size)
+    val totalCountedItems = data.getTotalCountedItems()
+    val totalDivergentItems = data.getTotalDivergentItems()
+    val statusCounting = data.getStatusCounting()
+
+    val labelStatusCounting =
+      getString(
+        R.string.truck_label__one_from_max_counted,
+        data.truckLabel,
+        totalCountedItems,
+        data.items.size
+      )
+
     val progressColor =
-      when (data.getStatusCounting()) {
-        CargoConferenceDto.STATUS_COUNTING_ALL_COUNTED -> {
-          labelCountingStatus.visibility = View.VISIBLE
-          val totalDivergentItems = data.getTotalDivergentItems()
+      when (statusCounting) {
+        STATUS_COUNTING_NONE_COUNTED -> R.color.colorAccent
+        STATUS_COUNTING_ALL_COUNTED ->
           when {
-            totalDivergentItems > 0 -> {
-              labelCountingStatus.text = getString(R.string.divergent_itens, totalDivergentItems)
-              R.color.error
-            }
-            else -> {
-              labelCountingStatus.text = getString(R.string.every_items_counted_correct)
-              R.color.success
-            }
+            totalDivergentItems > 0 -> R.color.error
+            else -> R.color.success
           }
-        }
-        CargoConferenceDto.STATUS_COUNTING_NONE_COUNTED -> {
-          labelCountingStatus.visibility = View.GONE
-          R.color.colorAccent
-        }
-        else -> {
-          R.color.colorBlueAccent
-        }
+        else -> R.color.colorBlueAccent
       }
-    setProgressGradient(
-      findViewById(R.id.totals_to_count),
-      data.getPercentProgress(),
-      getColor(progressColor),
-      getColor(R.color.colorPrimary)
-    )
+
+    progress_bar.setText(labelStatusCounting)
+    progress_bar.setProgress(data.getPercentProgress(), progressColor)
   }
 
-  private fun updateUiShowHIdeBtnFinish(data: CargoConferenceDto) {
-    findViewById<View>(R.id.layout_btn_finish)
-      .visibility = when (data.getStatusCounting()) {
-      CargoConferenceDto.STATUS_COUNTING_ALL_COUNTED -> {
-        View.VISIBLE
-      }
-      else -> View.GONE
-    }
+  private fun updateBtnFinishTask(data: CargoConferenceDto) {
+    val statusCounting = data.getStatusCounting()
+    /*btn_finish_conference.setVisible(statusCounting == STATUS_COUNTING_ALL_COUNTED)*/
   }
 
-  private fun loadTask() {
+  private fun loadCargoConferenceTask() {
     startLoading()
     viewModel.loadTask(cargoConferenceId)
   }
 
-  private fun startSearchProductsActivity() {
-    val searchProductIntent = Intent(this, ConferenceItemsActivity::class.java)
-    searchProductIntent.putExtra(
-      ConferenceItemsActivity.CARGO_CONFERENCE_ID,
-      cargoConferenceId
-    )
-    searchProductIntent.putExtra(
-      ConferenceItemsActivity.SEARCH_PRODUCT_GTIN,
-      editBarcode.text.toString()
-    )
-    hideKeyboard(editBarcode)
-    startActivityForResult(searchProductIntent, ConferenceItemsActivity.REQUEST_CODE_SELECT_ITEM)
-  }
-
-  private fun loadItemToRequestQuantity(gtin: String) {
+  private fun requestQuantity(gtin: String) {
     lifecycleScope.launch {
-      val cargoItemResult = callAsync {
-        viewModel.getCargoItem(gtin)
-      }
-      threatResult(cargoItemResult,
-        onSuccess = { item ->
-          requestQuantity(item.data)
-        }
+      call(
+        { viewModel.getCargoItem(gtin) },
+        onSuccess = { promtQtd(it.data) }
       )
     }
   }
 
-  private fun resetBarcode() {
-    showKeyboard(editBarcode)
-    editBarcode.setText("")
-  }
-
-  private fun requestQuantity(item: CargoConferenceItemDto) {
-
+  private fun promtQtd(item: CargoConferenceItemDto) {
     val reportDamageButtons = createButton(getString(R.string.report_damage))
     val buttonsList = listOf(reportDamageButtons)
-
     prompt(
       firstTitle = item.name,
       secondTitle = getString(R.string.how_many_items_were_conted),
@@ -259,10 +204,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         dialog.hide()
       }
     }
-
     reportDamageButtons.setOnClickListener {
       reportDamage(item)
     }
+  }
+
+  private fun resetBarcode() {
+    barcode.reset()
+    barcode.setKeyboardVisible(true)
   }
 
   private fun reportDamage(item: CargoConferenceItemDto) {
@@ -311,23 +260,58 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (resultCode == ConferenceItemsActivity.SUCCESS) {
-      if (requestCode == ConferenceItemsActivity.REQUEST_CODE_SELECT_ITEM) {
-        data?.let {
-          val gtin = data.getStringExtra(ConferenceItemsActivity.GTIN_ID)
-          loadItemToRequestQuantity(gtin)
+  class CargoItemsAdapter(private val onClickCargoItem: OnClickCargoItem) :
+    RecyclerView.Adapter<CargoItemsAdapter.CargoItemCountViewHolder>() {
+
+    var items: List<CargoConferenceItemDto> = mutableListOf()
+      set(value) {
+        field = value
+        notifyDataSetChanged()
+      }
+
+    class CargoItemCountViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+      private var productName = view.findViewById<TextView>(R.id.product_name)
+      private var gtin = view.findViewById<TextView>(R.id.gtin_text)
+      private var sku = view.findViewById<TextView>(R.id.sku_text)
+      private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
+      fun bind(
+        item: CargoConferenceItemDto,
+        onClickCargoItem: OnClickCargoItem
+      ) {
+        var color = 0
+        if (item.countedQuantity != null) {
+          color = R.color.green_transparent
+        }
+        if (item.mismatchQuantity()) {
+          color = R.color.red_transparent
+        }
+        if (color != 0)
+          view.setBackgroundColor(view.context.getColor(color))
+        productName.text = item.name
+        gtin.text = coalesce(item.gtin, R.string.no_gtin)
+        sku.text = coalesce(item.sku, R.string.no_sku)
+        countedQtd.text = formatNumber(item.countedQuantity)
+        view.setOnClickListener {
+          onClickCargoItem.onClick(item)
         }
       }
     }
-    super.onActivityResult(requestCode, resultCode, data)
-  }
 
-
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    this.handleHomeClickFinish(item) {
-      hideKeyboard(editBarcode)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CargoItemCountViewHolder {
+      return CargoItemCountViewHolder(parent.inflateToViewHolder(R.layout.item_conference_layout))
     }
-    return super.onOptionsItemSelected(item)
+
+    override fun getItemCount(): Int {
+      return items.size
+    }
+
+    override fun onBindViewHolder(holder: CargoItemCountViewHolder, position: Int) {
+      val item = items[position]
+      holder.bind(item, onClickCargoItem)
+    }
+
+    interface OnClickCargoItem {
+      fun onClick(item: CargoConferenceItemDto)
+    }
   }
 }

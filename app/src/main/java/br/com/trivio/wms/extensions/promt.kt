@@ -21,7 +21,7 @@ fun MyAppCompatActivity.prompt(
   hint: String = "0,00",
   positiveAction: (dialog: Dialog, value: String) -> Unit
 ): Dialog {
-  val layout = inflate<View>(R.layout.activity_input_number)
+  val layout = inflate<View>(R.layout.custom_prompt)
   val confirmButton = layout.findViewById<Button>(R.id.confirm_button)
   val inputValueEditText = layout.findViewById<EditText>(R.id.input_value)
   val btnClose = layout.findViewById<Button>(R.id.close_btn)
@@ -72,7 +72,7 @@ fun MyAppCompatActivity.alert(
   hint: String = "0,00",
   positiveAction: (dialog: Dialog, value: String) -> Unit
 ): Dialog {
-  val layout = inflate<View>(R.layout.activity_input_number)
+  val layout = inflate<View>(R.layout.custom_prompt)
   val confirmButton = layout.findViewById<Button>(R.id.confirm_button)
   val inputValueEditText = layout.findViewById<EditText>(R.id.input_value)
   val btnClose = layout.findViewById<Button>(R.id.close_btn)

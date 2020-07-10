@@ -3,8 +3,6 @@ package br.com.trivio.wms.ui.tasks
 import UiUtils
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -19,6 +17,7 @@ import br.com.trivio.wms.extensions.setupToolbar
 import br.com.trivio.wms.extensions.startLoading
 import br.com.trivio.wms.threatResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
+import kotlinx.android.synthetic.main.activity_task_details.*
 import kotlinx.android.synthetic.main.custom_top_bar.*
 
 class TaskDetailsActivity : MyAppCompatActivity() {
@@ -29,11 +28,6 @@ class TaskDetailsActivity : MyAppCompatActivity() {
     const val REQUEST_TASK_CHANGE = 100
   }
 
-  private lateinit var taskHint: TextView
-  private lateinit var executorsLabel: TextView
-  private lateinit var taskName: TextView
-  private lateinit var btnTaskAction: Button
-  private lateinit var labelTaskStatus: TextView
   private val viewModel: TaskDetailsViewModel by viewModels()
   private var taskId: Long = 0
 
@@ -41,19 +35,10 @@ class TaskDetailsActivity : MyAppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_task_details)
     setupToolbar()
-    associateComponents()
     this.taskId = intent.getLongExtra(TASK_ID, 0)
     observeViewModel()
     onClickBtnStartTask()
     loadTask(taskId)
-  }
-
-  private fun associateComponents() {
-    labelTaskStatus = findViewById(R.id.label_task_status)
-    btnTaskAction = findViewById(R.id.btn_task_action)
-    taskName = findViewById(R.id.task_name)
-    executorsLabel = findViewById(R.id.executors_label)
-    taskHint = findViewById(R.id.task_hint)
   }
 
   private fun observeViewModel() {
@@ -74,7 +59,7 @@ class TaskDetailsActivity : MyAppCompatActivity() {
   }
 
   private fun onClickBtnStartTask() {
-    btnTaskAction.setOnClickListener {
+    btn_task_action.setOnClickListener {
       getIntentFromTask(viewModel.task)?.let {
         startActivityForResult(it, REQUEST_TASK_CHANGE)
       }
@@ -84,11 +69,11 @@ class TaskDetailsActivity : MyAppCompatActivity() {
   private fun updateUi(task: TaskDto) {
     val name = task.name
     title_text_view.text = getString(R.string.task_and_number, task.id)
-    UiUtils.setTaskStatusStyle(labelTaskStatus, task)
-    taskName.text = name
-    btnTaskAction.text = getActionTextFromTask(task)
-    executorsLabel.text = task.currentExecutorsNames
-    taskHint.text = task.hint
+    UiUtils.setTaskStatusStyle(label_task_status, task)
+    task_name.text = name
+    btn_task_action.text = getActionTextFromTask(task)
+    executors_label.text = task.currentExecutorsNames
+    task_hint.text = task.hint
   }
 
   private fun loadTask(id: Long) {
@@ -101,11 +86,11 @@ class TaskDetailsActivity : MyAppCompatActivity() {
   ): Intent? {
     return when (val taskResult = task.value) {
       is Result.Success -> {
-        val task = taskResult.data
-        when (task.type) {
+        val taskRetrieved = taskResult.data
+        when (taskRetrieved.type) {
           TaskType.CARGO_CONFERENCE -> {
             val intent = Intent(this, CargoConferenceActivity::class.java)
-            intent.putExtra(CargoConferenceActivity.CARGO_ID, task.id)
+            intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskRetrieved.id)
             intent
           }
           else -> null

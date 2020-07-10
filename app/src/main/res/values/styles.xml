@@ -87,7 +87,7 @@
     <item name="android:layout_gravity">center</item>
   </style>
 
-  <style name="action_button">
+  <style name="button_action">
     <item name="android:layout_weight">1</item>
     <item name="android:background">@drawable/button_white_bordered</item>
     <item name="android:drawablePadding">12dp</item>
@@ -95,11 +95,15 @@
     <item name="android:textColor">@color/grey</item>
   </style>
 
-  <style name="action_button.cancel">
+  <style name="button_action.cancel">
     <item name="android:drawableLeft">@drawable/ic_close_black_24dp</item>
   </style>
 
-  <style name="action_button.ok">
+  <style name="button_action.back">
+    <item name="android:drawableLeft">@drawable/ic_arrow_back_black_24dp</item>
+  </style>
+
+  <style name="button_action.ok">
     <item name="android:drawableLeft">@drawable/ic_check_black_24dp</item>
   </style>
 

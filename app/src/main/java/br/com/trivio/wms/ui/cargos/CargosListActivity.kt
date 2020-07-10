@@ -45,7 +45,7 @@ class CargosListActivity : MyAppCompatActivity() {
   }
 
   private fun associateComponents() {
-    cargosList = findViewById(R.id.list)
+    cargosList = findViewById(R.id.tasks_list)
     loading = findViewById(R.id.progress_bar)
   }
 

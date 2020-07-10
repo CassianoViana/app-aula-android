@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 
 @SuppressLint("WrongViewCast")
-fun AppCompatActivity.getProgressBarLayout(): FrameLayout? {
+fun MyAppCompatActivity.getProgressBarLayout(): FrameLayout? {
   return findViewById(R.id.layout_progress_bar)
 }
 
-fun AppCompatActivity.startLoading(loadingStringId: Int? = null) {
+fun MyAppCompatActivity.startLoading(loadingStringId: Int? = null) {
   getProgressBarLayout()?.let { layout ->
     layout.visibility = View.VISIBLE
     loadingStringId?.let {
@@ -21,6 +21,15 @@ fun AppCompatActivity.startLoading(loadingStringId: Int? = null) {
   }
 }
 
-fun AppCompatActivity.endLoading() {
+fun MyAppCompatActivity.endLoading() {
   getProgressBarLayout()?.visibility = View.GONE
+}
+
+fun TextView.setLoading(value: Boolean) {
+  background = if (value) {
+    text = ""
+    resources.getDrawable(R.drawable.background_loading_grey_input)
+  } else {
+    resources.getDrawable(R.drawable.transparent)
+  }
 }

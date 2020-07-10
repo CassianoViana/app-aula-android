@@ -5,27 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.components.custom.RefreshableList
 import br.com.trivio.wms.data.dto.TaskDto
-import br.com.trivio.wms.extensions.endLoading
-import br.com.trivio.wms.extensions.formatTo
-import br.com.trivio.wms.extensions.setupToolbar
-import br.com.trivio.wms.extensions.startLoading
-import br.com.trivio.wms.extensions.inflateToViewHolder
+import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.threatResult
+import kotlinx.android.synthetic.main.activity_tasks.*
 
 class TasksListActivity : MyAppCompatActivity() {
 
   private val viewModel: TasksViewModel by viewModels()
-  private lateinit var loading: ProgressBar
-  private lateinit var tasksList: RefreshableList
 
   private val adapter = TasksAdapter(object : OnTaskClickListener {
     override fun onClick(task: TaskDto) {
@@ -39,7 +32,6 @@ class TasksListActivity : MyAppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_tasks)
     this.setupToolbar()
-    associateComponents()
     observeViewModel()
     bindListAdapter()
     addRefreshListener()
@@ -50,17 +42,12 @@ class TasksListActivity : MyAppCompatActivity() {
     loadTasks()
   }
 
-  private fun associateComponents() {
-    tasksList = findViewById(R.id.list)
-    loading = findViewById(R.id.progress_bar)
-  }
-
   private fun bindListAdapter() {
-    tasksList.setAdapter(adapter)
+    tasks_list.setAdapter(adapter)
   }
 
   private fun addRefreshListener() {
-    tasksList.setOnRefreshListener {
+    tasks_list.setOnRefreshListener {
       viewModel.loadTasks()
     }
   }
@@ -73,7 +60,7 @@ class TasksListActivity : MyAppCompatActivity() {
         },
         always = {
           endLoading()
-          tasksList.stopRefresh()
+          tasks_list.stopRefresh()
         }
       )
     })

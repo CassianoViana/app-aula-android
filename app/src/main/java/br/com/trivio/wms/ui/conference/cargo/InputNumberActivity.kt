@@ -10,7 +10,7 @@ class InputNumberActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_input_number)
+    setContentView(R.layout.custom_prompt)
     val inputValue: EditText = findViewById(R.id.input_value)
     showKeyboard(inputValue)
   }

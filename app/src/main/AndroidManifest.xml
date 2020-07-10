@@ -16,9 +16,6 @@
     <activity
       android:name=".ui.conference.cargo.InputNumberActivity"
       android:windowSoftInputMode="adjustResize" />
-    <activity
-      android:name=".ui.conference.cargo.ConferenceItemsActivity"
-      android:windowSoftInputMode="adjustResize" />
     <activity android:name=".ui.conference.cargo.CargoConferenceActivity" />
     <activity android:name=".ui.tasks.TaskDetailsActivity" />
     <activity android:name=".LaunchActivity">

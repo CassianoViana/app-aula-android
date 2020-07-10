@@ -3,10 +3,19 @@ package br.com.trivio.wms.data.dto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.getPercent
 import br.com.trivio.wms.extensions.matchFilter
+import org.joda.time.LocalDateTime
 
 class CargoConferenceDto(
   val id: Long = 0,
+  val taskId: Long = 0,
+  val cargoId: Long = 0,
   val items: MutableList<CargoConferenceItemDto> = mutableListOf(),
+  val scheduledStart: LocalDateTime? = null,
+  val scheduledEnd: LocalDateTime? = null,
+  val driverName: String = "",
+  val truckLabel: String = "",
+  val companyName: String = "",
+  val cargoReferenceCode: String = "",
   val taskStatus: TaskStatus = TaskStatus.PENDING
 ) {
   fun getTotalCountedItems(): Int {

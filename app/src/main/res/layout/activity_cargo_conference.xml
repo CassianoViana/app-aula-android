@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+  android:orientation="vertical"
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/constraint_layout"
@@ -9,81 +11,48 @@
 
   <br.com.trivio.wms.components.custom.TopBar
     android:id="@+id/top_bar"
-    app:title="@string/cargo_conference"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    />
+    android:layout_height="wrap_content"
+    app:title="@string/cargo_conference" />
 
-  <LinearLayout
-    android:id="@+id/totals_to_count"
+  <br.com.trivio.wms.components.custom.ProgressBar
+    android:padding="@dimen/padding_half"
+    android:id="@+id/progress_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/top_bar"
-    android:background="@color/colorBlueAccent"
+    android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/padding_half"
+    app:label_below_bar="CFA2323 - 2 de 4 itens"
     app:layout_constraintTop_toBottomOf="@id/top_bar">
-
-    <TextView
-      android:id="@+id/qtd_items_to_count"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="22 de 40"
-      android:textColor="@color/colorWhite"
-      android:textSize="@dimen/large_text"
-      android:textStyle="bold" />
-
-    <TextView
-      android:id="@+id/label_status_counting"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/counted_itens"
-      android:textColor="@color/colorWhite" />
-  </LinearLayout>
-
-  <include
-    android:id="@+id/layout_btn_finish"
-    layout="@layout/button_finish_task"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/totals_to_count"
-    android:visibility="gone" />
+  </br.com.trivio.wms.components.custom.ProgressBar>
 
   <LinearLayout
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/layout_btn_finish"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/padding">
+    android:orientation="vertical">
 
-    <EditText
+    <br.com.trivio.wms.components.custom.SearchInput
       android:id="@+id/barcode"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16sp"
       android:gravity="center"
-      android:hint="@string/barcode"
+      app:hint="@string/product_code"
       android:inputType="number"
       android:textSize="@dimen/large_text" />
 
-    <Button
-      android:id="@+id/btn_search_product"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16sp"
-      android:drawableLeft="@drawable/ic_search_black_24dp"
-      android:text="@string/search_product" />
-
-
+    <br.com.trivio.wms.components.custom.RefreshableList
+      android:id="@+id/cargo_items_recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
   </LinearLayout>
 
   <include
     layout="@layout/progress_bar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/top_bar"
     android:visibility="gone" />
-</RelativeLayout>
+</LinearLayout>

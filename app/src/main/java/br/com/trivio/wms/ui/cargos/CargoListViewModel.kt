@@ -16,13 +16,9 @@ class CargoListViewModel(
 
   val cargosResult = MutableLiveData<Result<List<CargoListDto>>>()
 
-  fun loadCargos() {
+  fun loadPendingCargos() {
     viewModelScope.launch {
-      cargosResult.apply {
-        value = callAsync {
-          cargosRepository.loadCargoArrivals()
-        }
-      }
+      cargosResult.value = callAsync { cargosRepository.loadPendingCargos() }
     }
   }
 }

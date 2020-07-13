@@ -37,6 +37,7 @@
     <activity android:name=".ui.cargos.CargosListActivity" />
     <activity android:name=".ui.tasks.TasksListActivity" />
     <activity android:name=".ui.cargos.StartConferenceActivity" />
+    <activity android:name=".ui.cargos.EndConferenceActivity" />
   </application>
 
 </manifest>

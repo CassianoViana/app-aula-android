@@ -1,22 +1,20 @@
 package br.com.trivio.wms.ui.cargos
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
-import br.com.trivio.wms.extensions.formatTo
+import br.com.trivio.wms.extensions.Status
 import br.com.trivio.wms.extensions.setLoading
+import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.threatResult
-import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
-import kotlinx.android.synthetic.main.activity_start_conference.*
+import kotlinx.android.synthetic.main.activity_end_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 
-class StartConferenceActivity : MyAppCompatActivity() {
+class EndConferenceActivity : MyAppCompatActivity() {
 
   private val cargoDetailsViewModel: CargoDetailsViewModel by viewModels()
 
@@ -26,7 +24,7 @@ class StartConferenceActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_start_conference)
+    setContentView(R.layout.activity_end_conference)
     setupObservables()
     listenClickEvents()
     listenRefresh()
@@ -48,34 +46,42 @@ class StartConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun setInputsLoading(loading: Boolean) {
-    driver_name_info.loading = loading
-    truck_label_info.loading = loading
-    company_name_info.loading = loading
-    start_date_info.loading = loading
-    bono_reference_code.setLoading(loading)
-    quantity_items_text_view.setLoading(loading)
+    driver_name_info.setLoading(loading)
+    truck_label_info.setLoading(loading)
+    bono_ref_code_info.setLoading(loading)
+    final_message.setLoading(loading)
+    icon_finish_counting.setLoading(loading)
   }
 
   private fun updateUi(data: CargoConferenceDto) {
-    bono_reference_code.text = data.cargoReferenceCode
+    bono_ref_code_info.text = getString(R.string.bono_ref_code_template, data.cargoReferenceCode)
     truck_label_info.text = data.truckLabel
     driver_name_info.text = data.driverName
-    company_name_info.text = data.companyName
-    start_date_info.text = data.scheduledStart?.formatTo("dd/MM/yyyy - HH:mm").toString()
-    quantity_items_text_view.text = data.quantityItems.toString()
-    barcode_reader_indicator.connected = true
+    final_message.text = getString(
+      when {
+        data.isFinishedWithAllCorrect() -> R.string.all_correct_bono_counted
+        else -> R.string.not_all_correct_bono_counted
+      }
+    )
+    icon_finish_counting.setImageResource(
+      when {
+        data.isFinishedWithAllCorrect() -> Status.SUCCESS.bigIcon
+        else -> Status.ERROR.bigIcon
+      }
+    )
+    layout_success.setVisible(data.isFinishedWithAllCorrect())
+    layout_fail.setVisible(!data.isFinishedWithAllCorrect())
   }
 
   private fun loadCargoDetails() {
     setInputsLoading(true)
     val cargoId = intent.getLongExtra(CARGO_ID, 0)
     Log.i("CARGO", "loadingCargoDetails: $cargoId")
-    cargoDetailsViewModel.loadCargo(cargoId)
+    cargoDetailsViewModel.loadCargo(cargoId, true)
   }
 
   private fun listenClickEvents() {
     btn_finish.setOnClickListener {
-      openConferenceActivity(cargoDetailsViewModel.cargoResult.value)
     }
     btn_icon_x.setOnClickListener { finish() }
     btn_cancel.setOnClickListener { finish() }
@@ -84,15 +90,6 @@ class StartConferenceActivity : MyAppCompatActivity() {
   private fun listenRefresh() {
     refresh_cargo_activity.setOnRefreshListener {
       loadCargoDetails()
-    }
-  }
-
-  private fun openConferenceActivity(value: Result<CargoConferenceDto>?) {
-    if (value is Result.Success) {
-      val taskId = value.data.taskId
-      val intent = Intent(this, CargoConferenceActivity::class.java)
-      intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskId)
-      startActivity(intent)
     }
   }
 }

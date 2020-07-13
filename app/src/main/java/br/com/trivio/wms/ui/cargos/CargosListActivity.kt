@@ -41,7 +41,7 @@ class CargosListActivity : MyAppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    loadTasks()
+    loadPendingCargos()
   }
 
   private fun associateComponents() {
@@ -55,7 +55,7 @@ class CargosListActivity : MyAppCompatActivity() {
 
   private fun addRefreshListener() {
     cargosList.setOnRefreshListener {
-      viewModel.loadCargos()
+      viewModel.loadPendingCargos()
     }
   }
 
@@ -73,9 +73,9 @@ class CargosListActivity : MyAppCompatActivity() {
     })
   }
 
-  private fun loadTasks() {
+  private fun loadPendingCargos() {
     startLoading()
-    viewModel.loadCargos()
+    viewModel.loadPendingCargos()
   }
 
   class CargosAdapter(

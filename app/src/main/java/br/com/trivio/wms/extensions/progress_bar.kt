@@ -1,9 +1,8 @@
 package br.com.trivio.wms.extensions
 
 import android.graphics.drawable.GradientDrawable
-import android.view.View
 
-fun setProgressGradient(v: View, percent: Int, colorStart: Int, colorEnd: Int) {
+fun getProgressGradient(percent: Int, colorStart: Int, colorEnd: Int): GradientDrawable {
   val colors = mutableListOf<Int>()
   repeat((0..1000).count()) {
     colors.add(
@@ -14,9 +13,22 @@ fun setProgressGradient(v: View, percent: Int, colorStart: Int, colorEnd: Int) {
       }
     )
   }
-  val linearGradient = GradientDrawable(
+  return gradientDrawable(colors)
+}
+
+fun gradientDrawable(colors: List<Int>): GradientDrawable {
+  val c = mutableListOf<Int>()
+  repeat((0..1000).count()) {
+    val index = it * colors.size / 1000
+    if (index < colors.size)
+      c.add(colors[index])
+  }
+  return GradientDrawable(
     GradientDrawable.Orientation.LEFT_RIGHT,
-    colors.toIntArray()
+    c.toIntArray()
   )
-  v.background = linearGradient
+
+  /*
+  indice
+  * */
 }

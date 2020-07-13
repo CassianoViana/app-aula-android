@@ -26,7 +26,7 @@ class CargoConferenceViewModel(
   val finishStatus = MutableLiveData<Result<Boolean>>()
   val damageRegistration = MutableLiveData<Result<DamageDto>>()
 
-  fun loadTask(id: Long) {
+  fun loadCargoConferenceTask(id: Long) {
     viewModelScope.launch {
       task.value = callAsync {
         repository.loadCargoConference(id)

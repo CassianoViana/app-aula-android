@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 interface Api {
 
@@ -34,6 +35,9 @@ interface Api {
 
   @GET("cargoConference/{id}")
   Call<CargoConferenceDto> getCargoConference(@Path("id") Long id);
+
+  @GET("cargoConference/{id}/details")
+  Call<CargoConferenceDto> getCargoConferenceDetails(@Path("id") Long id);
 
   @GET("cargoConference/pending")
   Call<List<CargoListDto>> getPendingCargos();

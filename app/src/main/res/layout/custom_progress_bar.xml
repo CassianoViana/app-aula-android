@@ -25,6 +25,8 @@
       android:orientation="horizontal" />
 
     <ImageView
+      android:visibility="gone"
+      android:id="@+id/icon_finish_bar"
       style="@style/primary_rounded_input"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

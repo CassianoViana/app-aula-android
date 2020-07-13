@@ -19,4 +19,19 @@ data class CargoConferenceItemDto(
   fun mismatchQuantity(): Boolean {
     return countedQuantity != null && expectedQuantity != countedQuantity
   }
+
+  fun correctCounted(): Boolean {
+    return countedQuantity != null && expectedQuantity == countedQuantity
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other is CargoConferenceItemDto) {
+      return id == other.id
+    }
+    return false
+  }
+
+  override fun hashCode(): Int {
+    return id.hashCode()
+  }
 }

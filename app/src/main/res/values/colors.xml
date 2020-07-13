@@ -16,7 +16,7 @@
   <color name="almost_transparent">#5BFFFFFF</color>
   <color name="almost_transparent_2">#22FFFFFF</color>
   <color name="success">#009648</color>
-  <color name="error">#B60C00</color>
+  <color name="error">#FF0000</color>
   <color name="info">#006AEC</color>
   <color name="colorBlueAccent">#006AEC</color>
   <color name="colorBlueAccentPressed">#0059C6</color>

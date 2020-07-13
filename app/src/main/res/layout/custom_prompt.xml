@@ -51,7 +51,7 @@
 
     <EditText
       android:id="@+id/input_value"
-      android:layout_width="174dp"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="15dp"
       android:hint="0,00"

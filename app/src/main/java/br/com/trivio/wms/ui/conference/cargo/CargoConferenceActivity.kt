@@ -1,10 +1,12 @@
 package br.com.trivio.wms.ui.conference.cargo
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -20,7 +22,11 @@ import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
+import br.com.trivio.wms.extensions.Status.Companion.ERROR
+import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
+import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.ui.cargos.EndConferenceActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.android.synthetic.main.activity_cargo_conference.*
 import kotlinx.coroutines.launch
@@ -54,7 +60,21 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     observeViewModel()
     onBarcodeChangeSearchProduct()
     onRefreshLoadData()
+    onClickFinish()
     loadData()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    barcode.setKeyboardVisible(false)
+  }
+
+  private fun onClickFinish() {
+    progress_bar.setOnClickListener {
+      val intent = Intent(this, EndConferenceActivity::class.java)
+      intent.putExtra(EndConferenceActivity.CARGO_ID, this.cargoConferenceId)
+      startActivity(intent)
+    }
   }
 
   private fun onRefreshLoadData() {
@@ -135,12 +155,16 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun updateKeyboardStatusCargo(dto: CargoConferenceDto) {
     val allCounted = dto.getStatusCounting() != STATUS_COUNTING_ALL_COUNTED
-    barcode.setKeyboardVisible(!allCounted)
+    if (allCounted) {
+
+    }
   }
 
   private fun updateUiLabelItemsCounted(data: CargoConferenceDto) {
+    val totalItems = data.quantityItems
     val totalCountedItems = data.getTotalCountedItems()
     val totalDivergentItems = data.getTotalDivergentItems()
+    val totalCorrectCounted = data.getTotalCorrectCountedItems()
     val statusCounting = data.getStatusCounting()
 
     val labelStatusCounting =
@@ -151,19 +175,28 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         data.items.size
       )
 
-    val progressColor =
+    val progressStatus =
       when (statusCounting) {
-        STATUS_COUNTING_NONE_COUNTED -> R.color.colorAccent
+        STATUS_COUNTING_NONE_COUNTED -> NOT_COMPLETED
         STATUS_COUNTING_ALL_COUNTED ->
           when {
-            totalDivergentItems > 0 -> R.color.error
-            else -> R.color.success
+            totalDivergentItems > 0 -> ERROR
+            else -> SUCCESS
           }
-        else -> R.color.colorBlueAccent
+        else -> NOT_COMPLETED
       }
 
+    val colors = data.items.map {
+      when {
+        it.correctCounted() -> SUCCESS.color
+        it.mismatchQuantity() -> ERROR.color
+        else -> NOT_COMPLETED.color
+      }
+    }
+
+    progress_bar.setStatus(progressStatus)
     progress_bar.setText(labelStatusCounting)
-    progress_bar.setProgress(data.getPercentProgress(), progressColor)
+    progress_bar.setColors(colors.map { getColor(it) })
   }
 
   private fun updateBtnFinishTask(data: CargoConferenceDto) {
@@ -173,19 +206,19 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun loadCargoConferenceTask() {
     startLoading()
-    viewModel.loadTask(cargoConferenceId)
+    viewModel.loadCargoConferenceTask(cargoConferenceId)
   }
 
   private fun requestQuantity(gtin: String) {
     lifecycleScope.launch {
       call(
         { viewModel.getCargoItem(gtin) },
-        onSuccess = { promtQtd(it.data) }
+        onSuccess = { promptQtd(it.data) }
       )
     }
   }
 
-  private fun promtQtd(item: CargoConferenceItemDto) {
+  private fun promptQtd(item: CargoConferenceItemDto) {
     val reportDamageButtons = createButton(getString(R.string.report_damage))
     val buttonsList = listOf(reportDamageButtons)
     prompt(
@@ -211,7 +244,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun resetBarcode() {
     barcode.reset()
-    barcode.setKeyboardVisible(true)
   }
 
   private fun reportDamage(item: CargoConferenceItemDto) {
@@ -271,6 +303,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
     class CargoItemCountViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
       private var productName = view.findViewById<TextView>(R.id.product_name)
+      private var icon = view.findViewById<ImageView>(R.id.icon)
       private var gtin = view.findViewById<TextView>(R.id.gtin_text)
       private var sku = view.findViewById<TextView>(R.id.sku_text)
       private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
@@ -278,17 +311,23 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         item: CargoConferenceItemDto,
         onClickCargoItem: OnClickCargoItem
       ) {
-        var color = 0
-        if (item.countedQuantity != null) {
-          color = R.color.green_transparent
+        val status = when {
+          item.correctCounted() -> SUCCESS
+          item.mismatchQuantity() -> ERROR
+          else -> NOT_COMPLETED
         }
-        if (item.mismatchQuantity()) {
-          color = R.color.red_transparent
+        icon.setVisible(status.icon != null)
+        when (status) {
+          NOT_COMPLETED -> {
+            icon.clearColorFilter()
+          }
+          else -> {
+            icon.setImageResource(status.icon!!)
+            icon.setColorFilter(view.context.getColor(status.color))
+          }
         }
-        if (color != 0)
-          view.setBackgroundColor(view.context.getColor(color))
-        productName.text = item.name
         gtin.text = coalesce(item.gtin, R.string.no_gtin)
+        productName.text = item.name
         sku.text = coalesce(item.sku, R.string.no_sku)
         countedQtd.text = formatNumber(item.countedQuantity)
         view.setOnClickListener {
@@ -298,7 +337,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CargoItemCountViewHolder {
-      return CargoItemCountViewHolder(parent.inflateToViewHolder(R.layout.item_conference_layout))
+      val items = parent.inflateToViewHolder(R.layout.item_conference_layout)
+      return CargoItemCountViewHolder(items)
     }
 
     override fun getItemCount(): Int {

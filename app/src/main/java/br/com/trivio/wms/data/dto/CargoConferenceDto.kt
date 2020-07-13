@@ -16,6 +16,7 @@ class CargoConferenceDto(
   val truckLabel: String = "",
   val companyName: String = "",
   val cargoReferenceCode: String = "",
+  val quantityItems: Int = 0,
   val taskStatus: TaskStatus = TaskStatus.PENDING
 ) {
   fun getTotalCountedItems(): Int {
@@ -59,5 +60,15 @@ class CargoConferenceDto(
     return items.filter {
       it.mismatchQuantity()
     }.count()
+  }
+
+  fun getTotalCorrectCountedItems(): Int {
+    return items.filter {
+      it.correctCounted()
+    }.count()
+  }
+
+  fun isFinishedWithAllCorrect(): Boolean {
+    return quantityItems == getTotalCorrectCountedItems()
   }
 }

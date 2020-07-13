@@ -16,10 +16,15 @@ class CargoDetailsViewModel(
 
   val cargoResult = MutableLiveData<Result<CargoConferenceDto>>()
 
-  fun loadCargo(cargoId: Long) {
+  fun loadCargo(cargoId: Long, fetchItems: Boolean = false) {
     viewModelScope.launch {
       cargoResult.apply {
-        value = callAsync { cargosRepository.loadCargoById(cargoId) }
+        value = callAsync {
+          when {
+            fetchItems -> cargosRepository.loadCargoById(cargoId)
+            else -> cargosRepository.loadCargoDetailsById(cargoId)
+          }
+        }
       }
     }
   }

@@ -7,25 +7,28 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
-import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
+import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_start_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 
 class StartConferenceActivity : MyAppCompatActivity() {
 
   private val cargoDetailsViewModel: CargoDetailsViewModel by viewModels()
+  private val cargoConferenceViewModel: CargoConferenceViewModel by viewModels()
+  private var taskId: Long = 0
 
   companion object {
-    const val CARGO_ID = "CARGO_ID"
+    const val CARGO_TASK_ID = "CARGO_TASK_ID"
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    this.taskId = intent.getLongExtra(CARGO_TASK_ID, 0)
     setContentView(R.layout.activity_start_conference)
     setupObservables()
     listenClickEvents()
@@ -35,13 +38,13 @@ class StartConferenceActivity : MyAppCompatActivity() {
 
   private fun setupObservables() {
     cargoDetailsViewModel.cargoResult.observe(this, Observer { result ->
-      threatResult(result,
+      onResult(result,
         onSuccess = {
           updateUi(it.data)
         },
         always = {
           setInputsLoading(false)
-          refresh_cargo_activity.isRefreshing = false
+//          refresh_cargo_activity.isRefreshing = false
         }
       )
     })
@@ -60,7 +63,7 @@ class StartConferenceActivity : MyAppCompatActivity() {
     bono_reference_code.text = data.cargoReferenceCode
     truck_label_info.text = data.truckLabel
     driver_name_info.text = data.driverName
-    company_name_info.text = data.companyName
+    company_name_info.text = data.nfesCompanyNames.joinToString("", transform = { "$it\n" })
     start_date_info.text = data.scheduledStart?.formatTo("dd/MM/yyyy - HH:mm").toString()
     quantity_items_text_view.text = data.quantityItems.toString()
     barcode_reader_indicator.connected = true
@@ -68,31 +71,35 @@ class StartConferenceActivity : MyAppCompatActivity() {
 
   private fun loadCargoDetails() {
     setInputsLoading(true)
-    val cargoId = intent.getLongExtra(CARGO_ID, 0)
+    val cargoId = intent.getLongExtra(CARGO_TASK_ID, 0)
     Log.i("CARGO", "loadingCargoDetails: $cargoId")
     cargoDetailsViewModel.loadCargo(cargoId)
   }
 
   private fun listenClickEvents() {
-    btn_finish.setOnClickListener {
-      openConferenceActivity(cargoDetailsViewModel.cargoResult.value)
+    btn_start_counting.setOnClickListener {
+      cargoConferenceViewModel.startCounting(taskId) { result ->
+        onResult(
+          result,
+          onSuccess = {
+            openConferenceActivity()
+          }
+        )
+      }
     }
     btn_icon_x.setOnClickListener { finish() }
     btn_cancel.setOnClickListener { finish() }
   }
 
   private fun listenRefresh() {
-    refresh_cargo_activity.setOnRefreshListener {
-      loadCargoDetails()
-    }
+//    refresh_cargo_activity.setOnRefreshListener {
+//      loadCargoDetails()
+//    }
   }
 
-  private fun openConferenceActivity(value: Result<CargoConferenceDto>?) {
-    if (value is Result.Success) {
-      val taskId = value.data.taskId
-      val intent = Intent(this, CargoConferenceActivity::class.java)
-      intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskId)
-      startActivity(intent)
-    }
+  private fun openConferenceActivity() {
+    val intent = Intent(this, CargoConferenceActivity::class.java)
+    intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskId)
+    startActivity(intent)
   }
 }

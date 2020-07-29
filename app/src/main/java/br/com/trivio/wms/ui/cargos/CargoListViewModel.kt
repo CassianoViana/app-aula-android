@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoListDto
-import br.com.trivio.wms.extensions.callAsync
+import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.repository.CargosRepository
 import kotlinx.coroutines.launch
 
@@ -18,7 +18,16 @@ class CargoListViewModel(
 
   fun loadPendingCargos() {
     viewModelScope.launch {
-      cargosResult.value = callAsync { cargosRepository.loadPendingCargos() }
+      cargosResult.value = asyncRequest { cargosRepository.loadPendingCargos() }
+    }
+  }
+
+  fun filter(filterString: String): List<CargoListDto> {
+    return when (val value = cargosResult.value) {
+      is Result.Success -> value.data.filter {
+        it.search(filterString)
+      }
+      else -> listOf()
     }
   }
 }

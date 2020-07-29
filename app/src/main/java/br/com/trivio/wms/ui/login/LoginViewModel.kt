@@ -9,7 +9,6 @@ import br.com.trivio.wms.R
 import br.com.trivio.wms.data.LoginRepository
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.model.UserDetails
-import br.com.trivio.wms.extensions.callAsync
 import br.com.trivio.wms.getErrorMessageCode
 import br.com.trivio.wms.globalData
 import kotlinx.coroutines.Dispatchers

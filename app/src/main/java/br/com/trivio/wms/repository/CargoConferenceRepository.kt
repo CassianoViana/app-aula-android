@@ -6,12 +6,15 @@ import br.com.trivio.wms.serverBackend
 
 class CargoConferenceRepository {
   fun loadCargoConference(id: Long) =
-    Result.call { serverBackend.getCargoConference(id) }
+    Result.call { serverBackend.getCargoConferenceTask(id) }
 
-  fun countItem(cargoItem: CargoConferenceItemDto): Result<CargoConferenceItemDto> {
-    return Result.call {
-      serverBackend.countCargoItem(cargoItem)
-      cargoItem
-    }
+  fun countItem(cargoItem: CargoConferenceItemDto) = Result.call {
+    serverBackend.countCargoItem(cargoItem)
+    cargoItem
   }
+
+  fun startConference(taskId: Long) = Result.call { serverBackend.startCargoConference(taskId) }
+  fun finishConference(taskId: Long) = Result.call { serverBackend.finishCargoConference(taskId) }
 }
+
+

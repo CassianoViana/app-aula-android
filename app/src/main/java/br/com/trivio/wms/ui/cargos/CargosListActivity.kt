@@ -13,9 +13,12 @@ import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.RefreshableList
 import br.com.trivio.wms.data.dto.CargoListDto
-import br.com.trivio.wms.extensions.*
+import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.inflateToViewHolder
-import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.extensions.setupToolbar
+import br.com.trivio.wms.extensions.startLoading
+import br.com.trivio.wms.onResult
+import kotlinx.android.synthetic.main.activity_cargos.*
 
 class CargosListActivity : MyAppCompatActivity() {
 
@@ -25,7 +28,7 @@ class CargosListActivity : MyAppCompatActivity() {
 
   private val adapter = CargosAdapter { cargoItemClicked: CargoListDto ->
     val intent = Intent(this@CargosListActivity, StartConferenceActivity::class.java)
-    intent.putExtra(StartConferenceActivity.CARGO_ID, cargoItemClicked.taskId)
+    intent.putExtra(StartConferenceActivity.CARGO_TASK_ID, cargoItemClicked.taskId)
     startActivity(intent)
   }
 
@@ -37,6 +40,13 @@ class CargosListActivity : MyAppCompatActivity() {
     observeViewModel()
     bindListAdapter()
     addRefreshListener()
+    onSearchFilterItems()
+  }
+
+  private fun onSearchFilterItems() {
+    search_input_cargos.addTextChangedListener {
+      adapter.cargos = viewModel.filter(it)
+    }
   }
 
   override fun onResume() {
@@ -61,7 +71,7 @@ class CargosListActivity : MyAppCompatActivity() {
 
   private fun observeViewModel() {
     viewModel.cargosResult.observe(this, Observer {
-      threatResult(it,
+      onResult(it,
         onSuccess = { success ->
           adapter.cargos = success.data
         },

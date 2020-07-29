@@ -19,8 +19,6 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent" />
 
-
-
   <include
     layout="@layout/progress_bar"
     android:layout_width="match_parent"

@@ -109,12 +109,20 @@ class ServerBackend {
     return executeAndReturn(api.getTask(id))
   }
 
-  fun getCargoConference(id: Long): CargoConferenceDto {
-    return executeAndReturn(api.getCargoConference(id))
+  fun getCargoConferenceTask(id: Long): CargoConferenceDto {
+    return executeAndReturn(api.getCargoConference(id, true))
   }
 
-  fun getCargoConferenceDetails(id: Long): CargoConferenceDto {
-    return executeAndReturn(api.getCargoConferenceDetails(id))
+  fun getCargoConferenceTaskWithoutItems(taskId: Long): CargoConferenceDto {
+    return executeAndReturn(api.getCargoConference(taskId, false))
+  }
+
+  fun startCargoConference(taskId: Long): TaskStatusDto {
+    return executeAndReturn(api.startCargoConference(taskId))
+  }
+
+  fun finishCargoConference(taskId: Long): TaskStatusDto {
+    return executeAndReturn(api.finishCargoConference(taskId))
   }
 
   fun getPendingCargos(): List<CargoListDto> {

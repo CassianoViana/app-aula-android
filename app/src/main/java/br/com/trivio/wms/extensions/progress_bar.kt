@@ -13,10 +13,11 @@ fun getProgressGradient(percent: Int, colorStart: Int, colorEnd: Int): GradientD
       }
     )
   }
-  return gradientDrawable(colors)
+  return gradientDrawable(colors)!!
 }
 
-fun gradientDrawable(colors: List<Int>): GradientDrawable {
+fun gradientDrawable(colors: List<Int>): GradientDrawable? {
+  if(colors.size <=1) return null
   val c = mutableListOf<Int>()
   repeat((0..1000).count()) {
     val index = it * colors.size / 1000

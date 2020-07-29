@@ -114,7 +114,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent">
 
@@ -127,7 +126,7 @@
         android:textAlignment="textStart" />
 
       <Button
-        android:id="@+id/btn_finish"
+        android:id="@+id/btn_finish_counting"
         style="@style/button_action.ok"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -145,7 +144,7 @@
       app:layout_constraintStart_toStartOf="parent">
 
       <Button
-        android:id="@+id/btn_restart"
+        android:id="@+id/btn_restart_counting"
         style="@style/button_action.back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

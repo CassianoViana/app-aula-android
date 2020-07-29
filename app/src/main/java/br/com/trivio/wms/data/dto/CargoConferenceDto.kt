@@ -15,6 +15,7 @@ class CargoConferenceDto(
   val driverName: String = "",
   val truckLabel: String = "",
   val companyName: String = "",
+  val nfesCompanyNames: List<String> = mutableListOf("Tramontina", "Plimor", "Abacate", "Abacate"),
   val cargoReferenceCode: String = "",
   val quantityItems: Int = 0,
   val taskStatus: TaskStatus = TaskStatus.PENDING

@@ -1,8 +1,5 @@
 package br.com.trivio.wms.data
 
-import br.com.trivio.wms.data.Result.Success
-import br.com.trivio.wms.data.dto.CargoListDto
-
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>
@@ -20,9 +17,9 @@ sealed class Result<out T : Any> {
   }
 
   companion object {
-    fun <T : Any> call(listCargos: () -> T): Result<T> {
+    fun <T : Any> call(fn: () -> T): Result<T> {
       return try {
-        Success(listCargos())
+        Success(fn())
       } catch (e: Exception) {
         Error(e)
       }

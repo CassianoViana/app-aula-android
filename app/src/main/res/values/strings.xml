@@ -120,4 +120,8 @@
   <string name="restart_counting">Reiniciar a\ncontagem</string>
   <string name="finish_with_divergences">Finalizar com \ndivergências</string>
   <string name="finish">Finalizar</string>
+    <string name="companies">Empresas</string>
+  <string name="driver">Motorista</string>
+  <string name="generated_at">Gerado em</string>
+  <string name="truck_label">Placa</string>
 </resources>

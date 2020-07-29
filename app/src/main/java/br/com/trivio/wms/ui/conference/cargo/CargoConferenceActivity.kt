@@ -25,7 +25,7 @@ import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.extensions.Status.Companion.ERROR
 import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
 import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
-import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.cargos.EndConferenceActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.android.synthetic.main.activity_cargo_conference.*
@@ -36,10 +36,10 @@ import java.math.BigDecimal
 class CargoConferenceActivity : MyAppCompatActivity() {
 
   companion object {
-    const val CARGO_TASK_ID: String = "CARGO_id"
+    const val CARGO_TASK_ID: String = "CARGO_TASK_id"
   }
 
-  private var cargoConferenceId: Long = 0
+  private var cargoConferenceTaskId: Long = 0
   private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
     override fun onClick(item: CargoConferenceItemDto) {
       requestQuantity(item.gtin)
@@ -53,7 +53,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     setContentView(R.layout.activity_cargo_conference)
     setupToolbar()
 
-    cargoConferenceId = intent.getLongExtra(CARGO_TASK_ID, 0)
+    cargoConferenceTaskId = intent.getLongExtra(CARGO_TASK_ID, 0)
     cargo_items_recycler_view.setAdapter(cargoItemsAdapter)
     progress_bar.setText(getString(R.string.loading_string))
 
@@ -72,7 +72,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun onClickFinish() {
     progress_bar.setOnClickListener {
       val intent = Intent(this, EndConferenceActivity::class.java)
-      intent.putExtra(EndConferenceActivity.CARGO_ID, this.cargoConferenceId)
+      intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
       startActivity(intent)
     }
   }
@@ -85,7 +85,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun observeViewModel() {
     viewModel.cargoItem.observe(this, Observer {
-      threatResult(it,
+      onResult(it,
         onSuccess = {
           showMessageSuccess(R.string.counted_success)
           loadCargoConferenceTask()
@@ -95,13 +95,13 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         })
     })
     viewModel.damageRegistration.observe(this, Observer {
-      threatResult(it,
+      onResult(it,
         onSuccess = { showMessageSuccess(R.string.damage_was_registered) },
         onError = { showMessageError(R.string.error_while_register_damage) }
       )
     })
     viewModel.task.observe(this, Observer {
-      threatResult(it,
+      onResult(it,
         onSuccess = { result ->
           updateUi(result.data)
         },
@@ -114,7 +114,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       )
     })
     viewModel.finishStatus.observe(this, Observer {
-      threatResult(it, onSuccess = {
+      onResult(it, onSuccess = {
         setResult(TaskDetailsActivity.RESULT_TASK_CHANGED)
         finish()
       })
@@ -206,7 +206,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun loadCargoConferenceTask() {
     startLoading()
-    viewModel.loadCargoConferenceTask(cargoConferenceId)
+    viewModel.loadCargoConferenceTask(cargoConferenceTaskId)
   }
 
   private fun requestQuantity(gtin: String) {

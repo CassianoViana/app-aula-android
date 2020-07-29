@@ -1,6 +1,7 @@
 package br.com.trivio.wms.data.dto
 
 import br.com.trivio.wms.extensions.formatTo
+import br.com.trivio.wms.extensions.matchFilter
 import org.joda.time.LocalDateTime
 
 class CargoListDto(
@@ -26,5 +27,12 @@ class CargoListDto(
 
   fun formattedScheduledStart(): String {
     return scheduledStart?.formatTo("dd/MM/yyyy HH:mm").toString()
+  }
+
+  fun search(filterString: String): Boolean {
+    return matchFilter(
+      "$truckLabel, $referenceCode, $shippingCompanyName, $quantityItemsToCount, ${this.formattedScheduledStart()}",
+      filterString
+    );
   }
 }

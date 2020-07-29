@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -8,69 +7,73 @@
   android:layout_marginTop="@dimen/item_list_margin"
   android:layout_marginEnd="@dimen/item_list_margin">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:padding="@dimen/padding">
-
-    <TextView
-      android:id="@+id/name_text"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Conferência"
-      android:textColor="@color/colorDark"
-      android:textSize="@dimen/medium_text"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-      android:id="@+id/item_code"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:drawableStart="@drawable/pound_box_black_18_dp"
-      android:drawableLeft="@drawable/pound_box_black_18_dp"
-      android:text="code"
-      android:textColor="@color/lightGrey"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/name_text" />
-
-    <TextView
-      android:id="@+id/item_date"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:drawableStart="@drawable/ic_calendar_star_black_18dp"
-      android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
-      android:text="date"
-      android:textColor="@color/lightGrey"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/item_code" />
-
+    android:padding="@dimen/padding"
+    android:orientation="horizontal">
 
     <LinearLayout
       android:layout_width="wrap_content"
+      android:layout_weight="1"
       android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Conferência"
+        android:textColor="@color/colorDark"
+        android:textSize="@dimen/medium_text" />
+
+      <TextView
+        android:id="@+id/item_code"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:drawableStart="@drawable/pound_box_black_18_dp"
+        android:drawableLeft="@drawable/pound_box_black_18_dp"
+        android:text="code"
+        android:textColor="@color/lightGrey" />
+
+
+      <TextView
+        android:id="@+id/item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:drawableStart="@drawable/ic_calendar_star_black_18dp"
+        android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
+        android:text="date"
+        android:textColor="@color/lightGrey"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/linearLayout4"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="0"
       android:gravity="center"
-      android:orientation="vertical"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+      android:layout_gravity="center_vertical"
+      android:orientation="vertical">
 
       <TextView
         android:id="@+id/text_view_quantity_to_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:text="4" />
+        android:text="4"
+        android:textSize="25sp" />
 
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/items"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:text="@string/items" />
+        android:textStyle="bold" />
     </LinearLayout>
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+
 
 </androidx.cardview.widget.CardView>

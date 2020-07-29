@@ -1,141 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/refresh_cargo_activity"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:orientation="vertical">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
 
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <include layout="@layout/button_close_x" />
-
-    <LinearLayout
-      android:id="@+id/layout_id_bono"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:orientation="vertical"
-      android:paddingLeft="80dp"
-      android:paddingRight="80dp"
-      app:layout_constraintTop_toBottomOf="@+id/btn_icon_x">
-
-      <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bono"
-        android:textAllCaps="true" />
-
-      <TextView
-        android:id="@+id/bono_reference_code"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:text="17123"
-        android:textSize="@dimen/large_text" />
-    </LinearLayout>
-
+    android:layout_height="wrap_content"
+    android:layout_weight="1">
 
     <LinearLayout
-      android:id="@+id/basic_infos"
+
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="@dimen/padding"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/layout_id_bono">
+      android:orientation="vertical">
 
-      <br.com.trivio.wms.components.custom.LabelledInfo
-        android:id="@+id/truck_label_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:label_title="Placa"
-        app:label_value="ABC 123" />
+      <include layout="@layout/button_close_x" />
 
-      <br.com.trivio.wms.components.custom.LabelledInfo
-        android:id="@+id/driver_name_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:label_title="Motorista"
-        app:label_value="Raimundo Colombo Silva Teste Nome Grande" />
-
-      <br.com.trivio.wms.components.custom.LabelledInfo
-        android:id="@+id/company_name_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:label_title="Empresa"
-        app:label_value="Tramontina S. A." />
-
-      <br.com.trivio.wms.components.custom.LabelledInfo
-        android:id="@+id/start_date_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:label_title="Gerado em"
-        app:label_value="12/06/2020 - 13:00" />
-
-    </LinearLayout>
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:padding="@dimen/padding"
-      app:layout_constraintTop_toBottomOf="@+id/basic_infos">
 
       <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/layout_id_bono"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_icon_x">
 
         <TextView
-          android:id="@+id/quantity_items_text_view"
+          android:id="@+id/textView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/bono"
+          android:textAllCaps="true" />
+
+        <TextView
+          android:id="@+id/bono_reference_code"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:gravity="center_horizontal"
-          android:text="811"
-          android:textSize="60sp" />
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/items" />
+          android:text="17123"
+          android:textSize="@dimen/large_text" />
       </LinearLayout>
 
-      <br.com.trivio.wms.components.custom.BarcodeReaderConnectionIndicator
-        android:id="@+id/barcode_reader_indicator"
-        android:layout_width="wrap_content"
+
+      <LinearLayout
+        android:id="@+id/basic_infos"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:orientation="vertical"
+        android:padding="@dimen/padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_id_bono">
+
+        <br.com.trivio.wms.components.custom.LabelledInfo
+          android:id="@+id/truck_label_info"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:label_title="@string/truck_label"
+          app:label_value="ABC 123" />
+
+        <br.com.trivio.wms.components.custom.LabelledInfo
+          android:id="@+id/driver_name_info"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:label_title="@string/driver"
+          app:label_value="Raimundo Colombo Silva Teste Nome Grande" />
+
+        <br.com.trivio.wms.components.custom.LabelledInfo
+          android:id="@+id/company_name_info"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:label_title="@string/companies"
+          app:label_value="Tramontina S. A." />
+
+        <br.com.trivio.wms.components.custom.LabelledInfo
+          android:id="@+id/start_date_info"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:label_title="@string/generated_at"
+          app:label_value="12/06/2020 - 13:00" />
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding"
+        app:layout_constraintTop_toBottomOf="@+id/basic_infos">
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center_horizontal"
+          android:orientation="vertical">
+
+          <TextView
+            android:id="@+id/quantity_items_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="811"
+            android:textSize="60sp" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/items" />
+        </LinearLayout>
+
+        <br.com.trivio.wms.components.custom.BarcodeReaderConnectionIndicator
+          android:id="@+id/barcode_reader_indicator"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1" />
+      </LinearLayout>
+
     </LinearLayout>
+  </ScrollView>
 
-    <LinearLayout
-      android:id="@+id/linearLayout3"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toStartOf="parent">
+  <LinearLayout
+    android:id="@+id/linearLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
-      <Button
-        android:id="@+id/btn_cancel"
-        style="@style/button_action.back"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/come_back"
-        android:textAlignment="textStart" />
+    <Button
+      android:id="@+id/btn_cancel"
+      style="@style/button_action.back"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:text="@string/come_back"
+      android:textAlignment="textStart" />
 
-      <Button
-        android:id="@+id/btn_finish"
-        style="@style/button_action.ok"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/start_counting"
-        android:textAlignment="textStart" />
-    </LinearLayout>
-  </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <Button
+      android:id="@+id/btn_start_counting"
+      style="@style/button_action.ok"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:text="@string/start_counting"
+      android:textAlignment="textStart" />
+  </LinearLayout>
+</LinearLayout>

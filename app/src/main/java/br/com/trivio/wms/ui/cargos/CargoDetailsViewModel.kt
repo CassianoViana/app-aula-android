@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
-import br.com.trivio.wms.extensions.callAsync
+import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.repository.CargosRepository
 import kotlinx.coroutines.launch
 
@@ -19,10 +19,10 @@ class CargoDetailsViewModel(
   fun loadCargo(cargoId: Long, fetchItems: Boolean = false) {
     viewModelScope.launch {
       cargoResult.apply {
-        value = callAsync {
+        value = asyncRequest {
           when {
-            fetchItems -> cargosRepository.loadCargoById(cargoId)
-            else -> cargosRepository.loadCargoDetailsById(cargoId)
+            fetchItems -> cargosRepository.loadCargoConferenceTask(cargoId)
+            else -> cargosRepository.loadCargoConferenceTaskWithoutItems(cargoId)
           }
         }
       }

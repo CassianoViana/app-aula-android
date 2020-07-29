@@ -15,11 +15,9 @@ import br.com.trivio.wms.api.ServerBackend
 import br.com.trivio.wms.data.GlobalData
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.model.UserDetails
-import br.com.trivio.wms.extensions.callAsync
+import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.showErrorMessage
 import br.com.trivio.wms.ui.login.LoginActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.IOException
 
 val globalData: GlobalData = GlobalData()
@@ -108,7 +106,7 @@ suspend fun loadUserDetails(): UserDetails {
   Log.i("LoadUserDetails", "loadUserDetails")
   var userDetails = UserDetails()
   try {
-    userDetails = callAsync { serverBackend.getUserDetails() }
+    userDetails = asyncRequest { serverBackend.getUserDetails() }
     globalData.userDetails = userDetails
   } catch (e: Exception) {
     e.printStackTrace()
@@ -139,10 +137,10 @@ suspend fun <T : Any> call(
   onError: ((result: Result.Error) -> Unit)? = null,
   onSuccess: (result: Result.Success<T>) -> Unit
 ) {
-  threatResult(callAsync { result() }, always, onError, onSuccess)
+  onResult(asyncRequest { result() }, always, onError, onSuccess)
 }
 
-fun <T : Any> threatResult(
+fun <T : Any> onResult(
   result: Result<T>,
   always: ((result: Result<T>) -> Unit)? = null,
   onError: ((result: Result.Error) -> Unit)? = null,

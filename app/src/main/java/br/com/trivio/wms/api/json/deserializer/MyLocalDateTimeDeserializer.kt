@@ -1,7 +1,6 @@
 package br.com.trivio.wms.api.json.deserializer
 
 import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.core.JsonTokenId
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
@@ -24,9 +23,6 @@ class MyLocalDateTimeDeserializer : JsonDeserializer<LocalDateTime>() {
       JsonTokenId.ID_STRING -> {
         parseStringDate(parser)
       }
-      JsonTokenId.ID_START_ARRAY -> {
-        parseArrayDate(parser, ctxt)
-      }
       else -> null
     }
   }
@@ -38,65 +34,6 @@ class MyLocalDateTimeDeserializer : JsonDeserializer<LocalDateTime>() {
       localDateTime1 = compatibleFormatter.parseLocalDateTime(dateTimeString)
     }
     return localDateTime1
-  }
-
-  private fun parseArrayDate(
-    parser: JsonParser,
-    deserializationContext: DeserializationContext?
-  ): LocalDateTime? {
-    // [yyyy,mm,dd,hh,MM,ss,ms]
-    var t = parser.nextToken()
-    var dt: LocalDateTime? = null
-    do {
-      if (!t.isNumeric) {
-        break
-      }
-      val year = parser.intValue
-      t = parser.nextToken()
-      if (!t.isNumeric) {
-        break
-      }
-      val month = parser.intValue
-      t = parser.nextToken()
-      if (!t.isNumeric) {
-        break
-      }
-      val day = parser.intValue
-      t = parser.nextToken()
-      if (!t.isNumeric) {
-        break
-      }
-      val hour = parser.intValue
-      t = parser.nextToken()
-      if (!t.isNumeric) {
-        break
-      }
-      val minute = parser.intValue
-      t = parser.nextToken()
-      if (!t.isNumeric) {
-        break
-      }
-      val second = parser.intValue
-      t = parser.nextToken()
-      // let's leave milliseconds optional?
-      var millisecond = 0
-      if (t.isNumeric) {
-        millisecond = parser.intValue
-        t = parser.nextToken() // END_ARRAY?
-      }
-      if (millisecond > 999)
-        millisecond = 999
-      dt = LocalDateTime(year, month, day, hour, minute, second, millisecond)
-    } while (false) // bogus loop to allow break from within
-    if (t == JsonToken.END_ARRAY) {
-      return dt
-    }
-    throw deserializationContext!!.wrongTokenException(
-      parser,
-      handledType(),
-      JsonToken.END_ARRAY,
-      "after LocalDateTime ints"
-    )
   }
 
   private fun getFormatter(dateTimeString: String): DateTimeFormatter? {

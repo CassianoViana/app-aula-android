@@ -10,21 +10,26 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.extensions.Status
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
-import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.onResult
+import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_end_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 
 class EndConferenceActivity : MyAppCompatActivity() {
 
+  private var cargoId: Long = 0
+  private var taskId: Long = 0
   private val cargoDetailsViewModel: CargoDetailsViewModel by viewModels()
+  private val cargoConferenceViewModel: CargoConferenceViewModel by viewModels()
 
   companion object {
-    const val CARGO_ID = "CARGO_ID"
+    const val CARGO_TASK_ID = "CARGO_ID"
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_end_conference)
+    this.cargoId = intent.getLongExtra(CARGO_TASK_ID, 0)
     setupObservables()
     listenClickEvents()
     listenRefresh()
@@ -33,8 +38,9 @@ class EndConferenceActivity : MyAppCompatActivity() {
 
   private fun setupObservables() {
     cargoDetailsViewModel.cargoResult.observe(this, Observer { result ->
-      threatResult(result,
+      onResult(result,
         onSuccess = {
+          taskId = it.data.taskId
           updateUi(it.data)
         },
         always = {
@@ -75,13 +81,25 @@ class EndConferenceActivity : MyAppCompatActivity() {
 
   private fun loadCargoDetails() {
     setInputsLoading(true)
-    val cargoId = intent.getLongExtra(CARGO_ID, 0)
     Log.i("CARGO", "loadingCargoDetails: $cargoId")
     cargoDetailsViewModel.loadCargo(cargoId, true)
   }
 
   private fun listenClickEvents() {
-    btn_finish.setOnClickListener {
+    btn_restart_counting.setOnClickListener {
+      finish()
+    }
+    btn_finish_with_divergences.setOnClickListener {
+      cargoConferenceViewModel.finishCounting(taskId) { result ->
+        onResult(
+          result,
+          onSuccess = {
+          }
+        )
+      }
+    }
+    btn_finish_counting.setOnClickListener {
+      //cargoDetailsViewModel.
     }
     btn_icon_x.setOnClickListener { finish() }
     btn_cancel.setOnClickListener { finish() }

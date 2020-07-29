@@ -15,7 +15,7 @@ import br.com.trivio.wms.data.model.TaskType
 import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.setupToolbar
 import br.com.trivio.wms.extensions.startLoading
-import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
 import kotlinx.android.synthetic.main.activity_task_details.*
 import kotlinx.android.synthetic.main.custom_top_bar.*
@@ -43,7 +43,7 @@ class TaskDetailsActivity : MyAppCompatActivity() {
 
   private fun observeViewModel() {
     viewModel.task.observe(this, Observer {
-      threatResult(
+      onResult(
         it, always = {
           endLoading()
         },

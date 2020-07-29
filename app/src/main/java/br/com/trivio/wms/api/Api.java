@@ -7,6 +7,7 @@ import br.com.trivio.wms.data.dto.CargoConferenceItemDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.DamageDto;
 import br.com.trivio.wms.data.dto.TaskDto;
+import br.com.trivio.wms.data.dto.TaskStatusDto;
 import br.com.trivio.wms.data.model.UserDetails;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,11 +34,14 @@ interface Api {
   @POST("tasks/finish/{id}")
   Call<ResponseBody> finishTask(@Path("id") Long id);
 
-  @GET("cargoConference/{id}")
-  Call<CargoConferenceDto> getCargoConference(@Path("id") Long id);
+  @GET("cargoConference/{taskId}")
+  Call<CargoConferenceDto> getCargoConference(@Path("taskId") Long taskId, @Query("fetchItems") Boolean fetchItems);
 
-  @GET("cargoConference/{id}/details")
-  Call<CargoConferenceDto> getCargoConferenceDetails(@Path("id") Long id);
+  @POST("cargoConference/{taskId}/start")
+  Call<TaskStatusDto> startCargoConference(@Path("taskId") Long taskId);
+
+  @POST("cargoConference/{taskId}/finish")
+  Call<TaskStatusDto> finishCargoConference(@Path("taskId") Long taskId);
 
   @GET("cargoConference/pending")
   Call<List<CargoListDto>> getPendingCargos();

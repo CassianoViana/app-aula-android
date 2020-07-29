@@ -13,7 +13,7 @@ import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.extensions.*
-import br.com.trivio.wms.threatResult
+import br.com.trivio.wms.onResult
 import kotlinx.android.synthetic.main.activity_tasks.*
 
 class TasksListActivity : MyAppCompatActivity() {
@@ -54,7 +54,7 @@ class TasksListActivity : MyAppCompatActivity() {
 
   private fun observeViewModel() {
     viewModel.tasksResult.observe(this, Observer {
-      threatResult(it,
+      onResult(it,
         onSuccess = { success ->
           adapter.tasks = success.data
         },

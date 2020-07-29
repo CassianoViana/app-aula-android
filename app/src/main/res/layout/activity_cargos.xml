@@ -17,6 +17,7 @@
       custom:title="@string/pending_arrivals" />
 
     <br.com.trivio.wms.components.custom.SearchInput
+      android:id="@+id/search_input_cargos"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       custom:hint="Placa ou Bono" />

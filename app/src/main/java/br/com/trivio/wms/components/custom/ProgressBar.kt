@@ -49,7 +49,9 @@ class ProgressBar @JvmOverloads constructor(
   }
 
   fun setColors(colors: List<Int>) {
-    progress_line.background = gradientDrawable(colors)
+    gradientDrawable(colors)?.let {
+      progress_line.background = it
+    }
   }
 
   init {

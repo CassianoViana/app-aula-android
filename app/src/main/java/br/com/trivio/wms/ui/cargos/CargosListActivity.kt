@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.components.custom.RefreshableList
 import br.com.trivio.wms.data.dto.CargoListDto
 import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.inflateToViewHolder
@@ -23,8 +21,6 @@ import kotlinx.android.synthetic.main.activity_cargos.*
 class CargosListActivity : MyAppCompatActivity() {
 
   private val viewModel: CargoListViewModel by viewModels()
-  private lateinit var loading: ProgressBar
-  private lateinit var cargosList: RefreshableList
 
   private val adapter = CargosAdapter { cargoItemClicked: CargoListDto ->
     val intent = Intent(this@CargosListActivity, StartConferenceActivity::class.java)
@@ -36,11 +32,17 @@ class CargosListActivity : MyAppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_cargos)
     setupToolbar()
-    associateComponents()
     observeViewModel()
     bindListAdapter()
     addRefreshListener()
     onSearchFilterItems()
+    onClickFilterOpenCargos()
+  }
+
+  private fun onClickFilterOpenCargos() {
+    btn_list_open_cargos.setOnClickListener {
+      viewModel.toggleBetweenStartedOrPendingCargosConferences()
+    }
   }
 
   private fun onSearchFilterItems() {
@@ -54,22 +56,26 @@ class CargosListActivity : MyAppCompatActivity() {
     loadPendingCargos()
   }
 
-  private fun associateComponents() {
-    cargosList = findViewById(R.id.tasks_list)
-    loading = findViewById(R.id.progress_bar)
-  }
-
   private fun bindListAdapter() {
-    cargosList.setAdapter(adapter)
+    cargos_list.setAdapter(adapter)
   }
 
   private fun addRefreshListener() {
-    cargosList.setOnRefreshListener {
-      viewModel.loadPendingCargos()
+    cargos_list.setOnRefreshListener {
+      viewModel.loadCargos()
     }
   }
 
   private fun observeViewModel() {
+    viewModel.currentFilter.observe(this, Observer {
+      btn_list_open_cargos.text = getString(
+        when (it) {
+          "DOING" -> R.string.list_pending_cargos
+          "PENDING" -> R.string.list_open_cargos
+          else -> R.string.list_open_cargos
+        }
+      )
+    })
     viewModel.cargosResult.observe(this, Observer {
       onResult(it,
         onSuccess = { success ->
@@ -77,7 +83,7 @@ class CargosListActivity : MyAppCompatActivity() {
         },
         always = {
           endLoading()
-          cargosList.stopRefresh()
+          cargos_list.stopRefresh()
         }
       )
     })
@@ -85,11 +91,12 @@ class CargosListActivity : MyAppCompatActivity() {
 
   private fun loadPendingCargos() {
     startLoading()
-    viewModel.loadPendingCargos()
+    viewModel.loadCargos()
   }
 
   class CargosAdapter(
-    private val onClickListener: (cargoListDto: CargoListDto) -> Any
+    private
+    val onClickListener: (cargoListDto: CargoListDto) -> Any
   ) :
     RecyclerView.Adapter<CargosAdapter.ViewHolder>() {
 
@@ -102,7 +109,8 @@ class CargosListActivity : MyAppCompatActivity() {
     class ViewHolder(val layout: View) : RecyclerView.ViewHolder(layout) {
       private var cargoNameText: TextView = layout.findViewById(R.id.name_text)
       private var cargoRefCode: TextView = layout.findViewById(R.id.item_code)
-      private var quantityToCount: TextView = layout.findViewById(R.id.text_view_quantity_to_count)
+      private var quantityToCount: TextView =
+        layout.findViewById(R.id.text_view_quantity_to_count)
       private var cargoDate: TextView = layout.findViewById(R.id.item_date)
 
       fun bind(

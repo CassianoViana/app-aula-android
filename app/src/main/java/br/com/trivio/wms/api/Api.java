@@ -43,8 +43,11 @@ interface Api {
   @POST("cargoConference/{taskId}/finish")
   Call<TaskStatusDto> finishCargoConference(@Path("taskId") Long taskId);
 
-  @GET("cargoConference/pending")
-  Call<List<CargoListDto>> getPendingCargos();
+  @POST("cargoConference/{taskId}/restart")
+  Call<CargoConferenceDto> restartCargoConference(@Path("taskId") Long taskId);
+
+  @GET("cargoConference/byStatus/{status}")
+  Call<List<CargoListDto>> getCargos(@Path("status") String status);
 
   @POST("cargoConference/countItem")
   Call<ResponseBody> countCargoItem(@Body CargoConferenceItemDto item);

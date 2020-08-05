@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.CargoConferenceDto
+import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.onResult
@@ -67,6 +68,12 @@ class StartConferenceActivity : MyAppCompatActivity() {
     start_date_info.text = data.scheduledStart?.formatTo("dd/MM/yyyy - HH:mm").toString()
     quantity_items_text_view.text = data.quantityItems.toString()
     barcode_reader_indicator.connected = true
+    btn_start_counting.setText(
+      when (data.taskStatus) {
+        TaskStatus.DOING -> R.string.continue_counting
+        else -> R.string.start_counting
+      }
+    )
   }
 
   private fun loadCargoDetails() {

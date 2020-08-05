@@ -7,8 +7,6 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.getColor
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.Status
-import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
-import br.com.trivio.wms.extensions.getProgressGradient
 import br.com.trivio.wms.extensions.gradientDrawable
 import br.com.trivio.wms.extensions.setVisible
 import kotlinx.android.synthetic.main.custom_progress_bar.view.*
@@ -26,19 +24,6 @@ class ProgressBar @JvmOverloads constructor(
     icon_finish_bar.setOnClickListener {
       onClickListener()
     }
-  }
-
-  fun setProgress(
-    percentProgress: Int,
-    status: Status = NOT_COMPLETED,
-    backgroundBarColor: Int = R.color.progress_bar_incomplete_part
-  ) {
-    val progressStatus = setStatus(status)
-    progress_line.background = getProgressGradient(
-      percentProgress,
-      getColor(context, progressStatus.color),
-      getColor(context, backgroundBarColor)
-    )
   }
 
   fun setStatus(status: Status): Status {

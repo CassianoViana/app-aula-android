@@ -89,4 +89,15 @@ class CargoConferenceViewModel(
       callback(result)
     }
   }
+
+  fun restartCounting(taskId: Long, callback: (Result<CargoConferenceDto>) -> Unit = {}) {
+    viewModelScope.launch {
+      asyncRequest {
+        cargoConferenceRepository.restartConference(taskId)
+      }.let { restartedCountingTask ->
+        task.value = restartedCountingTask
+        callback(restartedCountingTask)
+      }
+    }
+  }
 }

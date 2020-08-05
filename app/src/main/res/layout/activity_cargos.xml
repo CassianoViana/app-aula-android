@@ -22,12 +22,18 @@
       android:layout_height="wrap_content"
       custom:hint="Placa ou Bono" />
 
-
     <br.com.trivio.wms.components.custom.RefreshableList
-      android:id="@+id/tasks_list"
+      android:layout_weight="1"
+      android:id="@+id/cargos_list"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      />
+      android:layout_height="match_parent" />
+
+    <Button
+      android:id="@+id/btn_list_open_cargos"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/list_open_cargos" />
+
   </LinearLayout>
 
   <include

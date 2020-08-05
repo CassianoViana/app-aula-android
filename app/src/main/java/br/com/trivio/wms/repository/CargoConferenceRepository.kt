@@ -15,6 +15,7 @@ class CargoConferenceRepository {
 
   fun startConference(taskId: Long) = Result.call { serverBackend.startCargoConference(taskId) }
   fun finishConference(taskId: Long) = Result.call { serverBackend.finishCargoConference(taskId) }
+  fun restartConference(taskId: Long) = Result.call { serverBackend.restartCargoConference(taskId) }
 }
 
 

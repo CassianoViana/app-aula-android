@@ -18,6 +18,10 @@ class TopBar @JvmOverloads constructor(
     }
   }
 
+  fun setText(text: String) {
+    titleTextView.text = text
+  }
+
   private var titleTextView: TextView
   private var upIconButton: ImageButton
 

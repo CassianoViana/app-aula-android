@@ -73,7 +73,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     progress_bar.setOnClickListener {
       val intent = Intent(this, EndConferenceActivity::class.java)
       intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
-      startActivity(intent)
+      startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
     }
   }
 
@@ -137,7 +137,21 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
   }
 
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data);
+    when (resultCode) {
+      EndConferenceActivity.END_CONFERENCE_ACTIVITY -> {
+        data?.let {
+          cargoConferenceTaskId =
+            it.getLongExtra(EndConferenceActivity.RESTARTING_TASK, cargoConferenceTaskId)
+          loadCargoConferenceTask()
+        }
+      }
+    }
+  }
+
   private fun updateUi(cargoConferenceDto: CargoConferenceDto) {
+    top_bar.setText(getString(R.string.cargo_conference_number, cargoConferenceDto.taskId))
     cargoItemsAdapter.items = cargoConferenceDto.items
     updateUiLabelItemsCounted(cargoConferenceDto)
     if (cargoConferenceDto.taskStatus == TaskStatus.DONE) {

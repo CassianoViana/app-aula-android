@@ -4,6 +4,6 @@ import java.math.BigDecimal
 
 data class DamageDto(
   var cargoItemId: Long = 0,
-  var quantity: BigDecimal = BigDecimal.ZERO,
+  var quantity: BigDecimal? = BigDecimal.ZERO,
   var description: String? = ""
 )

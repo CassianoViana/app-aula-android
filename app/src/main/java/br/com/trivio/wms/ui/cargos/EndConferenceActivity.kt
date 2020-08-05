@@ -1,5 +1,6 @@
 package br.com.trivio.wms.ui.cargos
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -10,6 +11,7 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.extensions.Status
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
+import br.com.trivio.wms.extensions.showMessageSuccess
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_end_conference.*
@@ -24,6 +26,8 @@ class EndConferenceActivity : MyAppCompatActivity() {
 
   companion object {
     const val CARGO_TASK_ID = "CARGO_ID"
+    const val RESTARTING_TASK = "RESTARTING_TASK"
+    const val END_CONFERENCE_ACTIVITY = 1
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,13 +91,26 @@ class EndConferenceActivity : MyAppCompatActivity() {
 
   private fun listenClickEvents() {
     btn_restart_counting.setOnClickListener {
-      finish()
+      cargoConferenceViewModel.restartCounting(taskId) { result ->
+        onResult(
+          result,
+          onSuccess = {
+            showMessageSuccess(R.string.the_counting_was_restarted)
+            val restartingData = Intent()
+            restartingData.putExtra(RESTARTING_TASK, it.data.taskId);
+            setResult(END_CONFERENCE_ACTIVITY, restartingData)
+            finish()
+          }
+        )
+      }
     }
     btn_finish_with_divergences.setOnClickListener {
       cargoConferenceViewModel.finishCounting(taskId) { result ->
         onResult(
           result,
           onSuccess = {
+            showMessageSuccess(R.string.the_counting_was_finished)
+            finish()
           }
         )
       }

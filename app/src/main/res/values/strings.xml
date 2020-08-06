@@ -75,7 +75,8 @@
   <string name="counted_success">Contagem realizada com sucesso. Leia o próximo produto.</string>
   <string name="filter_per_code">Filtrar por código</string>
   <string name="please_check_the_quantity">Verifique a quantidade informada</string>
-  <string name="truck_label__one_from_max_counted">%s - %d de %d</string>
+  <string name="truck_label__one_from_max_counted">%s - %s - %d de %d</string>
+  <string name="counting_number">(%dª contagem)</string>
   <string name="counted_qtd">Quantidade contada</string>
   <string name="counted_qtd_abbreviated">Qtd contada</string>
   <string name="items">itens</string>
@@ -130,4 +131,6 @@
   <string name="the_counting_was_restarted">A contagem foi reiniciada</string>
   <string name="the_counting_was_finished">A contagem foi finalizada</string>
   <string name="cargo_conference_number">Conferência de carga %d</string>
+  <string name="the_counting_was_finished_with_divergences">A contagem foi finalizada com divergências</string>
+  <string name="not_counted">Não\ncontado</string>
 </resources>

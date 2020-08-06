@@ -119,10 +119,10 @@
 
       <Button
         android:id="@+id/btn_cancel"
-        style="@style/button_action.cancel"
+        style="@style/button_action.back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/cancel"
+        android:text="@string/come_back"
         android:textAlignment="textStart" />
 
       <Button

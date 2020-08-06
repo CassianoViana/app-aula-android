@@ -181,9 +181,15 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     val totalCorrectCounted = data.getTotalCorrectCountedItems()
     val statusCounting = data.getStatusCounting()
 
+    val restartString = if (data.restartCounter != null && data.restartCounter > 0) {
+      getString(R.string.counting_number, data.restartCounter + 1)
+    } else {
+      ""
+    }
     val labelStatusCounting =
       getString(
         R.string.truck_label__one_from_max_counted,
+        "${data.cargoReferenceCode} $restartString",
         data.truckLabel,
         totalCountedItems,
         data.items.size
@@ -321,6 +327,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       private var gtin = view.findViewById<TextView>(R.id.gtin_text)
       private var sku = view.findViewById<TextView>(R.id.sku_text)
       private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
+      private var labelItems = view.findViewById<TextView>(R.id.label_items)
       fun bind(
         item: CargoConferenceItemDto,
         onClickCargoItem: OnClickCargoItem
@@ -331,6 +338,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           else -> NOT_COMPLETED
         }
         icon.setVisible(status.icon != null)
+        countedQtd.setVisible(status.icon != null)
+        if (status.icon == null) {
+          labelItems.text = view.context.getString(R.string.not_counted)
+        }
         when (status) {
           NOT_COMPLETED -> {
             icon.clearColorFilter()

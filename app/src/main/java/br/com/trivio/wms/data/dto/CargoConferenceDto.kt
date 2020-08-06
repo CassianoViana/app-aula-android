@@ -14,6 +14,7 @@ class CargoConferenceDto(
   val scheduledEnd: LocalDateTime? = null,
   val driverName: String = "",
   val truckLabel: String = "",
+  val restartCounter: Int? = 0,
   val companyName: String = "",
   val nfesCompanyNames: List<String> = mutableListOf(),
   val cargoReferenceCode: String = "",

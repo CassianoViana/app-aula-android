@@ -109,14 +109,19 @@ class EndConferenceActivity : MyAppCompatActivity() {
         onResult(
           result,
           onSuccess = {
-            showMessageSuccess(R.string.the_counting_was_finished)
+            showMessageSuccess(R.string.the_counting_was_finished_with_divergences)
             finish()
           }
         )
       }
     }
     btn_finish_counting.setOnClickListener {
-      //cargoDetailsViewModel.
+      cargoConferenceViewModel.finishCounting(taskId) {
+        onResult(it, onSuccess = {
+          showMessageSuccess(R.string.the_counting_was_finished)
+          finish()
+        })
+      }
     }
     btn_icon_x.setOnClickListener { finish() }
     btn_cancel.setOnClickListener { finish() }

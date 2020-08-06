@@ -97,9 +97,9 @@ class EndConferenceActivity : MyAppCompatActivity() {
           onSuccess = {
             showMessageSuccess(R.string.the_counting_was_restarted)
             val restartingData = Intent()
-            restartingData.putExtra(RESTARTING_TASK, it.data.taskId);
+            restartingData.putExtra(RESTARTING_TASK, it.data.taskId)
             setResult(END_CONFERENCE_ACTIVITY, restartingData)
-            finish()
+            finishActivity(END_CONFERENCE_ACTIVITY)
           }
         )
       }
@@ -110,7 +110,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
           result,
           onSuccess = {
             showMessageSuccess(R.string.the_counting_was_finished_with_divergences)
-            finish()
+            backToCargosList()
           }
         )
       }
@@ -119,12 +119,16 @@ class EndConferenceActivity : MyAppCompatActivity() {
       cargoConferenceViewModel.finishCounting(taskId) {
         onResult(it, onSuccess = {
           showMessageSuccess(R.string.the_counting_was_finished)
-          finish()
+          backToCargosList()
         })
       }
     }
     btn_icon_x.setOnClickListener { finish() }
     btn_cancel.setOnClickListener { finish() }
+  }
+
+  private fun backToCargosList() {
+    clearTop(CargosListActivity::class)
   }
 
   private fun listenRefresh() {

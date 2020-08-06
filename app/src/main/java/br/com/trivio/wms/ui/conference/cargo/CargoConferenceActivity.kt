@@ -26,6 +26,7 @@ import br.com.trivio.wms.extensions.Status.Companion.ERROR
 import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
 import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.onResult
+import br.com.trivio.wms.ui.cargos.CargosListActivity
 import br.com.trivio.wms.ui.cargos.EndConferenceActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.android.synthetic.main.activity_cargo_conference.*
@@ -116,7 +117,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     viewModel.finishStatus.observe(this, Observer {
       onResult(it, onSuccess = {
         setResult(TaskDetailsActivity.RESULT_TASK_CHANGED)
-        finish()
+        clearTop(CargosListActivity::class)
       })
     })
   }
@@ -138,7 +139,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data);
+    super.onActivityResult(requestCode, resultCode, data)
     when (resultCode) {
       EndConferenceActivity.END_CONFERENCE_ACTIVITY -> {
         data?.let {
@@ -339,9 +340,13 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         }
         icon.setVisible(status.icon != null)
         countedQtd.setVisible(status.icon != null)
-        if (status.icon == null) {
-          labelItems.text = view.context.getString(R.string.not_counted)
-        }
+        labelItems.text = view.context.getString(
+          if (status.icon == null) {
+            R.string.not_counted
+          } else {
+            R.string.items
+          }
+        )
         when (status) {
           NOT_COMPLETED -> {
             icon.clearColorFilter()

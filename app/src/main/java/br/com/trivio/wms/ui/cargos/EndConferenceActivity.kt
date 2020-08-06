@@ -16,6 +16,7 @@ import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_end_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
+import kotlin.reflect.KClass
 
 class EndConferenceActivity : MyAppCompatActivity() {
 
@@ -28,6 +29,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
     const val CARGO_TASK_ID = "CARGO_ID"
     const val RESTARTING_TASK = "RESTARTING_TASK"
     const val END_CONFERENCE_ACTIVITY = 1
+    const val SCREEN_TO_BACK_TO: String = "ScreenToBackToWhenFinishCounting"
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +112,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
           result,
           onSuccess = {
             showMessageSuccess(R.string.the_counting_was_finished_with_divergences)
-            backToCargosList()
+            backToScreenThatInitiatedTheProcess()
           }
         )
       }
@@ -119,7 +121,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
       cargoConferenceViewModel.finishCounting(taskId) {
         onResult(it, onSuccess = {
           showMessageSuccess(R.string.the_counting_was_finished)
-          backToCargosList()
+          backToScreenThatInitiatedTheProcess()
         })
       }
     }
@@ -127,8 +129,17 @@ class EndConferenceActivity : MyAppCompatActivity() {
     btn_cancel.setOnClickListener { finish() }
   }
 
-  private fun backToCargosList() {
-    clearTop(CargosListActivity::class)
+  private fun backToScreenThatInitiatedTheProcess() {
+    intent.getStringExtra(SCREEN_TO_BACK_TO)?.let {
+      try {
+        val activityClass = Class.forName(it).kotlin as KClass<MyAppCompatActivity>
+        clearTop(activityClass)
+      } catch (e: Exception) {
+        Log.e("END_CONFERENCE", "Não foi possível volta para a tela")
+        e.printStackTrace()
+        clearTop(CargosListActivity::class)
+      }
+    }
   }
 
   private fun listenRefresh() {

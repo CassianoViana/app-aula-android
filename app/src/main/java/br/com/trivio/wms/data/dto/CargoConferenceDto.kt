@@ -73,4 +73,6 @@ class CargoConferenceDto(
   fun isFinishedWithAllCorrect(): Boolean {
     return quantityItems == getTotalCorrectCountedItems()
   }
+
+  fun isPending() = taskStatus == TaskStatus.PENDING
 }

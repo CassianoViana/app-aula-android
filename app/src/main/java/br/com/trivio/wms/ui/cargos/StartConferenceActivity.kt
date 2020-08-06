@@ -107,6 +107,10 @@ class StartConferenceActivity : MyAppCompatActivity() {
   private fun openConferenceActivity() {
     val intent = Intent(this, CargoConferenceActivity::class.java)
     intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskId)
+    intent.putExtra(
+      CargoConferenceActivity.SCREEN_TO_BACK_TO,
+      CargosListActivity::class.qualifiedName
+    )
     startActivity(intent)
   }
 }

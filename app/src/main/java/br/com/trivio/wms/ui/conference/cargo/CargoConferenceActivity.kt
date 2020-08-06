@@ -38,6 +38,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   companion object {
     const val CARGO_TASK_ID: String = "CARGO_TASK_id"
+    const val SCREEN_TO_BACK_TO: String = "ScreenToBackToWhenFinishCounting"
   }
 
   private var cargoConferenceTaskId: Long = 0
@@ -74,6 +75,13 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     progress_bar.setOnClickListener {
       val intent = Intent(this, EndConferenceActivity::class.java)
       intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
+      this.intent.getStringExtra(SCREEN_TO_BACK_TO)
+        ?.let { classNameEntityToBackToWhenFinishCounting ->
+          intent.putExtra(
+            EndConferenceActivity.SCREEN_TO_BACK_TO,
+            classNameEntityToBackToWhenFinishCounting
+          )
+        }
       startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
     }
   }
@@ -104,6 +112,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     viewModel.task.observe(this, Observer {
       onResult(it,
         onSuccess = { result ->
+          if (result.data.isPending()) {
+            viewModel.startCounting(cargoConferenceTaskId)
+            loadCargoConferenceTask()
+          }
           updateUi(result.data)
         },
         onError = {

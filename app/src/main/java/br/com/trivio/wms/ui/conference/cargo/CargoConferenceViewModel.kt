@@ -76,7 +76,7 @@ class CargoConferenceViewModel(
     }
   }
 
-  fun startCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit) {
+  fun startCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit = {}) {
     viewModelScope.launch {
       val result = asyncRequest { cargoConferenceRepository.startConference(taskId) }
       callback(result)

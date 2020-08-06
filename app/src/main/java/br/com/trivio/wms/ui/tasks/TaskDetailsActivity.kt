@@ -91,6 +91,10 @@ class TaskDetailsActivity : MyAppCompatActivity() {
           TaskType.CARGO_CONFERENCE -> {
             val intent = Intent(this, CargoConferenceActivity::class.java)
             intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskRetrieved.id)
+            intent.putExtra(
+              CargoConferenceActivity.SCREEN_TO_BACK_TO,
+              TasksListActivity::class.qualifiedName
+            )
             intent
           }
           else -> null

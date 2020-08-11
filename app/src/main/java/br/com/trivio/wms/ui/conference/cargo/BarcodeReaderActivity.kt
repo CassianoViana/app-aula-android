@@ -9,6 +9,7 @@ import br.com.trivio.wms.extensions.showMessageError
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
+import com.budiyev.android.codescanner.ScanMode
 import kotlinx.android.synthetic.main.activity_barcode_reader.*
 
 class BarcodeReaderActivity : MyAppCompatActivity() {
@@ -26,6 +27,7 @@ class BarcodeReaderActivity : MyAppCompatActivity() {
     setContentView(R.layout.activity_barcode_reader)
 
     codeScanner = CodeScanner(this, scanner_view)
+    codeScanner.scanMode = ScanMode.CONTINUOUS
 
     codeScanner.decodeCallback = DecodeCallback {
       val result = Intent()

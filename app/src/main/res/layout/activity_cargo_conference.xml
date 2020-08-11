@@ -8,6 +8,13 @@
   android:orientation="vertical"
   tools:context=".ui.conference.cargo.CargoConferenceActivity">
 
+  <br.com.trivio.wms.components.custom.BarcodeReader
+    android:id="@+id/barcode_reader"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:padding="0dp"
+    android:visibility="visible" />
+
   <br.com.trivio.wms.components.custom.TopBar
     android:id="@+id/top_bar"
     android:layout_width="match_parent"
@@ -38,11 +45,6 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <br.com.trivio.wms.components.custom.BarcodeReader
-        android:id="@+id/barcode_reader"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
       <br.com.trivio.wms.components.custom.SearchInput
         android:id="@+id/barcode"
         android:layout_width="wrap_content"
@@ -63,6 +65,7 @@
         android:tint="@color/colorWhite"
         tools:ignore="RtlSymmetry" />
     </LinearLayout>
+
 
     <br.com.trivio.wms.components.custom.RefreshableList
       android:id="@+id/cargo_items_recycler_view"

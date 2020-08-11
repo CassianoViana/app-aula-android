@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
+import br.com.trivio.wms.components.custom.Badge
 import br.com.trivio.wms.data.dto.CargoListDto
 import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.inflateToViewHolder
@@ -30,19 +31,13 @@ class CargosListActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    startTask()
     setContentView(R.layout.activity_cargos)
     setupToolbar()
     observeViewModel()
     bindListAdapter()
     addRefreshListener()
     onSearchFilterItems()
-    onClickFilterOpenCargos()
-  }
-
-  private fun onClickFilterOpenCargos() {
-    btn_list_open_cargos.setOnClickListener {
-      viewModel.toggleBetweenStartedOrPendingCargosConferences()
-    }
   }
 
   private fun onSearchFilterItems() {
@@ -67,15 +62,6 @@ class CargosListActivity : MyAppCompatActivity() {
   }
 
   private fun observeViewModel() {
-    viewModel.currentFilter.observe(this, Observer {
-      btn_list_open_cargos.text = getString(
-        when (it) {
-          "DOING" -> R.string.list_pending_cargos
-          "PENDING" -> R.string.list_open_cargos
-          else -> R.string.list_open_cargos
-        }
-      )
-    })
     viewModel.cargosResult.observe(this, Observer {
       onResult(it,
         onSuccess = { success ->
@@ -109,6 +95,7 @@ class CargosListActivity : MyAppCompatActivity() {
     class ViewHolder(val layout: View) : RecyclerView.ViewHolder(layout) {
       private var cargoNameText: TextView = layout.findViewById(R.id.name_text)
       private var cargoRefCode: TextView = layout.findViewById(R.id.item_code)
+      private var cargoStatus: Badge = layout.findViewById(R.id.cargo_status_badge)
       private var quantityToCount: TextView =
         layout.findViewById(R.id.text_view_quantity_to_count)
       private var cargoDate: TextView = layout.findViewById(R.id.item_date)
@@ -121,6 +108,8 @@ class CargosListActivity : MyAppCompatActivity() {
           cargoNameText.text = toString()
           cargoRefCode.text = bonoName()
           cargoDate.text = formattedScheduledStart()
+          cargoStatus.text = cargoListDto.cargoStatusDto?.name
+          cargoStatus.backgroundColor = cargoListDto.cargoStatusDto?.color
           quantityToCount.text = quantityItemsToCount.toString()
           layout.setOnClickListener {
             onClickListener(this)

@@ -17,4 +17,9 @@
     <attr name="label_title" format="string" />
     <attr name="label_value" format="string" />
   </declare-styleable>
+
+  <declare-styleable name="Badge">
+    <attr name="badge_text" format="string" />
+    <attr name="badge_text_color" format="reference|color" />
+  </declare-styleable>
 </resources>

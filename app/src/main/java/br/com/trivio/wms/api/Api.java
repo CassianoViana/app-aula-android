@@ -47,7 +47,10 @@ interface Api {
   Call<CargoConferenceDto> restartCargoConference(@Path("taskId") Long taskId);
 
   @GET("cargoConference/byStatus/{status}")
-  Call<List<CargoListDto>> getCargos(@Path("status") String status);
+  Call<List<CargoListDto>> getCargosByStatus(@Path("status") String status);
+
+  @GET("cargoConference")
+  Call<List<CargoListDto>> getCargos();
 
   @POST("cargoConference/countItem")
   Call<ResponseBody> countCargoItem(@Body CargoConferenceItemDto item);

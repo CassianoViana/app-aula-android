@@ -17,7 +17,7 @@ data class CargoConferenceItemDto(
   }
 
   fun mismatchQuantity(): Boolean {
-    return countedQuantity != null && expectedQuantity != countedQuantity
+    return countedQuantity != null && !correctCounted()
   }
 
   fun correctCounted(): Boolean {

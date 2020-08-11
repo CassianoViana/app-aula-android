@@ -10,13 +10,13 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="@dimen/padding">
 
     <LinearLayout
       android:layout_width="wrap_content"
-      android:layout_weight="1"
       android:layout_height="wrap_content"
+      android:layout_weight="1"
       android:orientation="vertical">
 
       <TextView
@@ -53,9 +53,9 @@
       android:id="@+id/linearLayout4"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_weight="0"
-      android:gravity="center"
       android:layout_gravity="center_vertical"
+      android:layout_weight="0"
+      android:gravity="end"
       android:orientation="vertical">
 
       <TextView
@@ -65,12 +65,12 @@
         android:text="4"
         android:textSize="25sp" />
 
-      <TextView
+      <br.com.trivio.wms.components.custom.Badge
+        android:id="@+id/cargo_status_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/items"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        app:badge_text="Teste"
+        app:badge_text_color="@color/colorWhite" />
     </LinearLayout>
 
   </LinearLayout>

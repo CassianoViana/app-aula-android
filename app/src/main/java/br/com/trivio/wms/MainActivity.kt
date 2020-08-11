@@ -43,6 +43,7 @@ class MainActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    //startLockTask()
     setContentView(R.layout.activity_main)
 
     menusList = findViewById(R.id.menu_list)

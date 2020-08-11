@@ -125,12 +125,6 @@ fun getErrorMessageCode(context: String, throwable: Throwable): Int {
   }
 }
 
-fun TextView.setTagBackground(color: String?) {
-  color?.let {
-    (background as GradientDrawable).setColor(Color.parseColor(it))
-  }
-}
-
 suspend fun <T : Any> call(
   result: () -> Result<T>,
   always: ((result: Result<T>) -> Unit)? = null,

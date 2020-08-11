@@ -15,19 +15,10 @@ class CargoListViewModel(
   ViewModel() {
 
   val cargosResult = MutableLiveData<Result<List<CargoListDto>>>()
-  val currentFilter = MutableLiveData<String>()
 
-  fun loadCargos(status: String = "PENDING") {
-    loadCargosAndPutInResult(status, cargosResult)
-  }
-
-  private fun loadCargosAndPutInResult(
-    status: String,
-    result: MutableLiveData<Result<List<CargoListDto>>>
-  ) {
-    currentFilter.value = status
+  fun loadCargos() {
     viewModelScope.launch {
-      result.value = asyncRequest { cargosRepository.loadCargosByStatus(status) }
+      cargosResult.value = asyncRequest { cargosRepository.loadCargos() }
     }
   }
 
@@ -38,14 +29,5 @@ class CargoListViewModel(
       }
       else -> listOf()
     }
-  }
-
-  fun toggleBetweenStartedOrPendingCargosConferences() {
-    val status = when (currentFilter.value) {
-      "DOING" -> "PENDING"
-      "PENDING" -> "DOING"
-      else -> "PENDING"
-    }
-    this.loadCargos(status)
   }
 }

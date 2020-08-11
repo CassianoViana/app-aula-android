@@ -28,12 +28,6 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
 
-    <Button
-      android:id="@+id/btn_list_open_cargos"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/list_open_cargos" />
-
   </LinearLayout>
 
   <include

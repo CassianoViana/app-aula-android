@@ -26,7 +26,6 @@ import br.com.trivio.wms.extensions.Status.Companion.ERROR
 import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
 import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.cargos.CargosListActivity
 import br.com.trivio.wms.ui.cargos.EndConferenceActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import kotlinx.android.synthetic.main.activity_cargo_conference.*
@@ -38,7 +37,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   companion object {
     const val CARGO_TASK_ID: String = "CARGO_TASK_id"
-    const val SCREEN_TO_BACK_TO: String = "ScreenToBackToWhenFinishCounting"
   }
 
   private var cargoConferenceTaskId: Long = 0
@@ -75,13 +73,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     progress_bar.setOnClickListener {
       val intent = Intent(this, EndConferenceActivity::class.java)
       intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
-      this.intent.getStringExtra(SCREEN_TO_BACK_TO)
-        ?.let { classNameEntityToBackToWhenFinishCounting ->
-          intent.putExtra(
-            EndConferenceActivity.SCREEN_TO_BACK_TO,
-            classNameEntityToBackToWhenFinishCounting
-          )
-        }
       startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
     }
   }
@@ -129,7 +120,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     viewModel.finishStatus.observe(this, Observer {
       onResult(it, onSuccess = {
         setResult(TaskDetailsActivity.RESULT_TASK_CHANGED)
-        clearTop(CargosListActivity::class)
+        clearTop()
       })
     })
   }

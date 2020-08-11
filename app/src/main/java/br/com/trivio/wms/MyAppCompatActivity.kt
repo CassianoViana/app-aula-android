@@ -2,9 +2,12 @@ package br.com.trivio.wms
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import br.com.trivio.wms.extensions.handleHomeClickFinish
 
 
@@ -35,6 +38,17 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
     this.handleHomeClickFinish(item)
     return super.onOptionsItemSelected(item)
+  }
+
+  fun checkCameraPermissions(camera: String): Boolean {
+    var permitted = true
+    if (ContextCompat.checkSelfPermission(this, camera)
+      == PackageManager.PERMISSION_DENIED
+    ) {
+      permitted = false
+      ActivityCompat.requestPermissions(this, arrayOf(camera), 100)
+    }
+    return permitted
   }
 }
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  android:orientation="vertical"
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:orientation="vertical"
   tools:context=".ui.conference.cargo.CargoConferenceActivity">
 
   <br.com.trivio.wms.components.custom.TopBar
@@ -16,7 +15,6 @@
     app:title="@string/cargo_conference" />
 
   <br.com.trivio.wms.components.custom.ProgressBar
-    android:padding="@dimen/padding_half"
     android:id="@+id/progress_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,9 +22,9 @@
     android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="@dimen/padding_half"
     app:label_below_bar="CFA2323 - 2 de 4 itens"
-    app:layout_constraintTop_toBottomOf="@id/top_bar">
-  </br.com.trivio.wms.components.custom.ProgressBar>
+    app:layout_constraintTop_toBottomOf="@id/top_bar" />
 
   <LinearLayout
     android:id="@+id/main_content"
@@ -35,14 +33,36 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <br.com.trivio.wms.components.custom.SearchInput
-      android:id="@+id/barcode"
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
-      app:hint="@string/product_code"
-      android:inputType="number"
-      android:textSize="@dimen/large_text" />
+      android:orientation="horizontal">
+
+      <br.com.trivio.wms.components.custom.BarcodeReader
+        android:id="@+id/barcode_reader"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+      <br.com.trivio.wms.components.custom.SearchInput
+        android:id="@+id/barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:inputType="number"
+        android:textSize="@dimen/large_text"
+        app:hint="@string/product_code" />
+
+      <ImageButton
+        android:id="@+id/btn_open_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:paddingRight="@dimen/padding_half"
+        android:src="@drawable/ic_barcode_white_24dp"
+        android:tint="@color/colorWhite"
+        tools:ignore="RtlSymmetry" />
+    </LinearLayout>
 
     <br.com.trivio.wms.components.custom.RefreshableList
       android:id="@+id/cargo_items_recycler_view"

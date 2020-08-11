@@ -99,7 +99,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
             val restartingData = Intent()
             restartingData.putExtra(RESTARTING_TASK, it.data.taskId)
             setResult(END_CONFERENCE_ACTIVITY, restartingData)
-            finishActivity(END_CONFERENCE_ACTIVITY)
+            finish()
           }
         )
       }

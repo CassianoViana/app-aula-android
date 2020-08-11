@@ -61,12 +61,26 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     onBarcodeChangeSearchProduct()
     onRefreshLoadData()
     onClickFinish()
+    onClickCameraOpenBarcodeReader()
     loadData()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    barcode_reader.start()
   }
 
   override fun onPause() {
     super.onPause()
     barcode.setKeyboardVisible(false)
+    barcode_reader.pause()
+  }
+
+  private fun onClickCameraOpenBarcodeReader() {
+    btn_open_camera.setOnClickListener {
+      val barcodeReader = Intent(this, BarcodeReaderActivity::class.java)
+      startActivityForResult(barcodeReader, BarcodeReaderActivity.BARCODE_ACTIVITY)
+    }
   }
 
   private fun onClickFinish() {
@@ -149,6 +163,12 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           cargoConferenceTaskId =
             it.getLongExtra(EndConferenceActivity.RESTARTING_TASK, cargoConferenceTaskId)
           loadCargoConferenceTask()
+        }
+      }
+      BarcodeReaderActivity.BARCODE_ACTIVITY -> {
+        data?.let {
+          val barcodeRead = it.getStringExtra(BarcodeReaderActivity.RESULT_BARCODE)
+          barcode.setText(barcodeRead)
         }
       }
     }

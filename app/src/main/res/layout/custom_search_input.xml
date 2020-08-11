@@ -3,7 +3,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@color/colorPrimary"
-  android:padding="12dp">
+  android:padding="@dimen/padding_half">
 
   <EditText
     android:id="@+id/custom_input_search"

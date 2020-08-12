@@ -1,5 +1,6 @@
 package br.com.trivio.wms.ui.conference.cargo
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.call
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceDto.Companion.STATUS_COUNTING_ALL_COUNTED
 import br.com.trivio.wms.data.dto.CargoConferenceDto.Companion.STATUS_COUNTING_NONE_COUNTED
@@ -40,6 +40,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private var cargoConferenceTaskId: Long = 0
+  private var requestingQuantity = false
   private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
     override fun onClick(item: CargoConferenceItemDto) {
       requestQuantity(item.gtin)
@@ -68,7 +69,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    barcode_reader.start()
+    resetReadingState()
+    if (checkCameraPermissions(Manifest.permission.CAMERA)) {
+      barcode_reader.start()
+    }
   }
 
   override fun onPause() {
@@ -77,11 +81,23 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.pause()
   }
 
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<out String>,
+    grantResults: IntArray
+  ) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    barcode_reader.start()
+  }
+
   private fun onReadBarcodeFillSearchInput() {
     barcode_reader.onRead = { it ->
-      runOnUiThread {
-        barcode.setText(it)
-        barcode_reader.start()
+      if (!requestingQuantity) {
+        requestingQuantity = true
+        runOnUiThread {
+          playAudio(this, R.raw.beep)
+          barcode.setText(it)
+        }
       }
     }
   }
@@ -258,9 +274,15 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun requestQuantity(gtin: String) {
     lifecycleScope.launch {
-      call(
-        { viewModel.getCargoItem(gtin) },
-        onSuccess = { promptQtd(it.data) }
+      onResult(viewModel.getCargoItem(gtin),
+        onSuccess = {
+          promptQtd(it.data)
+        },
+        onNullResult = {
+          showMessageError(getString(R.string.not_found_product_with_gtin, gtin))
+          delay { resetReadingState() }
+        },
+        onError = { resetReadingState() }
       )
     }
   }
@@ -273,14 +295,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       secondTitle = getString(R.string.how_many_items_were_conted),
       inputValue = item.countedQuantity,
       closeAction = {
-        resetBarcode()
+        resetReadingState()
         showMessageInfo(R.string.cancelled_operation)
       },
       viewsToAdd = buttonsList
     ) { dialog: Dialog, value: String ->
       validateCountQuantity(value) { quantity ->
         viewModel.countItem(item, quantity)
-        resetBarcode()
+        resetReadingState()
         dialog.hide()
       }
     }
@@ -289,8 +311,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun resetBarcode() {
+  private fun resetReadingState() {
     barcode.reset()
+    barcode_reader.start()
+    requestingQuantity = false
   }
 
   private fun reportDamage(item: CargoConferenceItemDto) {

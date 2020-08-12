@@ -3,7 +3,7 @@ package br.com.trivio.wms
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -12,10 +12,6 @@ import br.com.trivio.wms.extensions.handleHomeClickFinish
 
 
 abstract class MyAppCompatActivity : AppCompatActivity() {
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-  }
 
   fun startTask() {
     getSharedPreferences().edit()

@@ -60,7 +60,7 @@ class CargoConferenceViewModel(
         it.gtin == gtin
       }
       if (item == null) {
-        Result.Error(IllegalStateException("Não foi encontrado o produto com o GTIN $gtin"))
+        Result.Null(item)
       } else {
         Result.Success(item)
       }

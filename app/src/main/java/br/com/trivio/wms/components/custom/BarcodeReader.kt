@@ -10,6 +10,7 @@ import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 
+//https://github.com/yuriy-budiyev/code-scanner
 class BarcodeReader @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -23,6 +24,10 @@ class BarcodeReader @JvmOverloads constructor(
     LayoutInflater.from(context).inflate(R.layout.custom_barcode_reader, this, true)
     codeScannerView = findViewById(R.id.scanner_view)
     codeScanner = CodeScanner(context, codeScannerView)
+
+    codeScannerView.setOnClickListener {
+      codeScanner.startPreview()
+    }
 
     codeScanner.decodeCallback = DecodeCallback {
       onRead(it.text)

@@ -5,11 +5,8 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.preference.PreferenceManager
 import br.com.trivio.wms.api.ServerBackend
 import br.com.trivio.wms.data.GlobalData
@@ -125,19 +122,11 @@ fun getErrorMessageCode(context: String, throwable: Throwable): Int {
   }
 }
 
-suspend fun <T : Any> call(
-  result: () -> Result<T>,
-  always: ((result: Result<T>) -> Unit)? = null,
-  onError: ((result: Result.Error) -> Unit)? = null,
-  onSuccess: (result: Result.Success<T>) -> Unit
-) {
-  onResult(asyncRequest { result() }, always, onError, onSuccess)
-}
-
 fun <T : Any> onResult(
   result: Result<T>,
-  always: ((result: Result<T>) -> Unit)? = null,
-  onError: ((result: Result.Error) -> Unit)? = null,
+  always: ((result: Result<T>) -> Unit) = {},
+  onError: ((result: Result.Error) -> Unit) = {},
+  onNullResult: ((result: Result.Null<T?>) -> Unit) = {},
   onSuccess: (result: Result.Success<T>) -> Unit
 ) {
   when (result) {
@@ -145,11 +134,12 @@ fun <T : Any> onResult(
       onSuccess(result)
     }
     is Result.Error -> {
-      onError?.let {
-        it(result)
-      }
+      onError(result)
       showErrorMessage(result)
     }
+    is Result.Null -> {
+      onNullResult(result)
+    }
   }
-  always?.let { it(result) }
+  always(result)
 }

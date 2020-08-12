@@ -133,4 +133,5 @@
     <string name="cargo_conference_number">Conferência de carga %d</string>
     <string name="the_counting_was_finished_with_divergences">A contagem foi finalizada com divergências</string>
     <string name="not_counted">Não\ncontado</string>
+    <string name="not_found_product_with_gtin">Produto não encontrado para o GTIN %s</string>
 </resources>

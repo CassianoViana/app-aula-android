@@ -40,7 +40,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private var cargoConferenceTaskId: Long = 0
-  private var requestingQuantity = false
   private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
     override fun onClick(item: CargoConferenceItemDto) {
       requestQuantity(item.gtin)
@@ -90,13 +89,17 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.start()
   }
 
+  private var waiting = false
   private fun onReadBarcodeFillSearchInput() {
     barcode_reader.onRead = { it ->
-      if (!requestingQuantity) {
-        requestingQuantity = true
-        runOnUiThread {
-          playAudio(this, R.raw.beep)
+      runOnUiThread {
+        playAudio(this, R.raw.beep)
+        if (!waiting) {
+          waiting = true
           barcode.setText(it)
+          delay(1000) {
+            waiting = false
+          }
         }
       }
     }
@@ -314,7 +317,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun resetReadingState() {
     barcode.reset()
     barcode_reader.start()
-    requestingQuantity = false
   }
 
   private fun reportDamage(item: CargoConferenceItemDto) {

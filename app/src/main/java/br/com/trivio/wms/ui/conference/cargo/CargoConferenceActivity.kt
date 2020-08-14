@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -99,6 +100,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           barcode.setText(it)
           delay(1000) {
             waiting = false
+            barcode_reader.start()
           }
         }
       }
@@ -107,7 +109,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun onClickCameraOpenBarcodeReader() {
     btn_open_camera.setOnClickListener {
-      barcode_reader.toggleVisibility()
+      if (barcode_reader.toggleVisibility() == VISIBLE) {
+        barcode_reader.start()
+      }
     }
   }
 
@@ -283,7 +287,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         },
         onNullResult = {
           showMessageError(getString(R.string.not_found_product_with_gtin, gtin))
-          delay { resetReadingState() }
         },
         onError = { resetReadingState() }
       )

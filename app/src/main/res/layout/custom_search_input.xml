@@ -3,12 +3,14 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@color/colorPrimary"
+  android:orientation="horizontal"
   android:padding="@dimen/padding_half">
 
   <EditText
     android:id="@+id/custom_input_search"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:background="@color/colorWhite"
     android:drawableLeft="@drawable/ic_search_black_24dp"
     android:drawableTint="@color/lighterGray3"
@@ -17,4 +19,14 @@
     android:padding="8dp"
     android:textColorHint="@color/grey"
     android:textSize="@dimen/small_text" />
+
+  <ImageButton
+    android:id="@+id/icon_clear"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:padding="10dp"
+    android:src="@drawable/ic_baseline_backspace_24"
+    android:tint="@color/colorAccent"
+    android:visibility="gone" />
 </LinearLayout>

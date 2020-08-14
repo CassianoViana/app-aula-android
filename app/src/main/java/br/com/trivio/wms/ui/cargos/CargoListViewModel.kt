@@ -18,7 +18,7 @@ class CargoListViewModel(
 
   fun loadCargos() {
     viewModelScope.launch {
-      cargosResult.value = asyncRequest { cargosRepository.loadCargos() }
+      cargosResult.value = asyncRequest { cargosRepository.loadMyPendingOrDoingCargos() }
     }
   }
 

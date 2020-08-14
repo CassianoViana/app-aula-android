@@ -5,8 +5,8 @@ import br.com.trivio.wms.serverBackend
 
 class CargosRepository {
 
-  fun loadCargos() =
-    Result.call { serverBackend.getCargos() }
+  fun loadMyPendingOrDoingCargos() =
+    Result.call { serverBackend.getMyPendingCargos() }
 
   fun loadCargosByStatus(status:String) =
     Result.call { serverBackend.getCargosByStatus(status) }

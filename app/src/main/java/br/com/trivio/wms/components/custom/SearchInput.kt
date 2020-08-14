@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.setKeyboardVisible
+import br.com.trivio.wms.extensions.setVisible
 import kotlinx.android.synthetic.main.custom_search_input.view.*
 
 class SearchInput @JvmOverloads constructor(
@@ -31,12 +32,19 @@ class SearchInput @JvmOverloads constructor(
   }
 
   fun reset() {
-    custom_input_search.setText("")
+    custom_input_search.clearComposingText()
     custom_input_search.setKeyboardVisible(context, false)
   }
 
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_search_input, this, true)
+
+    icon_clear.setOnClickListener {
+      setText("")
+    }
+    custom_input_search.addTextChangedListener {
+      icon_clear.setVisible(custom_input_search.text.toString().isNotEmpty())
+    }
 
     attrs?.let {
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.SearchInput)

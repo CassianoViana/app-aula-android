@@ -133,8 +133,8 @@ class ServerBackend {
     return executeAndReturn(api.getCargosByStatus(status))
   }
 
-  fun getCargos(): List<CargoListDto> {
-    return executeAndReturn(api.getCargos())
+  fun getMyPendingCargos(): List<CargoListDto> {
+    return executeAndReturn(api.cargosPendingToOperatorCheck)
   }
 
   fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto) {

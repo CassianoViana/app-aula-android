@@ -52,6 +52,9 @@ interface Api {
   @GET("cargoConference")
   Call<List<CargoListDto>> getCargos();
 
+  @GET("cargoConference/pendingToOperatorCheck")
+  Call<List<CargoListDto>> getCargosPendingToOperatorCheck();
+
   @POST("cargoConference/countItem")
   Call<ResponseBody> countCargoItem(@Body CargoConferenceItemDto item);
 

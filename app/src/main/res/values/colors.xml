@@ -20,10 +20,14 @@
   <color name="error">#FF0000</color>
   <color name="info">#006AEC</color>
   <color name="colorBlueAccent">#006AEC</color>
+  <color name="colorLightBlueAccent">#0097ff</color>
+  <color name="colorLightBlueAccentPressed">#0080D8</color>
   <color name="colorBlueAccentPressed">#0059C6</color>
   <color name="green_transparent">#8600DB6A</color>
   <color name="red_transparent">#88F44336</color>
   <color name="progress_bar_incomplete_part">#1e6699</color>
+  <color name="colorLightRedAccent">#DF1111</color>
+  <color name="colorLightRedAccentPressed">#C60A0A</color>
 </resources>
 
 

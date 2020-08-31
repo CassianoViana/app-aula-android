@@ -46,7 +46,7 @@
 
         <EditText
           android:id="@+id/username"
-          style="@style/transparent_rounded_input"
+          style="@style/transparent_rounded"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
@@ -74,7 +74,7 @@
 
         <EditText
           android:id="@+id/password"
-          style="@style/transparent_rounded_input"
+          style="@style/transparent_rounded"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
@@ -99,7 +99,7 @@
 
         <Button
           android:id="@+id/settings"
-          style="@style/transparent_rounded_bordered_input"
+          style="@style/transparent_rounded_bordered"
           android:layout_width="155dp"
           android:layout_height="wrap_content"
           android:text="@string/action_settings"
@@ -108,7 +108,7 @@
 
         <Button
           android:id="@+id/login"
-          style="@style/primary_rounded_input"
+          style="@style/primary_rounded"
           android:layout_width="155dp"
           android:layout_height="wrap_content"
           android:text="@string/action_sign_in"

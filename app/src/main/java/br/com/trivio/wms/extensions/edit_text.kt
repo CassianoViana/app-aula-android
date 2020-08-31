@@ -18,3 +18,7 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
   })
 }
+
+fun EditText.moveCursorToEnd() {
+  this.setSelection(this.text.length)
+}

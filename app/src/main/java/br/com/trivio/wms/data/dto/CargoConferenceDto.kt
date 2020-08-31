@@ -70,6 +70,10 @@ class CargoConferenceDto(
     }.count()
   }
 
+  fun getTotalItemsToCount(): Int {
+    return quantityItems - this.getTotalCountedItems()
+  }
+
   fun isFinishedWithAllCorrect(): Boolean {
     return quantityItems == getTotalCorrectCountedItems()
   }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@drawable/rounded_background"
   android:orientation="vertical"
-  android:padding="@dimen/padding_half">
+  android:padding="@dimen/padding_half"
+  android:paddingBottom="0dp">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -27,7 +27,7 @@
       android:id="@+id/linearLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"
+      android:layout_marginBottom="5dp"
       android:orientation="vertical">
 
       <TextView
@@ -48,12 +48,11 @@
         android:textSize="@dimen/medium_text" />
     </LinearLayout>
 
-
     <EditText
       android:id="@+id/input_value"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="15dp"
+      android:layout_marginTop="5dp"
       android:hint="0,00"
       android:inputType="number"
       android:textSize="@dimen/huge_text" />
@@ -62,20 +61,38 @@
       android:id="@+id/more_views_to_add"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"
-      android:orientation="horizontal"
+      android:layout_marginTop="5dp"
+      android:orientation="vertical"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/input_value" />
 
   </LinearLayout>
 
-  <Button
-    android:id="@+id/confirm_button"
-    style="@style/primary_rounded_input"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:text="@string/confirm"
-    app:layout_constraintBottom_toBottomOf="parent" />
+    android:orientation="horizontal">
 
+    <Button
+      android:id="@+id/negative_action"
+      style="@style/light_red_rounded"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:visibility="gone"
+      android:layout_marginRight="5dp"
+      android:layout_weight="1"
+      android:text="@string/cancel"
+      app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+      android:id="@+id/positive_action"
+      style="@style/light_blue_rounded"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:layout_weight="1"
+      android:text="@string/confirm"
+      app:layout_constraintBottom_toBottomOf="parent" />
+  </LinearLayout>
 </LinearLayout>

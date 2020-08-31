@@ -294,27 +294,35 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun promptQtd(item: CargoConferenceItemDto) {
-    val reportDamageButtons = createButton(getString(R.string.report_damage))
-    val buttonsList = listOf(reportDamageButtons)
+
+    val totalQuantityCounted = item.countedQuantity?.toInt()
+    val countedQtdNumberInput = createInputNumber(BigDecimal.ZERO, getString(R.string.counted_units))
+
     prompt(
-      firstTitle = item.name,
-      secondTitle = getString(R.string.how_many_items_were_conted),
-      inputValue = item.countedQuantity,
+      firstTitle = getString(R.string.add_counted_qtd),
+      secondTitle = item.name,
+      inputValue = totalQuantityCounted,
+      hint = "0",
+      positiveAction = fun(dialog: Dialog, _) {
+        countedQtdNumberInput.value?.let { quantity ->
+          viewModel.countItem(item, quantity)
+          resetReadingState()
+          dialog.hide()
+        }
+      },
+      inputView = countedQtdNumberInput,
+      viewsToAdd = listOf(
+        createTextView(getString(R.string.already_conted_x_unities, totalQuantityCounted))
+      ),
+      negativeButtonText = getString(R.string.inform_damage),
+      negativeAction = {
+        openReportDamageDialog(item)
+      },
       closeAction = {
         resetReadingState()
         showMessageInfo(R.string.cancelled_operation)
-      },
-      viewsToAdd = buttonsList
-    ) { dialog: Dialog, value: String ->
-      validateCountQuantity(value) { quantity ->
-        viewModel.countItem(item, quantity)
-        resetReadingState()
-        dialog.hide()
       }
-    }
-    reportDamageButtons.setOnClickListener {
-      reportDamage(item)
-    }
+    )
   }
 
   private fun resetReadingState() {
@@ -322,50 +330,38 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.start()
   }
 
-  private fun reportDamage(item: CargoConferenceItemDto) {
-
-    var dialogDescriptionDialog: Dialog? = null
-    var dialogQuantityDialog: Dialog? = null
+  private fun openReportDamageDialog(item: CargoConferenceItemDto) {
 
     val damageDto = item.damageDto ?: DamageDto()
+    val damageCountInput = createInputNumber()
 
-    // Page 2
-    dialogDescriptionDialog = prompt(
-      firstTitle = getString(R.string.describe_damage),
-      secondTitle = getString(R.string.describe_the_damage_template, item.name),
-      keepClosedOnCreate = true,
-      inputType = InputType.TYPE_CLASS_TEXT,
-      inputValue = damageDto.description,
-      hint = getString(R.string.damage_example),
-      positiveAction = { _, value ->
-        damageDto.description = value
-        damageDto.cargoItemId = item.cargoItemId
-        viewModel.registerDamage(damageDto)
-        dialogQuantityDialog?.hide()
-        dialogDescriptionDialog?.hide()
-      }
+    // Quantos itens foram quebrados?
+    prompt(
+      firstTitle = getString(R.string.how_many_items_are_damaged),
+      secondTitle = item.name,
+      inputView = damageCountInput,
+      positiveAction = { _, _: String ->
+        damageDto.quantity = damageCountInput.value
+
+        // Descreva o que aconteceu
+        prompt(
+          firstTitle = getString(R.string.describe_damage),
+          secondTitle = getString(R.string.describe_the_damage_template, item.name),
+          positiveAction = { _, value ->
+            damageDto.description = value
+            damageDto.cargoItemId = item.cargoItemId
+            viewModel.registerDamage(damageDto)
+          },
+          inputType = InputType.TYPE_CLASS_TEXT,
+          inputValue = damageDto.description,
+          hint = getString(R.string.damage_example),
+          negativeButtonText = getString(R.string.inform_damage)
+        )
+      },
+
+      inputValue = damageDto.quantity?.toInt(),
+      negativeButtonText = getString(R.string.inform_damage)
     )
-
-    // Page 1
-    dialogQuantityDialog = prompt(
-      firstTitle = getString(R.string.count_the_damage),
-      secondTitle = getString(R.string.how_many_items_were_damaged_template, item.name),
-      inputValue = damageDto.quantity
-    ) { _, value: String ->
-      validateCountQuantity(value) {
-        damageDto.quantity = it
-        dialogDescriptionDialog.show()
-      }
-    }
-  }
-
-  private fun validateCountQuantity(value: String, onSuccess: (value: BigDecimal) -> Any) {
-    try {
-      val bigDecimal = BigDecimal(value)
-      onSuccess(bigDecimal)
-    } catch (e: Exception) {
-      showMessageError(R.string.please_check_the_quantity)
-    }
   }
 
   class CargoItemsAdapter(private val onClickCargoItem: OnClickCargoItem) :
@@ -383,6 +379,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       private var gtin = view.findViewById<TextView>(R.id.gtin_text)
       private var sku = view.findViewById<TextView>(R.id.sku_text)
       private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
+      private var damagedQtd = view.findViewById<TextView>(R.id.damaged_qtd)
       private var labelItems = view.findViewById<TextView>(R.id.label_items)
       fun bind(
         item: CargoConferenceItemDto,
@@ -395,6 +392,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         }
         icon.setVisible(status.icon != null)
         countedQtd.setVisible(status.icon != null)
+        damagedQtd.setVisible(item.damageDto != null)
+        item.damageDto?.let {
+          damagedQtd.text = view.context.getString(R.string.damaged_items, it.quantity?.toInt())
+        }
         labelItems.text = view.context.getString(
           if (status.icon == null) {
             R.string.not_counted

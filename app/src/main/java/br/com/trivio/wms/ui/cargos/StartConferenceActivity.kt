@@ -57,7 +57,8 @@ class StartConferenceActivity : MyAppCompatActivity() {
     company_name_info.loading = loading
     start_date_info.loading = loading
     bono_reference_code.setLoading(loading)
-    quantity_items_text_view.setLoading(loading)
+    quantity_counted_itens.setLoading(loading)
+    quantity_items_to_count.setLoading(loading)
   }
 
   private fun updateUi(data: CargoConferenceDto) {
@@ -66,8 +67,8 @@ class StartConferenceActivity : MyAppCompatActivity() {
     driver_name_info.text = data.driverName
     company_name_info.text = data.nfesCompanyNames.joinToString("", transform = { "$it\n" })
     start_date_info.text = data.scheduledStart?.formatTo("dd/MM/yyyy - HH:mm").toString()
-    quantity_items_text_view.text = data.quantityItems.toString()
-    barcode_reader_indicator.connected = true
+    quantity_counted_itens.text = data.getTotalCountedItems().toString()
+    quantity_items_to_count.text = data.getTotalItemsToCount().toString()
     btn_start_counting.setText(
       when (data.taskStatus) {
         TaskStatus.DOING -> R.string.continue_counting
@@ -80,7 +81,7 @@ class StartConferenceActivity : MyAppCompatActivity() {
     setInputsLoading(true)
     val cargoId = intent.getLongExtra(CARGO_TASK_ID, 0)
     Log.i("CARGO", "loadingCargoDetails: $cargoId")
-    cargoDetailsViewModel.loadCargo(cargoId)
+    cargoDetailsViewModel.loadCargo(cargoId, true)
   }
 
   private fun listenClickEvents() {
@@ -95,7 +96,6 @@ class StartConferenceActivity : MyAppCompatActivity() {
       }
     }
     btn_icon_x.setOnClickListener { finish() }
-    btn_cancel.setOnClickListener { finish() }
   }
 
   private fun listenRefresh() {

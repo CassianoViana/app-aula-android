@@ -155,7 +155,7 @@
 
     <Button
       android:id="@+id/btn_start_counting"
-      android:layout_margin="10dp"
+      android:layout_margin="@dimen/margin"
       style="@style/light_blue_rounded"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

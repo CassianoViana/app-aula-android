@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
+import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
+import br.com.trivio.wms.extensions.hideKeyboard
 import br.com.trivio.wms.extensions.setKeyboardVisible
 import br.com.trivio.wms.extensions.setVisible
 import kotlinx.android.synthetic.main.custom_search_input.view.*
@@ -34,6 +36,10 @@ class SearchInput @JvmOverloads constructor(
   fun reset() {
     custom_input_search.clearComposingText()
     custom_input_search.setKeyboardVisible(context, false)
+  }
+
+  fun hideKeyboard() {
+    (context as MyAppCompatActivity).hideKeyboard(custom_input_search)
   }
 
   init {

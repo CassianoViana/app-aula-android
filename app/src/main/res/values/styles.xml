@@ -100,11 +100,13 @@
   </style>
 
   <style name="button_action">
+    <item name="android:layout_margin">@dimen/margin</item>
     <item name="android:layout_weight">1</item>
     <item name="android:background">@drawable/button_white_bordered</item>
     <item name="android:drawablePadding">12dp</item>
+    <item name="android:textAllCaps">true</item>
     <item name="android:drawableTint">@color/grey</item>
-    <item name="android:textColor">@color/grey</item>
+    <item name="android:textColor">@color/colorWhite</item>
   </style>
 
   <style name="button_action.cancel">
@@ -112,11 +114,13 @@
   </style>
 
   <style name="button_action.back">
-    <item name="android:drawableLeft">@drawable/ic_arrow_back_black_24dp</item>
+    <!--<item name="android:drawableLeft">@drawable/ic_arrow_back_black_24dp</item>-->
+    <item name="android:background">@drawable/light_yellow_rounded</item>
   </style>
 
   <style name="button_action.ok">
-    <item name="android:drawableLeft">@drawable/ic_check_black_24dp</item>
+    <!--<item name="android:drawableLeft">@drawable/ic_check_black_24dp</item>-->
+    <item name="android:background">@drawable/light_blue_rounded</item>
   </style>
 
 

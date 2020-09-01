@@ -118,20 +118,11 @@
       app:layout_constraintStart_toStartOf="parent">
 
       <Button
-        android:id="@+id/btn_cancel"
-        style="@style/button_action.back"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/come_back"
-        android:textAlignment="textStart" />
-
-      <Button
         android:id="@+id/btn_finish_counting"
         style="@style/button_action.ok"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/finish"
-        android:textAlignment="textStart" />
+        android:text="@string/finish_arrival" />
     </LinearLayout>
 
     <LinearLayout
@@ -139,7 +130,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent">
 
@@ -148,16 +138,14 @@
         style="@style/button_action.back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/restart_counting"
-        android:textAlignment="textStart" />
+        android:text="@string/restart_counting" />
 
       <Button
         android:id="@+id/btn_finish_with_divergences"
         style="@style/button_action.ok"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/finish_with_divergences"
-        android:textAlignment="textStart" />
+        android:text="@string/finish_with_divergences" />
     </LinearLayout>
   </LinearLayout>
 

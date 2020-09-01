@@ -38,6 +38,8 @@ class EndConferenceActivity : MyAppCompatActivity() {
     listenClickEvents()
     listenRefresh()
     loadCargoDetails()
+    layout_success.setVisible(false)
+    layout_fail.setVisible(false)
   }
 
   private fun setupObservables() {
@@ -124,7 +126,6 @@ class EndConferenceActivity : MyAppCompatActivity() {
       }
     }
     btn_icon_x.setOnClickListener { finish() }
-    btn_cancel.setOnClickListener { finish() }
   }
 
   private fun backToScreenThatInitiatedTheProcess() {

@@ -64,6 +64,12 @@ class NumberInput @JvmOverloads constructor(
     custom_number_input_label.text = label
   }
 
+  fun setValue(value: BigDecimal?) {
+    value?.let {
+      this.setValue(it.toString())
+    }
+  }
+
   fun setValue(value: String) {
     custom_number_input.setText(value)
     custom_number_input.moveCursorToEnd()

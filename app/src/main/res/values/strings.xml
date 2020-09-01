@@ -141,6 +141,7 @@
   <string name="to_count">À contar</string>
   <string name="damage">Avaria</string>
   <string name="damaged_items">%d itens avariados</string>
-  <string name="add_counted_qtd">Adicionar quantidade contada</string>
+  <string name="inform_qtds">Informar quantidades</string>
   <string name="counted_units">Unidades contadas:</string>
+  <string name="finish_arrival">Finalizar recebimento</string>
 </resources>

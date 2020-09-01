@@ -64,7 +64,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     onClickFinish()
     onClickCameraOpenBarcodeReader()
     onReadBarcodeFillSearchInput()
+    onClickReaderHideKeyboard()
     loadData()
+  }
+
+  private fun onClickReaderHideKeyboard() {
+    barcode_reader.setOnClickListener {
+      barcode.hideKeyboard()
+    }
   }
 
   override fun onResume() {
@@ -112,6 +119,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       if (barcode_reader.toggleVisibility() == VISIBLE) {
         barcode_reader.start()
       }
+      barcode.hideKeyboard()
     }
   }
 
@@ -283,7 +291,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     lifecycleScope.launch {
       onResult(viewModel.getCargoItem(gtin),
         onSuccess = {
-          promptQtd(it.data)
+          openCountItemDialog(it.data)
         },
         onNullResult = {
           showMessageError(getString(R.string.not_found_product_with_gtin, gtin))
@@ -293,16 +301,28 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun promptQtd(item: CargoConferenceItemDto) {
+  private fun openCountItemDialog(item: CargoConferenceItemDto) {
 
     val totalQuantityCounted = item.countedQuantity?.toInt()
-    val countedQtdNumberInput = createInputNumber(BigDecimal.ZERO, getString(R.string.counted_units))
+    val countedQtdNumberInput =
+      createInputNumber(BigDecimal.ZERO, getString(R.string.counted_units))
 
+    val viewsToAdd = mutableListOf<View>()
+    if (totalQuantityCounted != null) {
+      if (totalQuantityCounted > 0) {
+        val labelWithCountedQtd =
+          createTextView(getString(R.string.already_conted_x_unities, totalQuantityCounted))
+        viewsToAdd.add(labelWithCountedQtd)
+      }
+    }
     prompt(
-      firstTitle = getString(R.string.add_counted_qtd),
+      firstTitle = getString(R.string.inform_qtds),
       secondTitle = item.name,
       inputValue = totalQuantityCounted,
       hint = "0",
+      inputView = countedQtdNumberInput,
+      viewsToAdd = viewsToAdd,
+      negativeButtonText = getString(R.string.inform_damage),
       positiveAction = fun(dialog: Dialog, _) {
         countedQtdNumberInput.value?.let { quantity ->
           viewModel.countItem(item, quantity)
@@ -310,11 +330,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           dialog.hide()
         }
       },
-      inputView = countedQtdNumberInput,
-      viewsToAdd = listOf(
-        createTextView(getString(R.string.already_conted_x_unities, totalQuantityCounted))
-      ),
-      negativeButtonText = getString(R.string.inform_damage),
       negativeAction = {
         openReportDamageDialog(item)
       },
@@ -334,6 +349,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
     val damageDto = item.damageDto ?: DamageDto()
     val damageCountInput = createInputNumber()
+    item.damageDto?.let {
+      damageCountInput.setValue(it.quantity)
+    }
+
 
     // Quantos itens foram quebrados?
     prompt(

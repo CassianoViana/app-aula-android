@@ -17,7 +17,7 @@ class BarcodeReader @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
   private var codeScanner: CodeScanner
-  private var codeScannerView: CodeScannerView
+  var codeScannerView: CodeScannerView
   var onRead: (read: String) -> Unit = { }
   var onError: (e: Exception) -> Unit = { }
 
@@ -48,6 +48,12 @@ class BarcodeReader @JvmOverloads constructor(
         )
       styledAttributes.recycle()
     }*/
+  }
+
+  fun setOnClickListener(onClickListener: () -> Any = {}) {
+    codeScannerView.setOnClickListener {
+      onClickListener()
+    }
   }
 
   fun start() {

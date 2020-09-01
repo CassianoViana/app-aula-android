@@ -3,10 +3,7 @@ package br.com.trivio.wms.extensions
 import android.app.Dialog
 import android.text.InputType
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.NumberInput
@@ -29,7 +26,7 @@ fun MyAppCompatActivity.prompt(
   val confirmButton = layout.findViewById<Button>(R.id.positive_action)
   val negativeButton = layout.findViewById<Button>(R.id.negative_action)
   val editText = layout.findViewById<EditText>(R.id.input_value)
-  val btnClose = layout.findViewById<Button>(R.id.close_btn)
+  val btnClose = layout.findViewById<ImageView>(R.id.btn_icon_x)
   val layoutAddViews = layout.findViewById<LinearLayout>(R.id.more_views_to_add)
 
   if (inputView != null) {

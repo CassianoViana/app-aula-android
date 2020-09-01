@@ -66,7 +66,7 @@ class NumberInput @JvmOverloads constructor(
 
   fun setValue(value: BigDecimal?) {
     value?.let {
-      this.setValue(it.toString())
+      this.setValue(it.toInt().toString())
     }
   }
 

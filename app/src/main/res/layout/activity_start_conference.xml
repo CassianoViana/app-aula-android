@@ -20,7 +20,6 @@
 
       <include layout="@layout/button_close_x" />
 
-
       <LinearLayout
         android:id="@+id/layout_id_bono"
         android:layout_width="match_parent"

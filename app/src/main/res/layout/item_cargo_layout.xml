@@ -47,16 +47,6 @@
         android:textColor="@color/lightGrey"
         app:layout_constraintStart_toStartOf="parent" />
 
-      <TextView
-        android:id="@+id/item_storage_unity"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:drawableStart="@drawable/ic_action_description_black_18dp"
-        android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
-        android:text="CX"
-        android:textColor="@color/lightGrey"
-        app:layout_constraintStart_toStartOf="parent" />
-
     </LinearLayout>
 
     <LinearLayout

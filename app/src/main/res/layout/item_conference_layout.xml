@@ -40,8 +40,16 @@
         android:id="@+id/sku_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gtin_text"
         android:drawableLeft="@drawable/pound_box_black_18_dp"
+        android:text="12312"
+        android:textColor="@color/lightGrey" />
+
+
+      <TextView
+        android:id="@+id/storage_unit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_fitness_center_24"
         android:text="12312"
         android:textColor="@color/lightGrey" />
 
@@ -49,7 +57,6 @@
         android:id="@+id/damaged_qtd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gtin_text"
         android:drawableLeft="@drawable/ic_baseline_warning_24"
         android:text="12312"
         android:textColor="@color/lightGrey" />

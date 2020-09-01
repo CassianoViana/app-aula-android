@@ -135,13 +135,14 @@
   <string name="the_counting_was_finished_with_divergences">A contagem foi finalizada com divergências</string>
   <string name="not_counted">Não\ncontado</string>
   <string name="not_found_product_with_gtin">Produto não encontrado para o GTIN %s</string>
-  <string name="already_conted_x_unities">Já foram contadas %d unidades</string>
+  <string name="already_conted_x_unities">Já foram contadas %d %ss</string>
   <string name="counted_to_from">%d/%d</string>
   <string name="counteds">Contados</string>
   <string name="to_count">À contar</string>
   <string name="damage">Avaria</string>
   <string name="damaged_items">%d itens avariados</string>
   <string name="inform_qtds">Informar quantidades</string>
-  <string name="counted_units">Unidades contadas:</string>
+  <string name="counted_units">%ss contadas:</string>
   <string name="finish_arrival">Finalizar recebimento</string>
+  <string name="unit">Unidade</string>
 </resources>

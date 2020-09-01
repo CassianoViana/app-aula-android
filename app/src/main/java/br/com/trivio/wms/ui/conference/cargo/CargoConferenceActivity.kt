@@ -304,14 +304,24 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun openCountItemDialog(item: CargoConferenceItemDto) {
 
     val totalQuantityCounted = item.countedQuantity?.toInt()
+    var unitName = getString(R.string.unit)
+    item.storageUnit?.let {
+      unitName = it.description
+    }
     val countedQtdNumberInput =
-      createInputNumber(BigDecimal.ZERO, getString(R.string.counted_units))
+      createInputNumber(BigDecimal.ZERO, getString(R.string.counted_units, unitName))
 
     val viewsToAdd = mutableListOf<View>()
     if (totalQuantityCounted != null) {
       if (totalQuantityCounted > 0) {
         val labelWithCountedQtd =
-          createTextView(getString(R.string.already_conted_x_unities, totalQuantityCounted))
+          createTextView(
+            getString(
+              R.string.already_conted_x_unities,
+              totalQuantityCounted,
+              unitName.toLowerCase()
+            )
+          )
         viewsToAdd.add(labelWithCountedQtd)
       }
     }
@@ -347,9 +357,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun openReportDamageDialog(item: CargoConferenceItemDto) {
 
-    val damageDto = item.damageDto ?: DamageDto()
+    val damageDto = item.damage ?: DamageDto()
     val damageCountInput = createInputNumber()
-    item.damageDto?.let {
+    item.damage?.let {
       damageCountInput.setValue(it.quantity)
     }
 
@@ -397,6 +407,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       private var icon = view.findViewById<ImageView>(R.id.icon)
       private var gtin = view.findViewById<TextView>(R.id.gtin_text)
       private var sku = view.findViewById<TextView>(R.id.sku_text)
+      private var storageUnit = view.findViewById<TextView>(R.id.storage_unit_text)
       private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
       private var damagedQtd = view.findViewById<TextView>(R.id.damaged_qtd)
       private var labelItems = view.findViewById<TextView>(R.id.label_items)
@@ -411,10 +422,17 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         }
         icon.setVisible(status.icon != null)
         countedQtd.setVisible(status.icon != null)
-        damagedQtd.setVisible(item.damageDto != null)
-        item.damageDto?.let {
+        damagedQtd.setVisible(item.damage != null)
+        storageUnit.setVisible(item.storageUnit != null)
+
+        item.damage?.let {
           damagedQtd.text = view.context.getString(R.string.damaged_items, it.quantity?.toInt())
         }
+
+        item.storageUnit?.let {
+          storageUnit.text = it.code
+        }
+
         labelItems.text = view.context.getString(
           if (status.icon == null) {
             R.string.not_counted

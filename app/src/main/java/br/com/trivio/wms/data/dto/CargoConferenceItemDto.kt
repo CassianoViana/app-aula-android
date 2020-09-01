@@ -10,7 +10,8 @@ data class CargoConferenceItemDto(
   val sku: String = "",
   val expectedQuantity: BigDecimal? = BigDecimal("0"),
   var countedQuantity: BigDecimal? = BigDecimal("0"),
-  var damageDto: DamageDto? = null
+  var damage: DamageDto? = null,
+  var storageUnit: StorageUnitDto? = null
 ) {
   fun getSearchString(): String {
     return "$name, $gtin, $sku, $expectedQuantity, $countedQuantity"

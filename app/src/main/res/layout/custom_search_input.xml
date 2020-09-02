@@ -16,6 +16,7 @@
     android:drawableTint="@color/lighterGray3"
     android:hint="Nome ou código do produto"
     android:inputType="textVisiblePassword"
+    android:imeOptions="actionSearch"
     android:padding="8dp"
     android:textColorHint="@color/grey"
     android:textSize="@dimen/small_text" />

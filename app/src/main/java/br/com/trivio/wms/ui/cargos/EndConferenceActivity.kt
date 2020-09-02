@@ -71,24 +71,24 @@ class EndConferenceActivity : MyAppCompatActivity() {
     driver_name_info.text = data.driverName
     final_message.text = getString(
       when {
-        data.isFinishedWithAllCorrect() -> R.string.all_correct_bono_counted
+        data.totalInvalid == 0 -> R.string.all_correct_bono_counted
         else -> R.string.not_all_correct_bono_counted
       }
     )
     icon_finish_counting.setImageResource(
       when {
-        data.isFinishedWithAllCorrect() -> Status.SUCCESS.bigIcon
+        data.totalInvalid == 0 -> Status.SUCCESS.bigIcon
         else -> Status.ERROR.bigIcon
       }
     )
-    layout_success.setVisible(data.isFinishedWithAllCorrect())
-    layout_fail.setVisible(!data.isFinishedWithAllCorrect())
+    layout_success.setVisible(data.totalInvalid == 0)
+    layout_fail.setVisible(data.totalInvalid > 0)
   }
 
   private fun loadCargoDetails() {
     setInputsLoading(true)
     Log.i("CARGO", "loadingCargoDetails: $cargoId")
-    cargoDetailsViewModel.loadCargo(cargoId, true)
+    cargoDetailsViewModel.loadCargo(cargoId)
   }
 
   private fun listenClickEvents() {

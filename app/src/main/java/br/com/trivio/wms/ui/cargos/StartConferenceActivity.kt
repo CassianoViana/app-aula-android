@@ -11,6 +11,7 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
+import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
@@ -34,6 +35,11 @@ class StartConferenceActivity : MyAppCompatActivity() {
     setupObservables()
     listenClickEvents()
     listenRefresh()
+    loadCargoDetails()
+  }
+
+  override fun onResume() {
+    super.onResume()
     loadCargoDetails()
   }
 
@@ -67,8 +73,9 @@ class StartConferenceActivity : MyAppCompatActivity() {
     driver_name_info.text = data.driverName
     company_name_info.text = data.nfesCompanyNames.joinToString("", transform = { "$it\n" })
     start_date_info.text = data.scheduledStart?.formatTo("dd/MM/yyyy - HH:mm").toString()
-    quantity_counted_itens.text = data.getTotalCountedItems().toString()
-    quantity_items_to_count.text = data.getTotalItemsToCount().toString()
+    progress_area_counting.setVisible(data.progressDescription != null)
+    quantity_counted_itens.text = data.totalCountedItems.toString()
+    quantity_items_to_count.text = data.totalToCountItems.toString()
     btn_start_counting.setText(
       when (data.taskStatus) {
         TaskStatus.DOING -> R.string.continue_counting
@@ -81,7 +88,7 @@ class StartConferenceActivity : MyAppCompatActivity() {
     setInputsLoading(true)
     val cargoId = intent.getLongExtra(CARGO_TASK_ID, 0)
     Log.i("CARGO", "loadingCargoDetails: $cargoId")
-    cargoDetailsViewModel.loadCargo(cargoId, true)
+    cargoDetailsViewModel.loadCargo(cargoId)
   }
 
   private fun listenClickEvents() {

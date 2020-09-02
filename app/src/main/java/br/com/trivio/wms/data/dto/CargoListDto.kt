@@ -15,8 +15,11 @@ class CargoListDto(
   val scheduledEnd: LocalDateTime? = null,
   val taskId: Long = 0,
   val cargoStatusDto: CargoStatusDto? = null,
-  val quantityItemsToCount: Int = 0
+  val quantityItemsToCount: Int = 0,
+  val progress: Int = 0
 ) {
+
+
   override fun toString(): String {
     return "PLACA: $truckLabel - $shippingCompanyName"
   }

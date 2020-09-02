@@ -1,30 +1,50 @@
 package br.com.trivio.wms.data.dto
 
 import br.com.trivio.wms.data.model.TaskStatus
-import br.com.trivio.wms.extensions.getPercent
 import br.com.trivio.wms.extensions.matchFilter
 import org.joda.time.LocalDateTime
 
 class CargoConferenceDto(
   val id: Long = 0,
   val taskId: Long = 0,
-  val cargoId: Long = 0,
   val items: MutableList<CargoConferenceItemDto> = mutableListOf(),
   val scheduledStart: LocalDateTime? = null,
   val scheduledEnd: LocalDateTime? = null,
   val driverName: String = "",
   val truckLabel: String = "",
   val restartCounter: Int? = 0,
-  val companyName: String = "",
+  val providerName: String = "",
   val nfesCompanyNames: List<String> = mutableListOf(),
   val cargoReferenceCode: String = "",
   val quantityItems: Int = 0,
-  val taskStatus: TaskStatus = TaskStatus.PENDING
+  val totalInvalid: Int = 0,
+  val totalValid: Int = 0,
+  val taskStatus: TaskStatus = TaskStatus.PENDING,
+  val progress: Int = 0
 ) {
-  fun getTotalCountedItems(): Int {
-    return items.filter {
-      it.countedQuantity != null
-    }.size
+
+  var totalToCountItems: Int = 0
+  var totalCountedItems: Int = 0
+
+  var progressDescription: String? = null
+    set(value) {
+      field = value
+      updateTotalsByProgressDescription()
+    }
+
+  private fun updateTotalsByProgressDescription() {
+    progressDescription?.split(Regex("[\\D]"))?.let {
+      var counted: Int
+      var total: Int
+      it[0].let {
+        counted = it.toInt()
+      }
+      it[1].let {
+        total = it.toInt()
+      }
+      totalCountedItems = counted
+      totalToCountItems = total - counted
+    }
   }
 
   fun filteredItems(search: String): List<CargoConferenceItemDto> {
@@ -42,10 +62,10 @@ class CargoConferenceDto(
 
   fun getStatusCounting(): Int {
     return when {
-      getTotalCountedItems() == items.size -> {
+      progress == 100 -> {
         STATUS_COUNTING_ALL_COUNTED
       }
-      getTotalCountedItems() > 0 -> {
+      progress > 0 -> {
         STATUS_COUNTING_SOME_COUNTED
       }
       else -> {
@@ -55,27 +75,13 @@ class CargoConferenceDto(
   }
 
   fun getPercentProgress(): Int {
-    return getPercent(getTotalCountedItems(), items.size)
+    return progress
   }
 
   fun getTotalDivergentItems(): Int {
     return items.filter {
       it.mismatchQuantity()
     }.count()
-  }
-
-  fun getTotalCorrectCountedItems(): Int {
-    return items.filter {
-      it.correctCounted()
-    }.count()
-  }
-
-  fun getTotalItemsToCount(): Int {
-    return quantityItems - this.getTotalCountedItems()
-  }
-
-  fun isFinishedWithAllCorrect(): Boolean {
-    return quantityItems == getTotalCorrectCountedItems()
   }
 
   fun isPending() = taskStatus == TaskStatus.PENDING

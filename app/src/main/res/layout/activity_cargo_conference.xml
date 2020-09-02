@@ -21,17 +21,36 @@
     android:padding="0dp"
     android:visibility="visible" />
 
-  <br.com.trivio.wms.components.custom.ProgressBar
-    android:id="@+id/progress_bar"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/top_bar"
-    android:background="@color/colorPrimary"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_half"
-    app:label_below_bar="CFA2323 - 2 de 4 itens"
-    app:layout_constraintTop_toBottomOf="@id/top_bar" />
+    android:background="@color/colorPrimaryDark"
+    android:orientation="horizontal">
+
+    <br.com.trivio.wms.components.custom.ProgressBar
+      android:padding="@dimen/padding_half"
+      android:id="@+id/progress_bar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/top_bar"
+      android:layout_weight="3"
+      android:background="@color/colorPrimary"
+      android:gravity="center"
+      android:orientation="vertical"
+      app:label_below_bar="CFA2323 - 2 de 4 itens texto longo para textar a te onde vai a coisa"
+      app:layout_constraintTop_toBottomOf="@id/top_bar" />
+
+    <Button
+      android:id="@+id/btn_finish_arrival"
+      style="@style/button_action.ok"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_margin="5dp"
+      android:layout_weight="0"
+      android:text="@string/finish_arrival_break_line"
+      android:textSize="12sp" />
+  </LinearLayout>
 
   <LinearLayout
     android:id="@+id/main_content"

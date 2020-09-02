@@ -53,10 +53,12 @@ class CargoConferenceViewModel(
     }
   }
 
-  fun getCargoItem(gtin: String): Result<CargoConferenceItemDto> {
+  fun getCargoItem(gtin: String?): Result<CargoConferenceItemDto> {
     val value: Result<CargoConferenceDto>? = task.value
     return if (value is Result.Success) {
-      val item = value.data.items.firstOrNull {
+      val item = value.data.items
+        .filter { it.gtin != null }
+        .firstOrNull {
         it.gtin == gtin
       }
       if (item == null) {

@@ -7,6 +7,10 @@
   <declare-styleable name="ProgressBar">
     <attr name="progress" format="integer" />
     <attr name="label_below_bar" format="string" />
+    <attr name="bar_height" format="dimension" />
+    <attr name="show_label" format="boolean" />
+    <attr name="foreground_color" format="reference|color" />
+    <attr name="background_color" format="reference|color" />
   </declare-styleable>
 
   <declare-styleable name="TopBar">

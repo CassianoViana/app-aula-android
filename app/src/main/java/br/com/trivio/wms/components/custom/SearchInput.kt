@@ -3,6 +3,7 @@ package br.com.trivio.wms.components.custom
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import br.com.trivio.wms.MyAppCompatActivity
@@ -16,13 +17,28 @@ class SearchInput @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+  private var onSearchListener: (String) -> Unit = {}
+
   val text: String?
     get() = custom_input_search.text.toString()
 
-  fun addTextChangedListener(listener: (String) -> Unit) {
-    custom_input_search.addTextChangedListener {
-      listener(custom_input_search.text.toString())
+  fun addOnSearchListener(listener: (String) -> Unit) {
+    this.onSearchListener = listener;
+    custom_input_search.setOnEditorActionListener { textView, actionId, keyEvent ->
+      if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        notifySearch()
+      }
+      true
     }
+  }
+
+  private fun notifySearch() {
+    this.onSearchListener(custom_input_search.text.toString())
+  }
+
+  fun applySearch(search: String) {
+    setText(search)
+    notifySearch()
   }
 
   fun setText(search: String) {

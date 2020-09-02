@@ -16,6 +16,9 @@ class ProgressBar @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
 
+  private var foregroundBarColor: Int = 0
+  private var backgroundBarColor: Int = 0
+
   fun setText(text: String) {
     label_below_progress_bar.text = text
   }
@@ -39,6 +42,20 @@ class ProgressBar @JvmOverloads constructor(
     }
   }
 
+  fun setProgress(percentProgress: Int) {
+    val progressColors = mutableListOf<Int>()
+    for (i in 1 until 100) {
+      progressColors.add(
+        if (i <= percentProgress) {
+          this.foregroundBarColor
+        } else {
+          this.backgroundBarColor
+        }
+      )
+    }
+    setColors(progressColors)
+  }
+
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_progress_bar, this, true)
 
@@ -46,6 +63,26 @@ class ProgressBar @JvmOverloads constructor(
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.ProgressBar)
       label_below_progress_bar.text =
         styledAttributes.getString(R.styleable.ProgressBar_label_below_bar)
+      this.foregroundBarColor = styledAttributes.getColor(
+        R.styleable.ProgressBar_foreground_color,
+        getColor(context, R.color.colorLightBlueAccent)
+      )
+      this.backgroundBarColor = styledAttributes.getColor(
+        R.styleable.ProgressBar_background_color,
+        getColor(context, R.color.almost_transparent_2)
+      )
+      label_below_progress_bar.setVisible(
+        styledAttributes.getBoolean(
+          R.styleable.ProgressBar_show_label,
+          true
+        )
+      )
+      progress_line.layoutParams.height =
+        styledAttributes.getDimensionPixelSize(R.styleable.ProgressBar_bar_height, 40)
+
+      setProgress(
+        styledAttributes.getInteger(R.styleable.ProgressBar_progress, 0)
+      )
       styledAttributes.recycle()
     }
   }

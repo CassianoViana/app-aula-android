@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.Badge
+import br.com.trivio.wms.components.custom.ProgressBar
 import br.com.trivio.wms.data.dto.CargoListDto
 import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.inflateToViewHolder
@@ -41,7 +42,7 @@ class CargosListActivity : MyAppCompatActivity() {
   }
 
   private fun onSearchFilterItems() {
-    search_input_cargos.addTextChangedListener {
+    search_input_cargos.addOnSearchListener {
       adapter.cargos = viewModel.filter(it)
     }
   }
@@ -96,6 +97,7 @@ class CargosListActivity : MyAppCompatActivity() {
       private var cargoNameText: TextView = layout.findViewById(R.id.name_text)
       private var cargoRefCode: TextView = layout.findViewById(R.id.item_code)
       private var cargoStatus: Badge = layout.findViewById(R.id.cargo_status_badge)
+      private var progressBar: ProgressBar = layout.findViewById(R.id.progress_bar)
       private var quantityToCount: TextView =
         layout.findViewById(R.id.text_view_quantity_to_count)
       private var cargoDate: TextView = layout.findViewById(R.id.item_date)
@@ -111,6 +113,7 @@ class CargosListActivity : MyAppCompatActivity() {
           cargoStatus.text = cargoListDto.cargoStatusDto?.name
           cargoStatus.backgroundColor = cargoListDto.cargoStatusDto?.color
           quantityToCount.text = quantityItemsToCount.toString()
+          progressBar.setProgress(cargoListDto.progress)
           layout.setOnClickListener {
             onClickListener(this)
           }

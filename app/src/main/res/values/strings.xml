@@ -144,5 +144,6 @@
   <string name="inform_qtds">Informar quantidades</string>
   <string name="counted_units">%ss contadas:</string>
   <string name="finish_arrival">Finalizar recebimento</string>
+  <string name="finish_arrival_break_line">Finalizar\nrecebimento</string>
   <string name="unit">Unidade</string>
 </resources>

@@ -63,4 +63,8 @@ class BarcodeReader @JvmOverloads constructor(
   fun pause() {
     codeScanner.stopPreview()
   }
+
+  fun stop() {
+    pause()
+  }
 }

@@ -43,7 +43,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private var cargoConferenceTaskId: Long = 0
   private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
     override fun onClick(item: CargoConferenceItemDto) {
-      requestQuantity(item.gtin)
+      searchProductToCount(item.gtin)
     }
   })
 
@@ -104,7 +104,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         playAudio(this, R.raw.beep)
         if (!waiting) {
           waiting = true
-          barcode.setText(it)
+          barcode.applySearch(it)
           delay(1000) {
             waiting = false
             barcode_reader.start()
@@ -115,16 +115,19 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun onClickCameraOpenBarcodeReader() {
+    barcode_reader.setVisible(false)
     btn_open_camera.setOnClickListener {
       if (barcode_reader.toggleVisibility() == VISIBLE) {
         barcode_reader.start()
+      } else {
+        barcode_reader.stop()
       }
       barcode.hideKeyboard()
     }
   }
 
   private fun onClickFinish() {
-    progress_bar.setOnClickListener {
+    btn_finish_arrival.setOnClickListener {
       val intent = Intent(this, EndConferenceActivity::class.java)
       intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
       startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
@@ -180,12 +183,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun onBarcodeChangeSearchProduct() {
-    barcode.addTextChangedListener {
-      val gtin = it
-      cargoItemsAdapter.items = viewModel.filter(gtin)
-      if (gtin.length >= 5) {
-        requestQuantity(gtin)
-      }
+    barcode.addOnSearchListener { gtin ->
+      searchProductToCount(gtin)
     }
   }
 
@@ -234,9 +233,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun updateUiLabelItemsCounted(data: CargoConferenceDto) {
     val totalItems = data.quantityItems
-    val totalCountedItems = data.getTotalCountedItems()
+    val totalCountedItems = data.totalCountedItems
     val totalDivergentItems = data.getTotalDivergentItems()
-    val totalCorrectCounted = data.getTotalCorrectCountedItems()
     val statusCounting = data.getStatusCounting()
 
     val restartString = if (data.restartCounter != null && data.restartCounter > 0) {
@@ -264,17 +262,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         else -> NOT_COMPLETED
       }
 
-    val colors = data.items.map {
-      when {
-        it.correctCounted() -> SUCCESS.color
-        it.mismatchQuantity() -> ERROR.color
-        else -> NOT_COMPLETED.color
-      }
-    }
-
     progress_bar.setStatus(progressStatus)
     progress_bar.setText(labelStatusCounting)
-    progress_bar.setColors(colors.map { getColor(it) })
+    progress_bar.setProgress(data.getPercentProgress())
   }
 
   private fun updateBtnFinishTask(data: CargoConferenceDto) {
@@ -287,7 +277,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     viewModel.loadCargoConferenceTask(cargoConferenceTaskId)
   }
 
-  private fun requestQuantity(gtin: String) {
+  private fun searchProductToCount(gtin: String) {
     lifecycleScope.launch {
       onResult(viewModel.getCargoItem(gtin),
         onSuccess = {

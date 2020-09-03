@@ -29,14 +29,18 @@ fun MyAppCompatActivity.createTextView(value: String): TextView {
 
 fun MyAppCompatActivity.createInputNumber(
   value: BigDecimal? = null,
-  label: String? = null
+  labelBeforeInput: String? = null,
+  labelAfterInput: String? = null
 ): NumberInput {
   val numberInput = NumberInput(this)
   value?.let {
     numberInput.setValue(it.toString())
   }
-  label?.let {
-    numberInput.setLabel(label)
+  labelBeforeInput?.let {
+    numberInput.setLabel(labelBeforeInput)
+  }
+  labelAfterInput?.let {
+    numberInput.setLabelAfterInput(labelAfterInput)
   }
   return numberInput
 }

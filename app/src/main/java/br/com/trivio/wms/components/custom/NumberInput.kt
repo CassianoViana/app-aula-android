@@ -31,6 +31,7 @@ class NumberInput @JvmOverloads constructor(
     LayoutInflater.from(context).inflate(R.layout.custom_number_input, this, true)
 
     custom_number_input_label.setVisible(false)
+    custom_number_input_label_after_input.setVisible(false)
     icon_add.setOnClickListener {
       this.add(1)
     }
@@ -62,6 +63,11 @@ class NumberInput @JvmOverloads constructor(
   fun setLabel(label: String) {
     custom_number_input_label.setVisible(true)
     custom_number_input_label.text = label
+  }
+
+  fun setLabelAfterInput(label: String) {
+    custom_number_input_label_after_input.setVisible(true)
+    custom_number_input_label_after_input.text = label
   }
 
   fun setValue(value: BigDecimal?) {

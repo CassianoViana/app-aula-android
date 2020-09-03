@@ -213,7 +213,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     if (cargoConferenceDto.taskStatus == TaskStatus.DONE) {
       updateUiDisableControls()
     } else {
-      updateBtnFinishTask(cargoConferenceDto)
       updateKeyboardStatusCargo(cargoConferenceDto)
     }
     endLoading()
@@ -230,7 +229,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun updateUiLabelItemsCounted(data: CargoConferenceDto) {
-    val totalItems = data.quantityItems
+    data.quantityItems
     val totalCountedItems = data.totalCountedItems
     val totalDivergentItems = data.getTotalDivergentItems()
     val statusCounting = data.getStatusCounting()
@@ -265,11 +264,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     progress_bar.setProgress(data.getPercentProgress())
   }
 
-  private fun updateBtnFinishTask(data: CargoConferenceDto) {
-    val statusCounting = data.getStatusCounting()
-    /*btn_finish_conference.setVisible(statusCounting == STATUS_COUNTING_ALL_COUNTED)*/
-  }
-
   private fun loadCargoConferenceTask() {
     startLoading()
     viewModel.loadCargoConferenceTask(cargoConferenceTaskId)
@@ -292,25 +286,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun openCountItemDialog(item: CargoConferenceItemDto) {
 
     val totalQuantityCounted = item.countedQuantity?.toInt()
-    var unitName = getString(R.string.unit)
-    item.storageUnit?.let {
-      unitName = it.description
-    }
-    val countedQtdNumberInput =
-      createInputNumber(BigDecimal.ZERO, getString(R.string.counted_units, unitName))
-
-    val viewsToAdd = mutableListOf<View>()
-    if (totalQuantityCounted != null) {
-      if (totalQuantityCounted > 0) {
-        val labelWithCountedQtd =
-          createTextView(
-            getString(
-              R.string.already_conted_x_unities,
-              totalQuantityCounted,
-              unitName.toLowerCase()
-            )
-          )
-        viewsToAdd.add(labelWithCountedQtd)
+    var unitCode: String? = getString(R.string.unit_code)
+    item.storageUnit?.let { storageUnitDto ->
+      storageUnitDto.code?.let { code ->
+        unitCode = code
       }
     }
     prompt(
@@ -318,11 +297,33 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       secondTitle = item.name,
       inputValue = totalQuantityCounted,
       hint = "0",
-      inputView = countedQtdNumberInput,
-      viewsToAdd = viewsToAdd,
+      inputView = createInputNumber(BigDecimal.ZERO, getString(R.string.add_two_dots), unitCode),
+      viewsBeforeInput = listOf(inflate<View>(R.layout.product_codes).apply {
+        this.findViewById<TextView>(R.id.sku_text).text = item.sku
+        this.findViewById<TextView>(R.id.gtin_text).text = coalesce(item.gtin, R.string.no_gtin)
+      }),
+      viewsAfterInput = mutableListOf<View>().apply {
+        totalQuantityCounted?.let { qtd ->
+          if (qtd > 0) {
+            val labelWithCountedQtd =
+              createTextView(
+                getString(
+                  R.string.already_conted_x_unities,
+                  qtd,
+                  unitCode
+                )
+              )
+            this.add(labelWithCountedQtd)
+          }
+        }
+      },
       negativeButtonText = getString(R.string.inform_damage),
       positiveAction = fun(dialog: Dialog, _) {
-        countedQtdNumberInput.value?.let { quantity ->
+        createInputNumber(
+          BigDecimal.ZERO,
+          getString(R.string.add_two_dots),
+          unitCode
+        ).value?.let { quantity ->
           viewModel.countItem(item, quantity)
           resetReadingState()
           dialog.hide()
@@ -351,8 +352,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       damageCountInput.setValue(it.quantity)
     }
 
-
-    // Quantos itens foram quebrados?
     prompt(
       firstTitle = getString(R.string.how_many_items_are_damaged),
       secondTitle = item.name,
@@ -360,7 +359,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       positiveAction = { _, _: String ->
         damageDto.quantity = damageCountInput.value
 
-        // Descreva o que aconteceu
         prompt(
           firstTitle = getString(R.string.describe_damage),
           secondTitle = getString(R.string.describe_the_damage_template, item.name),

@@ -28,13 +28,6 @@
         android:textColor="@color/colorDark"
         android:textSize="@dimen/medium_text" />
 
-      <TextView
-        android:id="@+id/gtin_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_barcode_black_18dp"
-        android:text="71231231231"
-        android:textColor="@color/lightGrey" />
 
       <TextView
         android:id="@+id/sku_text"
@@ -42,6 +35,14 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/pound_box_black_18_dp"
         android:text="12312"
+        android:textColor="@color/lightGrey" />
+
+      <TextView
+        android:id="@+id/gtin_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_barcode_black_18dp"
+        android:text="71231231231"
         android:textColor="@color/lightGrey" />
 
       <TextView

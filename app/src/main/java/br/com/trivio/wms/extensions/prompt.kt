@@ -20,14 +20,16 @@ fun MyAppCompatActivity.prompt(
   inputValue: Any? = null,
   hint: String = "0,00",
   inputView: View? = null,
-  viewsToAdd: List<View> = listOf()
+  viewsBeforeInput: List<View> = listOf(),
+  viewsAfterInput: List<View> = listOf()
 ): Dialog {
   val layout = inflate<View>(R.layout.custom_prompt)
   val confirmButton = layout.findViewById<Button>(R.id.positive_action)
   val negativeButton = layout.findViewById<Button>(R.id.negative_action)
   val editText = layout.findViewById<EditText>(R.id.input_value)
   val btnClose = layout.findViewById<ImageView>(R.id.btn_icon_x)
-  val layoutAddViews = layout.findViewById<LinearLayout>(R.id.more_views_to_add)
+  val layoutBeforeInput = layout.findViewById<LinearLayout>(R.id.views_to_add_before_input)
+  val layoutAfterInput = layout.findViewById<LinearLayout>(R.id.views_to_add_after_input)
 
   if (inputView != null) {
     editText.setVisible(false)
@@ -71,7 +73,8 @@ fun MyAppCompatActivity.prompt(
     dialog.hide()
   }
 
-  viewsToAdd.forEach { layoutAddViews.addView(it) }
+  viewsBeforeInput.forEach { layoutBeforeInput.addView(it) }
+  viewsAfterInput.forEach { layoutAfterInput.addView(it) }
 
   var editToShowKeyboard: EditText = editText
   if (inputView != null) {

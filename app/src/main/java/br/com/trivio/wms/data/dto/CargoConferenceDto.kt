@@ -60,29 +60,20 @@ class CargoConferenceDto(
     const val STATUS_COUNTING_SOME_COUNTED = 2
   }
 
-  fun getStatusCounting(): Int {
-    return when {
-      progress == 100 -> {
-        STATUS_COUNTING_ALL_COUNTED
-      }
-      progress > 0 -> {
-        STATUS_COUNTING_SOME_COUNTED
-      }
-      else -> {
-        STATUS_COUNTING_NONE_COUNTED
-      }
+  fun getTotalDivergentItems() = items.filter { it.mismatchQuantity() }.count()
+  fun isPending() = taskStatus == TaskStatus.PENDING
+  fun getPercentProgress() = progress
+  fun isValid(): Boolean = totalInvalid == 0 && totalCountedItems > 0
+  fun getStatusCounting() = when {
+    progress == 100 -> {
+      STATUS_COUNTING_ALL_COUNTED
+    }
+    progress > 0 -> {
+      STATUS_COUNTING_SOME_COUNTED
+    }
+    else -> {
+      STATUS_COUNTING_NONE_COUNTED
     }
   }
 
-  fun getPercentProgress(): Int {
-    return progress
-  }
-
-  fun getTotalDivergentItems(): Int {
-    return items.filter {
-      it.mismatchQuantity()
-    }.count()
-  }
-
-  fun isPending() = taskStatus == TaskStatus.PENDING
 }

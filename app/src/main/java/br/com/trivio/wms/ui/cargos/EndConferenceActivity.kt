@@ -71,18 +71,18 @@ class EndConferenceActivity : MyAppCompatActivity() {
     driver_name_info.text = data.driverName
     final_message.text = getString(
       when {
-        data.totalInvalid == 0 -> R.string.all_correct_bono_counted
+        data.isValid() -> R.string.all_correct_bono_counted
         else -> R.string.not_all_correct_bono_counted
       }
     )
     icon_finish_counting.setImageResource(
       when {
-        data.totalInvalid == 0 -> Status.SUCCESS.bigIcon
+        data.isValid() -> Status.SUCCESS.bigIcon
         else -> Status.ERROR.bigIcon
       }
     )
-    layout_success.setVisible(data.totalInvalid == 0)
-    layout_fail.setVisible(data.totalInvalid > 0)
+    layout_success.setVisible(data.isValid())
+    layout_fail.setVisible(!data.isValid())
   }
 
   private fun loadCargoDetails() {

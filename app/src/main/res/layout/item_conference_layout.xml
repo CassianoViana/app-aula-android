@@ -44,22 +44,32 @@
         android:text="12312"
         android:textColor="@color/lightGrey" />
 
-
       <TextView
-        android:id="@+id/storage_unit_text"
+        android:id="@+id/counting_status_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_baseline_fitness_center_24"
-        android:text="12312"
-        android:textColor="@color/lightGrey" />
+        android:drawableLeft="@drawable/ic_baseline_check_circle_18"
+        android:drawableTint="@color/success"
+        android:text="@string/counting_ok"
+        android:textColor="@color/success" />
+
+      <TextView
+        android:id="@+id/counting_status_divergent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_error_18"
+        android:drawableTint="@color/error"
+        android:text="@string/counting_divergent"
+        android:textColor="@color/error" />
 
       <TextView
         android:id="@+id/damaged_qtd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_baseline_warning_24"
-        android:text="12312"
-        android:textColor="@color/lightGrey" />
+        android:drawableTint="@color/error"
+        android:text="0 itens avariados"
+        android:textColor="@color/error" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,11 +77,6 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center_vertical"
       android:orientation="horizontal">
-
-      <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
 
       <LinearLayout
         android:layout_width="wrap_content"
@@ -89,11 +94,13 @@
           android:textSize="@dimen/large_text" />
 
         <TextView
-          android:textAlignment="center"
-          android:id="@+id/label_items"
+          android:id="@+id/storage_unit_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/items" />
+          android:text="CX"
+          android:textColor="@color/colorPrimaryDark"
+          android:textSize="@dimen/medium_large_text" />
+
       </LinearLayout>
     </LinearLayout>
 

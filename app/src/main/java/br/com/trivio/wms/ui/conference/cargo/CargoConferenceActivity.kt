@@ -8,7 +8,6 @@ import android.text.InputType
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -43,7 +42,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private var cargoConferenceTaskId: Long = 0
   private var cargoItemsAdapter = CargoItemsAdapter(object : CargoItemsAdapter.OnClickCargoItem {
     override fun onClick(item: CargoConferenceItemDto) {
-      searchProductToCount(item.gtin)
+      openCountItemDialog(item)
     }
   })
 
@@ -225,9 +224,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun updateKeyboardStatusCargo(dto: CargoConferenceDto) {
-    val allCounted = dto.getStatusCounting() != STATUS_COUNTING_ALL_COUNTED
-    if (allCounted) {
-
+    if (dto.getStatusCounting() == STATUS_COUNTING_ALL_COUNTED) {
+      showMessageSuccess(R.string.all_items_are_counted)
     }
   }
 
@@ -394,24 +392,20 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
     class CargoItemCountViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
       private var productName = view.findViewById<TextView>(R.id.product_name)
-      private var icon = view.findViewById<ImageView>(R.id.icon)
       private var gtin = view.findViewById<TextView>(R.id.gtin_text)
       private var sku = view.findViewById<TextView>(R.id.sku_text)
       private var storageUnit = view.findViewById<TextView>(R.id.storage_unit_text)
       private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
       private var damagedQtd = view.findViewById<TextView>(R.id.damaged_qtd)
-      private var labelItems = view.findViewById<TextView>(R.id.label_items)
+      private var countingOkLabel = view.findViewById<TextView>(R.id.counting_status_ok)
+      private var countingNotOkLabel = view.findViewById<TextView>(R.id.counting_status_divergent)
       fun bind(
         item: CargoConferenceItemDto,
         onClickCargoItem: OnClickCargoItem
       ) {
-        val status = when {
-          item.correctCounted() -> SUCCESS
-          item.mismatchQuantity() -> ERROR
-          else -> NOT_COMPLETED
-        }
-        icon.setVisible(status.icon != null)
-        countedQtd.setVisible(status.icon != null)
+        countingNotOkLabel.setVisible(item.mismatchQuantity())
+        countingOkLabel.setVisible(!item.mismatchQuantity())
+        countedQtd.setVisible(item.countedQuantity != null)
         damagedQtd.setVisible(item.damage != null)
         storageUnit.setVisible(item.storageUnit != null)
 
@@ -423,22 +417,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           storageUnit.text = it.code
         }
 
-        labelItems.text = view.context.getString(
-          if (status.icon == null) {
-            R.string.not_counted
-          } else {
-            R.string.items
-          }
-        )
-        when (status) {
-          NOT_COMPLETED -> {
-            icon.clearColorFilter()
-          }
-          else -> {
-            icon.setImageResource(status.icon!!)
-            icon.setColorFilter(view.context.getColor(status.color))
-          }
-        }
         gtin.text = coalesce(item.gtin, R.string.no_gtin)
         productName.text = item.name
         sku.text = coalesce(item.sku, R.string.no_sku)

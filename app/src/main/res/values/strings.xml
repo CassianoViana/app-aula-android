@@ -146,4 +146,7 @@
   <string name="finish_arrival">Finalizar recebimento</string>
   <string name="finish_arrival_break_line">Finalizar\nrecebimento</string>
   <string name="unit">Unidade</string>
+  <string name="all_items_are_counted">Todos os itens foram contados</string>
+    <string name="counting_ok">Contagem conforme</string>
+  <string name="counting_divergent">Contagem divergente</string>
 </resources>

@@ -55,8 +55,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
     cargoConferenceTaskId = intent.getLongExtra(CARGO_TASK_ID, 0)
     cargo_items_recycler_view.setAdapter(cargoItemsAdapter)
-    progress_bar.setText(getString(R.string.loading_string))
-
     observeViewModel()
     onBarcodeChangeSearchProduct()
     onRefreshLoadData()
@@ -207,7 +205,12 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun updateUi(cargoConferenceDto: CargoConferenceDto) {
-    top_bar.setText(getString(R.string.cargo_conference_number, cargoConferenceDto.taskId))
+    top_bar.setText(
+      getString(
+        R.string.cargo_conference_number,
+        cargoConferenceDto.cargoReferenceCode
+      )
+    )
     cargoItemsAdapter.items = cargoConferenceDto.items
     updateUiLabelItemsCounted(cargoConferenceDto)
     if (cargoConferenceDto.taskStatus == TaskStatus.DONE) {
@@ -228,45 +231,47 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun updateUiLabelItemsCounted(data: CargoConferenceDto) {
-    data.quantityItems
-    val totalCountedItems = data.totalCountedItems
-    val totalDivergentItems = data.getTotalDivergentItems()
-    val statusCounting = data.getStatusCounting()
-
-    val restartString = if (data.restartCounter != null && data.restartCounter > 0) {
-      getString(R.string.counting_number, data.restartCounter + 1)
-    } else {
-      ""
-    }
-    val labelStatusCounting =
-      getString(
-        R.string.truck_label__one_from_max_counted,
-        "${data.cargoReferenceCode} $restartString",
-        data.truckLabel,
-        totalCountedItems,
-        data.items.size
-      )
-
-    val progressStatus =
-      when (statusCounting) {
+  private fun updateUiLabelItemsCounted(conferenceDto: CargoConferenceDto) {
+    count_progress_bar.setProgress(conferenceDto.getPercentProgress())
+    count_progress_bar.setStatus(
+      when (conferenceDto.getStatusCounting()) {
         STATUS_COUNTING_NONE_COUNTED -> NOT_COMPLETED
         STATUS_COUNTING_ALL_COUNTED ->
           when {
-            totalDivergentItems > 0 -> ERROR
+            !conferenceDto.isValid() -> ERROR
             else -> SUCCESS
           }
         else -> NOT_COMPLETED
       }
-
-    progress_bar.setStatus(progressStatus)
-    progress_bar.setText(labelStatusCounting)
-    progress_bar.setProgress(data.getPercentProgress())
+    )
+    count_progress_bar.setLabelTop(
+      getString(
+        R.string.progress_counting,
+        conferenceDto.totalCountedItems,
+        conferenceDto.quantityItems,
+        (conferenceDto.restartCounter ?: 0).plus(1)
+      )
+    )
+    count_progress_bar.setLabelBelow(
+      getString(
+        R.string.driver_and_truck_break_line,
+        conferenceDto.driverName,
+        conferenceDto.truckLabel
+      )
+    )
   }
 
   private fun loadCargoConferenceTask() {
     startLoading()
     viewModel.loadCargoConferenceTask(cargoConferenceTaskId)
+  }
+
+  override fun startLoading(loadingStringId: Int?) {
+    cargo_items_recycler_view.setLoading(true)
+  }
+
+  override fun endLoading() {
+    cargo_items_recycler_view.setLoading(false)
   }
 
   private fun searchProductToCount(gtin: String) {
@@ -292,12 +297,17 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         unitCode = code
       }
     }
+    val qtdInputNumber = createInputNumber(
+      BigDecimal.ZERO,
+      getString(R.string.add_two_dots),
+      unitCode
+    )
     prompt(
       firstTitle = getString(R.string.inform_qtds),
       secondTitle = item.name,
       inputValue = totalQuantityCounted,
       hint = "0",
-      inputView = createInputNumber(BigDecimal.ZERO, getString(R.string.add_two_dots), unitCode),
+      inputView = qtdInputNumber,
       viewsBeforeInput = listOf(inflate<View>(R.layout.product_codes).apply {
         this.findViewById<TextView>(R.id.sku_text).text = item.sku
         this.findViewById<TextView>(R.id.gtin_text).text = coalesce(item.gtin, R.string.no_gtin)
@@ -319,12 +329,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       },
       negativeButtonText = getString(R.string.inform_damage),
       positiveAction = fun(dialog: Dialog, _) {
-        createInputNumber(
-          BigDecimal.ZERO,
-          getString(R.string.add_two_dots),
-          unitCode
-        ).value?.let { quantity ->
+        qtdInputNumber.value?.let { quantity ->
           viewModel.countItem(item, quantity)
+          item.count(quantity)
+          cargoItemsAdapter.notifyDataSetChanged()
           resetReadingState()
           dialog.hide()
         }
@@ -334,7 +342,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       },
       closeAction = {
         resetReadingState()
-        showMessageInfo(R.string.cancelled_operation)
       }
     )
   }
@@ -347,7 +354,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun openReportDamageDialog(item: CargoConferenceItemDto) {
 
     val damageDto = item.damage ?: DamageDto()
-    val damageCountInput = createInputNumber()
+    val damageCountInput = createInputNumber(allowNegative = false)
     item.damage?.let {
       damageCountInput.setValue(it.quantity)
     }
@@ -366,6 +373,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
             damageDto.description = value
             damageDto.cargoItemId = item.cargoItemId
             viewModel.registerDamage(damageDto)
+            this.loadCargoConferenceTask()
           },
           inputType = InputType.TYPE_CLASS_TEXT,
           inputValue = damageDto.description,
@@ -397,12 +405,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       private var damagedQtd = view.findViewById<TextView>(R.id.damaged_qtd)
       private var countingOkLabel = view.findViewById<TextView>(R.id.counting_status_ok)
       private var countingNotOkLabel = view.findViewById<TextView>(R.id.counting_status_divergent)
+      private var countingPendingLabel = view.findViewById<TextView>(R.id.counting_status_pending)
       fun bind(
         item: CargoConferenceItemDto,
         onClickCargoItem: OnClickCargoItem
       ) {
-        countingNotOkLabel.setVisible(item.mismatchQuantity())
-        countingOkLabel.setVisible(!item.mismatchQuantity())
+        countingNotOkLabel.setVisible(item.isCountedWithDivergences())
+        countingOkLabel.setVisible(item.isCountedCorrectly())
+        countingPendingLabel.setVisible(!item.isCounted())
         countedQtd.setVisible(item.countedQuantity != null)
         damagedQtd.setVisible(item.damage != null)
         storageUnit.setVisible(item.storageUnit != null)

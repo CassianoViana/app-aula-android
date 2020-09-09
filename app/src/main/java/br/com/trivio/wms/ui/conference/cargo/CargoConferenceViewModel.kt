@@ -45,10 +45,9 @@ class CargoConferenceViewModel(
     item: CargoConferenceItemDto,
     quantity: BigDecimal
   ) {
-    item.countedQuantity = quantity
     viewModelScope.launch {
       cargoItem.value = asyncRequest {
-        cargoConferenceRepository.countItem(item)
+        cargoConferenceRepository.countItem(item, quantity)
       }
     }
   }
@@ -59,8 +58,8 @@ class CargoConferenceViewModel(
       val item = value.data.items
         .filter { it.gtin != null }
         .firstOrNull {
-        it.gtin == gtin
-      }
+          it.gtin == gtin
+        }
       if (item == null) {
         Result.Null(item)
       } else {

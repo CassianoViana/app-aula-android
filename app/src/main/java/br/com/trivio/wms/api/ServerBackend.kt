@@ -14,6 +14,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.io.IOException
+import java.math.BigDecimal
 
 class ServerBackend {
   private lateinit var api: Api
@@ -137,8 +138,8 @@ class ServerBackend {
     return executeAndReturn(api.cargosPendingToOperatorCheck)
   }
 
-  fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto) {
-    return execute(api.countCargoItem(cargoConferenceItemDto))
+  fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto, quantity: BigDecimal) {
+    return execute(api.countCargoItem(cargoConferenceItemDto.id, quantity))
   }
 
   fun registerDamage(damageDto: DamageDto) {

@@ -18,6 +18,7 @@
   <color name="success">#009648</color>
   <color name="yellow_lemon">#08FF00</color>
   <color name="error">#FF0000</color>
+  <color name="warning">#FF9800</color>
   <color name="info">#006AEC</color>
   <color name="colorBlueAccent">#006AEC</color>
   <color name="colorLightBlueAccent">#0097ff</color>

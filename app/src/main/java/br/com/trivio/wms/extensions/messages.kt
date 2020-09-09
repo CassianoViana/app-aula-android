@@ -1,9 +1,9 @@
 package br.com.trivio.wms.extensions
 
 import android.content.Context
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.setPadding
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.Result
@@ -20,10 +20,12 @@ fun MyAppCompatActivity.showMessage(
 ) {
   val message = Toast.makeText(this, text, length)
   colorResource.let {
-    message.view.findViewById<TextView>(android.R.id.message)
-      .setTextColor(getColor(R.color.colorWhite))
-    message.view.setBackgroundColor(getColor(colorResource))
-    message.view.setPadding(15)
+    message.view = inflate<ViewGroup>(R.layout.toast).apply {
+      this.findViewById<TextView>(R.id.toast_message).apply {
+        this.background.setTint(getColor(colorResource))
+        this.text = text
+      }
+    }
   }
   message.show()
 }

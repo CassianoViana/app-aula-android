@@ -1,10 +1,12 @@
 package br.com.trivio.wms
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Handler
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -45,6 +47,24 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
       ActivityCompat.requestPermissions(this, arrayOf(camera), 100)
     }
     return permitted
+  }
+
+  open fun startLoading(loadingStringId: Int? = null) {
+    getProgressBarLayout()?.let { layout ->
+      layout.visibility = View.VISIBLE
+      loadingStringId?.let {
+        layout.findViewById<TextView>(R.id.loading_text).text = getString(it)
+      }
+    }
+  }
+
+  open fun endLoading() {
+    getProgressBarLayout()?.visibility = View.GONE
+  }
+
+  @SuppressLint("WrongViewCast")
+  fun getProgressBarLayout(): View? {
+    return findViewById(R.id.layout_progress_bar)
   }
 }
 

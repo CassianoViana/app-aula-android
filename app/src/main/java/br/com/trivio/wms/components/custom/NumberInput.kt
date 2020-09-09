@@ -16,6 +16,8 @@ class NumberInput @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+  var allowNegative: Boolean = true
+
   var textSize: Float
     get() {
       return custom_number_input.textSize
@@ -51,6 +53,9 @@ class NumberInput @JvmOverloads constructor(
   private fun add(quantitySum: Int) {
     val value = custom_number_input.text.toString().coalesce("0")
     val sum = value.toInt() + quantitySum
+    if (sum < 0 && !this.allowNegative) {
+      return
+    }
     setValue(sum.toString())
   }
 

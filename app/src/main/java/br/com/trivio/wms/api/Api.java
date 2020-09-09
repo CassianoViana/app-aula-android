@@ -1,9 +1,9 @@
 package br.com.trivio.wms.api;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.com.trivio.wms.data.dto.CargoConferenceDto;
-import br.com.trivio.wms.data.dto.CargoConferenceItemDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.DamageDto;
 import br.com.trivio.wms.data.dto.TaskDto;
@@ -55,8 +55,8 @@ interface Api {
   @GET("cargoConference/pendingToOperatorCheck")
   Call<List<CargoListDto>> getCargosPendingToOperatorCheck();
 
-  @POST("cargoConference/countItem")
-  Call<ResponseBody> countCargoItem(@Body CargoConferenceItemDto item);
+  @POST("cargoConference/countItem/{cargoConferenceTaskItemId}/{quantity}")
+  Call<ResponseBody> countCargoItem(@Path("cargoConferenceTaskItemId") Long itemId, @Path("quantity") BigDecimal quantity);
 
   @POST("damage/registerDamage")
   Call<ResponseBody> registerDamage(@Body DamageDto item);

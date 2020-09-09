@@ -50,6 +50,7 @@ class SearchInput @JvmOverloads constructor(
   }
 
   fun reset() {
+    custom_input_search.requestFocus()
     custom_input_search.clearComposingText()
     custom_input_search.setKeyboardVisible(context, false)
   }

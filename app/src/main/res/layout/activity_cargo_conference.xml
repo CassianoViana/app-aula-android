@@ -28,8 +28,7 @@
     android:orientation="horizontal">
 
     <br.com.trivio.wms.components.custom.ProgressBar
-      android:padding="@dimen/padding_half"
-      android:id="@+id/progress_bar"
+      android:id="@+id/count_progress_bar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/top_bar"
@@ -37,8 +36,10 @@
       android:background="@color/colorPrimary"
       android:gravity="center"
       android:orientation="vertical"
-      app:label_below_bar="CFA2323 - 2 de 4 itens texto longo para textar a te onde vai a coisa"
-      app:layout_constraintTop_toBottomOf="@id/top_bar" />
+      android:padding="@dimen/padding_half"
+      app:label_below_bar=""
+      app:layout_constraintTop_toBottomOf="@id/top_bar"
+      app:show_label_top="true" />
 
     <Button
       android:id="@+id/btn_finish_arrival"
@@ -74,15 +75,12 @@
         android:textSize="@dimen/large_text"
         app:hint="@string/product_code" />
 
-      <ImageButton
+      <ImageView
         android:id="@+id/btn_open_camera"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
-        android:paddingRight="@dimen/padding_half"
-        android:src="@drawable/ic_barcode_white_24dp"
-        android:tint="@color/colorWhite"
-        tools:ignore="RtlSymmetry" />
+        android:src="@drawable/ic_barcode_white_24dp" />
     </LinearLayout>
 
 
@@ -91,10 +89,4 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
   </LinearLayout>
-
-  <include
-    layout="@layout/progress_bar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone" />
 </LinearLayout>

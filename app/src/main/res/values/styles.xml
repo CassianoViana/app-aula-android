@@ -42,10 +42,10 @@
 
   <style name="TagTextWhite">
     <item name="android:background">@drawable/rounded</item>
-    <item name="android:paddingLeft">5dp</item>
-    <item name="android:paddingRight">5dp</item>
-    <item name="android:paddingTop">3dp</item>
-    <item name="android:paddingBottom">3dp</item>
+    <item name="android:paddingLeft">3dp</item>
+    <item name="android:paddingRight">3dp</item>
+    <item name="android:paddingTop">2dp</item>
+    <item name="android:paddingBottom">2dp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/colorWhite</item>
   </style>
@@ -88,19 +88,12 @@
     <item name="android:textColor">@color/colorWhite</item>
   </style>
 
-  <style name="light_red_rounded">
-    <item name="android:background">@drawable/light_red_rounded</item>
-    <item name="android:textAllCaps">true</item>
-    <item name="android:textColor">@color/colorWhite</item>
-  </style>
-
   <style name="login_icon">
     <item name="android:padding">10dp</item>
     <item name="android:layout_gravity">center</item>
   </style>
 
   <style name="button_action">
-    <item name="android:layout_margin">@dimen/margin</item>
     <item name="android:layout_weight">1</item>
     <item name="android:background">@drawable/button_white_bordered</item>
     <item name="android:drawablePadding">12dp</item>
@@ -111,6 +104,10 @@
 
   <style name="button_action.cancel">
     <item name="android:drawableLeft">@drawable/ic_close_black_24dp</item>
+  </style>
+
+  <style name="button_action.danger">
+    <item name="android:background">@drawable/light_red_rounded</item>
   </style>
 
   <style name="button_action.back">

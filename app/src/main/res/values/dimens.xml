@@ -17,4 +17,5 @@
   <dimen name="login_icon_size">50dp</dimen>
   <dimen name="item_list_margin">5dp</dimen>
   <dimen name="topbar_text_size">17sp</dimen>
+  <dimen name="message_text_size">16sp</dimen>
 </resources>

@@ -62,15 +62,23 @@
         android:drawableTint="@color/error"
         android:text="@string/counting_divergent"
         android:textColor="@color/error" />
+      <TextView
+        android:id="@+id/counting_status_pending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_access_time_18"
+        android:drawableTint="@color/colorPrimaryDark"
+        android:text="@string/counting_pending"
+        android:textColor="@color/colorPrimaryDark" />
 
       <TextView
         android:id="@+id/damaged_qtd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_baseline_warning_24"
-        android:drawableTint="@color/error"
+        android:drawableLeft="@drawable/ic_baseline_broken_image_18"
+        android:drawableTint="@color/warning"
         android:text="0 itens avariados"
-        android:textColor="@color/error" />
+        android:textColor="@color/warning" />
     </LinearLayout>
 
     <LinearLayout

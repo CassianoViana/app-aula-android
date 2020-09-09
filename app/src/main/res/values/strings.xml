@@ -1,6 +1,7 @@
 <resources>
   <string name="app_name">Wms</string>
   <string name="loading_app">Iniciando aplicativo</string>
+  <string name="loading_store">Carregando armazém...</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
   <string name="nav_header_title">Siad</string>
@@ -75,8 +76,6 @@
   <string name="counted_success">Contagem realizada com sucesso. Leia o próximo produto.</string>
   <string name="filter_per_code">Filtrar por código</string>
   <string name="please_check_the_quantity">Verifique a quantidade informada</string>
-  <string name="truck_label__one_from_max_counted">%s - %s - %d de %d</string>
-  <string name="counting_number">(%dª contagem)</string>
   <string name="counted_qtd">Quantidade contada</string>
   <string name="counted_qtd_abbreviated">Qtd contada</string>
   <string name="items">itens</string>
@@ -131,7 +130,7 @@
   <string name="list_pending_cargos">Listar cargas pententes</string>
   <string name="the_counting_was_restarted">A contagem foi reiniciada</string>
   <string name="the_counting_was_finished">A contagem foi finalizada</string>
-  <string name="cargo_conference_number">Conferência de carga %d</string>
+  <string name="cargo_conference_number">Conferência de carga %s</string>
   <string name="the_counting_was_finished_with_divergences">A contagem foi finalizada com divergências</string>
   <string name="not_counted">Não\ncontado</string>
   <string name="not_found_product_with_gtin">Produto não encontrado para o GTIN %s</string>
@@ -149,5 +148,11 @@
   <string name="all_items_are_counted">Todos os itens foram contados</string>
   <string name="counting_ok">Contagem conforme</string>
   <string name="counting_divergent">Contagem divergente</string>
+  <string name="counting_pending">Contagem pendente</string>
   <string name="add_two_dots">Adicionar:</string>
+  <string name="progress_counting">%d de %d (%dª contagem)</string>
+  <string name="driver_and_truck_break_line">%s - %s</string>
+  <string name="loading__">Carregando...</string>
+  <string name="restarting_count">Reiniciando contagem...</string>
+  <string name="finishing_count">Finalizando contagem...</string>
 </resources>

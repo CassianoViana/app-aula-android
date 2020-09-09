@@ -19,8 +19,12 @@ class ProgressBar @JvmOverloads constructor(
   private var foregroundBarColor: Int = 0
   private var backgroundBarColor: Int = 0
 
-  fun setText(text: String) {
+  fun setLabelBelow(text: String) {
     label_below_progress_bar.text = text
+  }
+
+  fun setLabelTop(text: String) {
+    label_top_progress_bar.text = text
   }
 
   fun setOnClickListener(onClickListener: () -> Unit) {
@@ -32,7 +36,7 @@ class ProgressBar @JvmOverloads constructor(
   fun setStatus(status: Status): Status {
     status.icon?.let { icon_finish_bar.setImageResource(it) }
     icon_finish_bar.background.setTint(getColor(context, status.color))
-    icon_finish_bar.setVisible(status.icon != null)
+    icon_finish_bar.setVisible(status != Status.NOT_COMPLETED)
     return status
   }
 
@@ -58,6 +62,7 @@ class ProgressBar @JvmOverloads constructor(
 
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_progress_bar, this, true)
+    icon_finish_bar.setVisible(false)
 
     attrs?.let {
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.ProgressBar)
@@ -75,6 +80,12 @@ class ProgressBar @JvmOverloads constructor(
         styledAttributes.getBoolean(
           R.styleable.ProgressBar_show_label,
           true
+        )
+      )
+      label_top_progress_bar.setVisible(
+        styledAttributes.getBoolean(
+          R.styleable.ProgressBar_show_label_top,
+          false
         )
       )
       progress_line.layoutParams.height =

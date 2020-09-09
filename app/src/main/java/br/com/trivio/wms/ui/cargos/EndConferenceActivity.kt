@@ -93,6 +93,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
 
   private fun listenClickEvents() {
     btn_restart_counting.setOnClickListener {
+      startLoading(R.string.restarting_count)
       cargoConferenceViewModel.restartCounting(taskId) { result ->
         onResult(
           result,
@@ -107,6 +108,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
       }
     }
     btn_finish_with_divergences.setOnClickListener {
+      startLoading(R.string.finishing_count)
       cargoConferenceViewModel.finishCounting(taskId) { result ->
         onResult(
           result,
@@ -118,6 +120,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
       }
     }
     btn_finish_counting.setOnClickListener {
+      startLoading(R.string.finishing_count)
       cargoConferenceViewModel.finishCounting(taskId) {
         onResult(it, onSuccess = {
           showMessageSuccess(R.string.the_counting_was_finished)

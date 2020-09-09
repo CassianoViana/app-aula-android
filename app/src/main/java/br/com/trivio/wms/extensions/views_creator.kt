@@ -30,9 +30,12 @@ fun MyAppCompatActivity.createTextView(value: String): TextView {
 fun MyAppCompatActivity.createInputNumber(
   value: BigDecimal? = null,
   labelBeforeInput: String? = null,
-  labelAfterInput: String? = null
+  labelAfterInput: String? = null,
+  allowNegative: Boolean = true
 ): NumberInput {
   val numberInput = NumberInput(this)
+  numberInput.allowNegative = allowNegative
+
   value?.let {
     numberInput.setValue(it.toString())
   }

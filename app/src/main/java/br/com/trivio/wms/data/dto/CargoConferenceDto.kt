@@ -60,7 +60,7 @@ class CargoConferenceDto(
     const val STATUS_COUNTING_SOME_COUNTED = 2
   }
 
-  fun getTotalDivergentItems() = items.filter { it.mismatchQuantity() }.count()
+  fun getTotalDivergentItems() = items.filter { it.isCountedWithDivergences() }.count()
   fun isPending() = taskStatus == TaskStatus.PENDING
   fun getPercentProgress() = progress
   fun isValid(): Boolean = totalInvalid == 0 && totalCountedItems > 0

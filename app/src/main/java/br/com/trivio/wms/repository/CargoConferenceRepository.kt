@@ -3,13 +3,14 @@ package br.com.trivio.wms.repository
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.serverBackend
+import java.math.BigDecimal
 
 class CargoConferenceRepository {
   fun loadCargoConference(id: Long) =
     Result.call { serverBackend.getCargoConferenceTask(id) }
 
-  fun countItem(cargoItem: CargoConferenceItemDto) = Result.call {
-    serverBackend.countCargoItem(cargoItem)
+  fun countItem(cargoItem: CargoConferenceItemDto, quantity: BigDecimal) = Result.call {
+    serverBackend.countCargoItem(cargoItem, quantity)
     cargoItem
   }
 

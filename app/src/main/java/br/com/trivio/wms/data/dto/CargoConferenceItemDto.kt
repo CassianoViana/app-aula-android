@@ -17,12 +17,12 @@ data class CargoConferenceItemDto(
     return "$name, $gtin, $sku, $expectedQuantity, $countedQuantity"
   }
 
-  fun mismatchQuantity(): Boolean {
-    return countedQuantity != null && !correctCounted()
+  fun isCountedWithDivergences(): Boolean {
+    return isCounted() && !isCountedCorrectly()
   }
 
-  fun correctCounted(): Boolean {
-    return countedQuantity != null && expectedQuantity == countedQuantity
+  fun isCountedCorrectly(): Boolean {
+    return isCounted() && expectedQuantity == countedQuantity
   }
 
   override fun equals(other: Any?): Boolean {
@@ -34,5 +34,13 @@ data class CargoConferenceItemDto(
 
   override fun hashCode(): Int {
     return id.hashCode()
+  }
+
+  fun count(quantity: BigDecimal) {
+    this.countedQuantity = this.countedQuantity?.add(quantity)
+  }
+
+  fun isCounted(): Boolean {
+    return countedQuantity != null
   }
 }

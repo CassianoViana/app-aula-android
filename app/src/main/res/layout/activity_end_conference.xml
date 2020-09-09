@@ -11,6 +11,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+      layout="@layout/progress_bar"
+      android:visibility="gone" />
+
     <include layout="@layout/button_close_x" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,6 +126,7 @@
         style="@style/button_action.ok"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin"
         android:text="@string/finish_arrival" />
     </LinearLayout>
 
@@ -138,6 +143,8 @@
         style="@style/button_action.back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin"
+        android:layout_weight="1"
         android:text="@string/restart_counting" />
 
       <Button
@@ -145,6 +152,8 @@
         style="@style/button_action.ok"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin"
+        android:layout_weight="1"
         android:text="@string/finish_with_divergences" />
     </LinearLayout>
   </LinearLayout>

@@ -73,7 +73,7 @@
 
       <Button
         android:id="@+id/negative_action"
-        style="@style/light_red_rounded"
+        style="@style/button_action.danger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

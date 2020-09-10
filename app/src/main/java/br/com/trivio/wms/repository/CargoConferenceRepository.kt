@@ -9,8 +9,12 @@ class CargoConferenceRepository {
   fun loadCargoConference(id: Long) =
     Result.call { serverBackend.getCargoConferenceTask(id) }
 
-  fun countItem(cargoItem: CargoConferenceItemDto, quantity: BigDecimal) = Result.call {
-    serverBackend.countCargoItem(cargoItem, quantity)
+  fun countItem(
+    cargoItem: CargoConferenceItemDto,
+    quantity: BigDecimal,
+    description: String? = null
+  ) = Result.call {
+    serverBackend.countCargoItem(cargoItem, quantity, description)
     cargoItem
   }
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.trivio.wms.data.dto.CargoConferenceDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
-import br.com.trivio.wms.data.dto.DamageDto;
 import br.com.trivio.wms.data.dto.TaskDto;
 import br.com.trivio.wms.data.dto.TaskStatusDto;
 import br.com.trivio.wms.data.model.UserDetails;
@@ -49,15 +48,12 @@ interface Api {
   @GET("cargoConference/byStatus/{status}")
   Call<List<CargoListDto>> getCargosByStatus(@Path("status") String status);
 
-  @GET("cargoConference")
-  Call<List<CargoListDto>> getCargos();
-
   @GET("cargoConference/pendingToOperatorCheck")
   Call<List<CargoListDto>> getCargosPendingToOperatorCheck();
 
   @POST("cargoConference/countItem/{cargoConferenceTaskItemId}/{quantity}")
-  Call<ResponseBody> countCargoItem(@Path("cargoConferenceTaskItemId") Long itemId, @Path("quantity") BigDecimal quantity);
+  Call<ResponseBody> countCargoItem(@Path("cargoConferenceTaskItemId") Long itemId,
+                                    @Path("quantity") BigDecimal quantity,
+                                    @Query("description") String description);
 
-  @POST("damage/registerDamage")
-  Call<ResponseBody> registerDamage(@Body DamageDto item);
 }

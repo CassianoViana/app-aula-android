@@ -19,7 +19,6 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceDto.Companion.STATUS_COUNTING_ALL_COUNTED
 import br.com.trivio.wms.data.dto.CargoConferenceDto.Companion.STATUS_COUNTING_NONE_COUNTED
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
-import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.extensions.Status.Companion.ERROR
@@ -67,7 +66,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun onClickReaderHideKeyboard() {
     barcode_reader.setOnClickListener {
-      barcode.hideKeyboard()
+      barcode_search_input.hideKeyboard()
     }
   }
 
@@ -81,7 +80,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   override fun onPause() {
     super.onPause()
-    barcode.setKeyboardVisible(false)
+    barcode_search_input.setKeyboardVisible(false)
     barcode_reader.pause()
   }
 
@@ -101,7 +100,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         playAudio(this, R.raw.beep)
         if (!waiting) {
           waiting = true
-          barcode.applySearch(it)
+          barcode_search_input.applySearch(it)
           delay(1000) {
             waiting = false
             barcode_reader.start()
@@ -119,7 +118,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       } else {
         barcode_reader.stop()
       }
-      barcode.hideKeyboard()
+      barcode_search_input.hideKeyboard()
     }
   }
 
@@ -148,12 +147,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           cargo_items_recycler_view.stopRefresh()
         })
     })
-    viewModel.damageRegistration.observe(this, Observer {
-      onResult(it,
-        onSuccess = { showMessageSuccess(R.string.damage_was_registered) },
-        onError = { showMessageError(R.string.error_while_register_damage) }
-      )
-    })
     viewModel.task.observe(this, Observer {
       onResult(it,
         onSuccess = { result ->
@@ -180,8 +173,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun onBarcodeChangeSearchProduct() {
-    barcode.addOnSearchListener { gtin ->
-      searchProductToCount(gtin)
+    barcode_search_input.addOnSearchListener { searchInputValue ->
+      searchProductToCount(searchInputValue)
     }
   }
 
@@ -222,7 +215,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun updateUiDisableControls() {
-    barcode.isEnabled = false
+    barcode_search_input.isEnabled = false
   }
 
   private fun updateKeyboardStatusCargo(dto: CargoConferenceDto) {
@@ -274,14 +267,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     cargo_items_recycler_view.setLoading(false)
   }
 
-  private fun searchProductToCount(gtin: String) {
+  private fun searchProductToCount(search: String) {
     lifecycleScope.launch {
-      onResult(viewModel.getCargoItem(gtin),
+      onResult(viewModel.getCargoItem(search),
         onSuccess = {
           openCountItemDialog(it.data)
         },
         onNullResult = {
-          showMessageError(getString(R.string.not_found_product_with_gtin, gtin))
+          showMessageError(getString(R.string.not_found_product_with_gtin, search))
         },
         onError = { resetReadingState() }
       )
@@ -291,16 +284,11 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun openCountItemDialog(item: CargoConferenceItemDto) {
 
     val totalQuantityCounted = item.countedQuantity?.toInt()
-    var unitCode: String? = getString(R.string.unit_code)
-    item.storageUnit?.let { storageUnitDto ->
-      storageUnitDto.code?.let { code ->
-        unitCode = code
-      }
-    }
+    var unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val qtdInputNumber = createInputNumber(
-      BigDecimal.ZERO,
-      getString(R.string.add_two_dots),
-      unitCode
+      value = BigDecimal.ZERO,
+      labelBeforeInput = getString(R.string.add_two_dots),
+      labelAfterInput = unitCode
     )
     prompt(
       firstTitle = getString(R.string.inform_qtds),
@@ -308,10 +296,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       inputValue = totalQuantityCounted,
       hint = "0",
       inputView = qtdInputNumber,
-      viewsBeforeInput = listOf(inflate<View>(R.layout.product_codes).apply {
-        this.findViewById<TextView>(R.id.sku_text).text = item.sku
-        this.findViewById<TextView>(R.id.gtin_text).text = coalesce(item.gtin, R.string.no_gtin)
-      }),
+      viewsBeforeInput = createLayoutGtinCode(item),
       viewsAfterInput = mutableListOf<View>().apply {
         totalQuantityCounted?.let { qtd ->
           if (qtd > 0) {
@@ -347,44 +332,79 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun resetReadingState() {
-    barcode.reset()
+    barcode_search_input.reset()
     barcode_reader.start()
   }
 
   private fun openReportDamageDialog(item: CargoConferenceItemDto) {
 
-    val damageDto = item.damage ?: DamageDto()
-    val damageCountInput = createInputNumber(allowNegative = false)
-    item.damage?.let {
-      damageCountInput.setValue(it.quantity)
-    }
+    var unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
+    val damageCountInput =
+      createInputNumber(
+        labelBeforeInput = getString(R.string.add_two_dots),
+        labelAfterInput = unitCode,
+      )
 
     prompt(
       firstTitle = getString(R.string.how_many_items_are_damaged),
       secondTitle = item.name,
       inputView = damageCountInput,
-      positiveAction = { _, _: String ->
-        damageDto.quantity = damageCountInput.value
-
-        prompt(
-          firstTitle = getString(R.string.describe_damage),
-          secondTitle = getString(R.string.describe_the_damage_template, item.name),
-          positiveAction = { _, value ->
-            damageDto.description = value
-            damageDto.cargoItemId = item.cargoItemId
-            viewModel.registerDamage(damageDto)
-            this.loadCargoConferenceTask()
-          },
-          inputType = InputType.TYPE_CLASS_TEXT,
-          inputValue = damageDto.description,
-          hint = getString(R.string.damage_example),
-          negativeButtonText = getString(R.string.inform_damage)
-        )
+      viewsBeforeInput = createLayoutGtinCode(item),
+      viewsAfterInput = mutableListOf<View>().apply {
+        item.damagedQuantity?.let {
+          it.toInt().let { intQtd ->
+            if (intQtd > 0) {
+              this.add(
+                createTextView(
+                  getString(
+                    R.string.damages_already_counted,
+                    intQtd,
+                    unitCode
+                  )
+                )
+              )
+            }
+          }
+        }
+      },
+      positiveAction = { dialog, _: String ->
+        damageCountInput.value?.let { damagedQtd ->
+          if (damagedQtd.toInt() == 0) {
+            showMessageError(R.string.the_quantity_cannot_be_zero)
+          } else {
+            if (damagedQtd.toInt() > 0) {
+              prompt(
+                firstTitle = getString(R.string.describe_damage),
+                secondTitle = getString(R.string.describe_the_damage_template, item.name),
+                viewsBeforeInput = createLayoutGtinCode(item),
+                positiveAction = { dialog, value ->
+                  viewModel.countItem(item, damagedQtd, value)
+                  this.loadCargoConferenceTask()
+                  dialog.hide()
+                },
+                inputType = InputType.TYPE_CLASS_TEXT,
+                inputValue = "",
+                hint = getString(R.string.damage_example),
+                negativeButtonText = getString(R.string.inform_damage)
+              )
+            } else {
+              viewModel.countItem(item, damagedQtd, "Descontando quantidade avariada")
+            }
+            dialog.hide()
+          }
+        }
       },
 
-      inputValue = damageDto.quantity?.toInt(),
+      inputValue = BigDecimal.ZERO,
       negativeButtonText = getString(R.string.inform_damage)
     )
+  }
+
+  private fun createLayoutGtinCode(item: CargoConferenceItemDto): List<View> {
+    return listOf(inflate<View>(R.layout.product_codes).apply {
+      this.findViewById<TextView>(R.id.sku_text).text = item.sku
+      this.findViewById<TextView>(R.id.gtin_text).text = coalesce(item.gtin, R.string.no_gtin)
+    })
   }
 
   class CargoItemsAdapter(private val onClickCargoItem: OnClickCargoItem) :
@@ -397,38 +417,42 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       }
 
     class CargoItemCountViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-      private var productName = view.findViewById<TextView>(R.id.product_name)
-      private var gtin = view.findViewById<TextView>(R.id.gtin_text)
-      private var sku = view.findViewById<TextView>(R.id.sku_text)
-      private var storageUnit = view.findViewById<TextView>(R.id.storage_unit_text)
-      private var countedQtd = view.findViewById<TextView>(R.id.counted_qtd)
-      private var damagedQtd = view.findViewById<TextView>(R.id.damaged_qtd)
-      private var countingOkLabel = view.findViewById<TextView>(R.id.counting_status_ok)
-      private var countingNotOkLabel = view.findViewById<TextView>(R.id.counting_status_divergent)
-      private var countingPendingLabel = view.findViewById<TextView>(R.id.counting_status_pending)
+      private var productNameTextView = view.findViewById<TextView>(R.id.product_name)
+      private var gtinTextView = view.findViewById<TextView>(R.id.gtin_text)
+      private var skuTextView = view.findViewById<TextView>(R.id.sku_text)
+      private var storageUnitTextView = view.findViewById<TextView>(R.id.storage_unit_text)
+      private var countedQtdTextView = view.findViewById<TextView>(R.id.counted_qtd)
+      private var damagedQtdTextView = view.findViewById<TextView>(R.id.damaged_qtd)
+      private var countingOkTextView = view.findViewById<TextView>(R.id.counting_status_ok)
+      private var countingNotOkTextView =
+        view.findViewById<TextView>(R.id.counting_status_divergent)
+      private var countingPendingTextView =
+        view.findViewById<TextView>(R.id.counting_status_pending)
+
       fun bind(
         item: CargoConferenceItemDto,
         onClickCargoItem: OnClickCargoItem
       ) {
-        countingNotOkLabel.setVisible(item.isCountedWithDivergences())
-        countingOkLabel.setVisible(item.isCountedCorrectly())
-        countingPendingLabel.setVisible(!item.isCounted())
-        countedQtd.setVisible(item.countedQuantity != null)
-        damagedQtd.setVisible(item.damage != null)
-        storageUnit.setVisible(item.storageUnit != null)
+        countingNotOkTextView.setVisible(item.isCountedWithDivergences())
+        countingOkTextView.setVisible(item.isCountedCorrectly())
+        countingPendingTextView.setVisible(!item.isCounted())
+        countedQtdTextView.setVisible(item.countedQuantity != null)
+        damagedQtdTextView.setVisible(item.hasDamagedQtd())
+        storageUnitTextView.setVisible(item.storageUnit != null)
 
-        item.damage?.let {
-          damagedQtd.text = view.context.getString(R.string.damaged_items, it.quantity?.toInt())
+        item.damagedQuantity?.let { damagedQtd ->
+          damagedQtdTextView.text =
+            view.context.getString(R.string.damaged_items, damagedQtd.toInt())
         }
 
         item.storageUnit?.let {
-          storageUnit.text = it.code
+          storageUnitTextView.text = it.code
         }
 
-        gtin.text = coalesce(item.gtin, R.string.no_gtin)
-        productName.text = item.name
-        sku.text = coalesce(item.sku, R.string.no_sku)
-        countedQtd.text = formatNumber(item.countedQuantity)
+        gtinTextView.text = coalesce(item.gtin, R.string.no_gtin)
+        productNameTextView.text = item.name
+        skuTextView.text = coalesce(item.sku, R.string.no_sku)
+        countedQtdTextView.text = formatNumber(item.countedQuantity)
         view.setOnClickListener {
           onClickCargoItem.onClick(item)
         }

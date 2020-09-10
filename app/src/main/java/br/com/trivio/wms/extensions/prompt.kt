@@ -55,7 +55,6 @@ fun MyAppCompatActivity.prompt(
 
   confirmButton.setOnClickListener {
     positiveAction(dialog, editText.text.toString())
-    dialog.hide()
   }
 
   negativeButton.setVisible(negativeAction != null)

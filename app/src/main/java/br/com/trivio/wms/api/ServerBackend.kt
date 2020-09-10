@@ -138,12 +138,12 @@ class ServerBackend {
     return executeAndReturn(api.cargosPendingToOperatorCheck)
   }
 
-  fun countCargoItem(cargoConferenceItemDto: CargoConferenceItemDto, quantity: BigDecimal) {
-    return execute(api.countCargoItem(cargoConferenceItemDto.id, quantity))
-  }
-
-  fun registerDamage(damageDto: DamageDto) {
-    return execute(api.registerDamage(damageDto))
+  fun countCargoItem(
+    cargoConferenceItemDto: CargoConferenceItemDto,
+    quantity: BigDecimal,
+    description: String? = null
+  ) {
+    return execute(api.countCargoItem(cargoConferenceItemDto.id, quantity, description))
   }
 
   fun finishTask(taskId: Long) {

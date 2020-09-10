@@ -27,7 +27,13 @@ class NumberInput @JvmOverloads constructor(
     }
 
   val value: BigDecimal?
-    get() = BigDecimal(custom_number_input.text.toString())
+    get() {
+      var stringValue = custom_number_input.text.toString()
+      if (stringValue.isEmpty()) {
+        stringValue = "0"
+      }
+      return BigDecimal(stringValue)
+    }
 
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_number_input, this, true)
@@ -85,5 +91,4 @@ class NumberInput @JvmOverloads constructor(
     custom_number_input.setText(value)
     custom_number_input.moveCursorToEnd()
   }
-
 }

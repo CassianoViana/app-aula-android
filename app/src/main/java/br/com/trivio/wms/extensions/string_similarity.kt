@@ -17,3 +17,7 @@ fun matchFilter(originalString: String, comparisonString: String): Boolean {
   val b = comparisonString.toUpperCase(Locale.getDefault())
   return stringSimilarity(a, b) >= 80 || a.contains(b)
 }
+
+fun String.isVerySimilar(another: String): Boolean {
+  return matchFilter(this, another)
+}

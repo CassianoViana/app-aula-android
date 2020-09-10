@@ -6,24 +6,21 @@ import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
-import br.com.trivio.wms.data.dto.DamageDto
 import br.com.trivio.wms.data.dto.TaskStatusDto
 import br.com.trivio.wms.extensions.asyncRequest
+import br.com.trivio.wms.extensions.isVerySimilar
 import br.com.trivio.wms.repository.CargoConferenceRepository
-import br.com.trivio.wms.repository.DamageRepository
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 class CargoConferenceViewModel(
   private val cargoConferenceRepository: CargoConferenceRepository = CargoConferenceRepository(),
-  private val damageRepository: DamageRepository = DamageRepository()
 ) :
   ViewModel() {
 
   val task = MutableLiveData<Result<CargoConferenceDto>>()
   val cargoItem = MutableLiveData<Result<CargoConferenceItemDto>>()
   val finishStatus = MutableLiveData<Result<Boolean>>()
-  val damageRegistration = MutableLiveData<Result<DamageDto>>()
 
   fun loadCargoConferenceTask(id: Long) {
     viewModelScope.launch {
@@ -33,32 +30,27 @@ class CargoConferenceViewModel(
     }
   }
 
-  fun registerDamage(damageDto: DamageDto) {
-    viewModelScope.launch {
-      damageRegistration.value = asyncRequest {
-        damageRepository.registerDamage(damageDto)
-      }
-    }
-  }
-
   fun countItem(
     item: CargoConferenceItemDto,
-    quantity: BigDecimal
+    quantity: BigDecimal,
+    description: String? = null
   ) {
     viewModelScope.launch {
       cargoItem.value = asyncRequest {
-        cargoConferenceRepository.countItem(item, quantity)
+        cargoConferenceRepository.countItem(item, quantity, description)
       }
     }
   }
 
-  fun getCargoItem(gtin: String?): Result<CargoConferenceItemDto> {
+  fun getCargoItem(search: String): Result<CargoConferenceItemDto> {
     val value: Result<CargoConferenceDto>? = task.value
     return if (value is Result.Success) {
       val item = value.data.items
         .filter { it.gtin != null }
         .firstOrNull {
-          it.gtin == gtin
+          it.sku == search ||
+            it.gtin == search ||
+            it.name.isVerySimilar(search)
         }
       if (item == null) {
         Result.Null(item)
@@ -67,13 +59,6 @@ class CargoConferenceViewModel(
       }
     } else {
       Result.Error(IllegalStateException("Não há tarefa de conferẽncia com estado válido"))
-    }
-  }
-
-  fun filter(search: String): List<CargoConferenceItemDto> {
-    return when (val value: Result<CargoConferenceDto>? = task.value) {
-      is Result.Success -> value.data.filteredItems(search)
-      else -> listOf()
     }
   }
 

@@ -8,9 +8,9 @@ data class CargoConferenceItemDto(
   val name: String = "",
   val gtin: String = "",
   val sku: String = "",
-  val expectedQuantity: BigDecimal? = BigDecimal("0"),
-  var countedQuantity: BigDecimal? = BigDecimal("0"),
-  var damage: DamageDto? = null,
+  val expectedQuantity: BigDecimal? = BigDecimal.ZERO,
+  var countedQuantity: BigDecimal? = BigDecimal.ZERO,
+  var damagedQuantity: BigDecimal? = BigDecimal.ZERO,
   var storageUnit: StorageUnitDto? = null
 ) {
   fun getSearchString(): String {
@@ -42,5 +42,21 @@ data class CargoConferenceItemDto(
 
   fun isCounted(): Boolean {
     return countedQuantity != null
+  }
+
+  fun getUnitCode(default: String): String? {
+    var unitCode = default;
+    storageUnit?.let { storageUnitDto ->
+      storageUnitDto.code?.let { code ->
+        unitCode = code
+      }
+    }
+    return unitCode
+  }
+
+  fun hasDamagedQtd(): Boolean {
+    return damagedQuantity != null && damagedQuantity?.compareTo(
+      BigDecimal.ZERO
+    ) != 0
   }
 }

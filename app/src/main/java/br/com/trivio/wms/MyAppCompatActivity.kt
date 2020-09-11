@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -13,9 +14,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import br.com.trivio.wms.components.custom.TopBar
 import br.com.trivio.wms.extensions.handleHomeClickFinish
+import br.com.trivio.wms.extensions.playAudio
 
 
 abstract class MyAppCompatActivity : AppCompatActivity() {
+
+  private var menuResourceId: Int? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -26,13 +30,27 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
     this.setupToolbar()
   }
 
-  fun setupToolbar() {
+  fun setupToolbar(menuResourceId: Int? = null) {
+    if (menuResourceId != null) {
+      this.menuResourceId = menuResourceId
+    }
     val topBar = findViewById<TopBar?>(R.id.top_bar)
     if (topBar != null) {
       topBar.onClickBack {
         onFinish()
       }
+      this.menuResourceId?.let {
+        topBar.registerForOptionsMenu()
+      }
     }
+
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    this.menuResourceId?.let {
+      menuInflater.inflate(it, menu)
+    }
+    return true
   }
 
   open fun onFinish() {
@@ -62,7 +80,7 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
     return super.onOptionsItemSelected(item)
   }
 
-  fun checkCameraPermissions(camera: String): Boolean {
+  fun requestPermission(camera: String): Boolean {
     var permitted = true
     if (ContextCompat.checkSelfPermission(this, camera)
       == PackageManager.PERMISSION_DENIED
@@ -89,6 +107,10 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
   @SuppressLint("WrongViewCast")
   fun getProgressBarLayout(): View? {
     return findViewById(R.id.layout_progress_bar)
+  }
+
+  fun playErrorSound(){
+    playAudio(this, R.raw.error)
   }
 }
 

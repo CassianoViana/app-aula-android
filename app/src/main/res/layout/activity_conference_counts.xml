@@ -15,7 +15,7 @@
     android:id="@+id/input_search_product"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:hint="@string/search_product" />
+    app:hint="@string/product_code" />
 
   <br.com.trivio.wms.components.custom.RefreshableList
     android:id="@+id/count_list"

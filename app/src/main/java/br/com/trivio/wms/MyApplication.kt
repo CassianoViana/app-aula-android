@@ -127,15 +127,18 @@ fun <T : Any> onResult(
   always: ((result: Result<T>) -> Unit) = {},
   onError: ((result: Result.Error) -> Unit) = {},
   onNullResult: ((result: Result.Null<T?>) -> Unit) = {},
-  onSuccess: (result: Result.Success<T>) -> Unit
+  onSuccess: (result: Result.Success<T>) -> Unit,
+  showErrorMessage: Boolean = true
 ) {
   when (result) {
     is Result.Success -> {
       onSuccess(result)
     }
     is Result.Error -> {
+      if (showErrorMessage) {
+        showErrorMessage(result)
+      }
       onError(result)
-      showErrorMessage(result)
     }
     is Result.Null -> {
       onNullResult(result)

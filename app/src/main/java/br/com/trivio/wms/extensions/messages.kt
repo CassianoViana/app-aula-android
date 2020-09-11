@@ -51,10 +51,23 @@ fun MyAppCompatActivity.showMessageError(
   showMessageError(text)
 }
 
+fun MyAppCompatActivity.showMessageWarning(
+  resourceText: Int
+) {
+  val text = getString(resourceText)
+  showMessageWarning(text)
+}
+
 fun MyAppCompatActivity.showMessageError(
   text: String
 ) {
   showMessage(text, colorResource = R.color.error)
+}
+
+fun MyAppCompatActivity.showMessageWarning(
+  text: String
+) {
+  showMessage(text, colorResource = R.color.warning)
 }
 
 fun MyAppCompatActivity.showMessageInfo(

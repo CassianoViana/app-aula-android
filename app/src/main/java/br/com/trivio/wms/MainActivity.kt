@@ -1,6 +1,5 @@
 package br.com.trivio.wms
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -40,6 +39,7 @@ class MainActivity : MyAppCompatActivity() {
     MenuItem(R.string.menu_exit, R.drawable.ic_exit_to_app_black_24dp) {
       exitAppHandler.logout()
     }
+
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,5 +107,4 @@ class MenuItemViewHolder(
     menuName.text = view.resources.getString(menuItem.name)
     menuIcon.setImageResource(menuItem.icon)
   }
-
 }

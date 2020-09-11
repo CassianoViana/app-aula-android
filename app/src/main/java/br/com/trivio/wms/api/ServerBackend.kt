@@ -150,11 +150,11 @@ class ServerBackend {
     return execute(api.finishTask(taskId))
   }
 
-  fun loadCountsHistory(taskId: Long):List<ConferenceCountDto> {
+  fun loadCountsHistory(taskId: Long): List<ConferenceCountDto> {
     return executeAndReturn(api.getCountsHistory(taskId))
   }
 
-  fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?) {
-    return execute(api.undoCountHistoryItem(conferenceCountHistoryItemId))
+  fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?): ResponseBody {
+    return executeAndReturn(api.undoCountHistoryItem(conferenceCountHistoryItemId))
   }
 }

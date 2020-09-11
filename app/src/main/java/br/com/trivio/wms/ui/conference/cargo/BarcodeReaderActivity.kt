@@ -48,7 +48,7 @@ class BarcodeReaderActivity : MyAppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    if (checkCameraPermissions(Manifest.permission.CAMERA)) {
+    if (requestPermission(Manifest.permission.CAMERA)) {
       codeScanner.startPreview()
     }
   }

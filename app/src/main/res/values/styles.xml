@@ -1,133 +1,133 @@
 <resources>
-  <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
-    <item name="android:textColor">@color/colorDark</item>
-    <item name="android:editTextColor">@color/colorDark</item>
-    <!--<item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorDark</item>
+        <item name="android:editTextColor">@color/colorDark</item>
+        <!--<item name="android:textColorPrimary">@color/colorPrimary</item>
     <item name="android:textColorSecondary">@color/colorPrimary</item>
     <item name="android:textColorTertiary">@color/colorPrimary</item>
     <item name="android:textColorPrimaryInverse">@color/colorPrimary</item>
     <item name="android:textColorSecondaryInverse">@color/colorPrimary</item>
     <item name="android:textColorTertiaryInverse">@color/colorPrimary</item>-->
-    <item name="android:buttonStyle">@style/buttonStyle</item>
-  </style>
+        <item name="android:buttonStyle">@style/buttonStyle</item>
+    </style>
 
-  <style name="AppTheme.NoActionBar" parent="AppTheme">
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
-  </style>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
-  <style name="buttonStyle">
-    <item name="android:background">@drawable/button_default</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:textAllCaps">false</item>
-    <item name="android:textColor">@color/colorPrimary</item>
-    <item name="android:gravity">center</item>
-    <item name="android:padding">13sp</item>
-  </style>
+    <style name="buttonStyle">
+        <item name="android:background">@drawable/button_default</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">13sp</item>
+    </style>
 
-  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-  <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Medium.Inverse">
-    <item name="android:textSize">12sp</item>
-    <item name="android:textColor">@color/colorWhite</item>
-  </style>
+    <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Medium.Inverse">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 
-  <style name="TagTextWhite">
-    <item name="android:background">@drawable/rounded</item>
-    <item name="android:paddingLeft">3dp</item>
-    <item name="android:paddingRight">3dp</item>
-    <item name="android:paddingTop">2dp</item>
-    <item name="android:paddingBottom">2dp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:textColor">@color/colorWhite</item>
-  </style>
+    <style name="TagTextWhite">
+        <item name="android:background">@drawable/rounded</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:paddingRight">3dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 
-  <style name="DialogAnimation">
-    <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
-    <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
-  </style>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
+    </style>
 
-  <style name="full_screen_dialog">
-    <item name="android:windowBackground">@null</item>
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
-    <item name="android:windowSoftInputMode">adjustResize</item>
-  </style>
+    <style name="full_screen_dialog">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
 
-  <style name="transparent_rounded">
-    <item name="android:background">@drawable/transparent_input</item>
-    <item name="android:padding">12dp</item>
-    <item name="android:color">@color/colorWhite</item>
-    <item name="android:textSize">14sp</item>
-    <item name="android:textColor">@color/colorWhite</item>
-    <item name="android:textColorHint">@color/colorWhite</item>
-  </style>
+    <style name="transparent_rounded">
+        <item name="android:background">@drawable/transparent_input</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:color">@color/colorWhite</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorHint">@color/colorWhite</item>
+    </style>
 
-  <style name="transparent_rounded_bordered" parent="transparent_rounded">
-    <item name="android:background">@drawable/button_transparent_bordered</item>
-    <item name="android:textAllCaps">false</item>
-  </style>
+    <style name="transparent_rounded_bordered" parent="transparent_rounded">
+        <item name="android:background">@drawable/button_transparent_bordered</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 
-  <style name="primary_rounded" parent="transparent_rounded">
-    <item name="android:background">@drawable/button_primary_bordered</item>
-    <item name="android:textAllCaps">false</item>
-  </style>
+    <style name="primary_rounded" parent="transparent_rounded">
+        <item name="android:background">@drawable/button_primary_bordered</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 
-  <style name="light_blue_rounded">
-    <item name="android:background">@drawable/light_blue_rounded</item>
-    <item name="android:textAllCaps">true</item>
-    <item name="android:textColor">@color/colorWhite</item>
-  </style>
+    <style name="light_blue_rounded">
+        <item name="android:background">@drawable/light_blue_rounded</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 
-  <style name="login_icon">
-    <item name="android:padding">10dp</item>
-    <item name="android:layout_gravity">center</item>
-  </style>
+    <style name="login_icon">
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
 
-  <style name="button_action">
-    <item name="android:layout_weight">1</item>
-    <item name="android:background">@drawable/button_white_bordered</item>
-    <item name="android:drawablePadding">12dp</item>
-    <item name="android:textAllCaps">true</item>
-    <item name="android:drawableTint">@color/grey</item>
-    <item name="android:textColor">@color/colorWhite</item>
-  </style>
+    <style name="button_action">
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/button_white_bordered</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:drawableTint">@color/grey</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 
-  <style name="button_action.cancel">
-    <item name="android:drawableLeft">@drawable/ic_close_black_24dp</item>
-  </style>
+    <style name="button_action.cancel">
+        <item name="android:drawableLeft">@drawable/ic_close_black_24dp</item>
+    </style>
 
-  <style name="button_action.danger">
-    <item name="android:background">@drawable/light_red_rounded</item>
-  </style>
+    <style name="button_action.danger">
+        <item name="android:background">@drawable/light_red_rounded</item>
+    </style>
 
-  <style name="button_action.back">
-    <!--<item name="android:drawableLeft">@drawable/ic_arrow_back_black_24dp</item>-->
-    <item name="android:background">@drawable/light_yellow_rounded</item>
-  </style>
+    <style name="button_action.back">
+        <!--<item name="android:drawableLeft">@drawable/ic_arrow_back_black_24dp</item>-->
+        <item name="android:background">@drawable/light_yellow_rounded</item>
+    </style>
 
-  <style name="button_action.ok">
-    <!--<item name="android:drawableLeft">@drawable/ic_check_black_24dp</item>-->
-    <item name="android:background">@drawable/light_blue_rounded</item>
-  </style>
+    <style name="button_action.ok">
+        <!--<item name="android:drawableLeft">@drawable/ic_check_black_24dp</item>-->
+        <item name="android:background">@drawable/light_blue_rounded</item>
+    </style>
 
-  <style name="AppTheme.NoActionBar.NoActionBar">
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
-  </style>
+    <style name="AppTheme.NoActionBar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
-  <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-  <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

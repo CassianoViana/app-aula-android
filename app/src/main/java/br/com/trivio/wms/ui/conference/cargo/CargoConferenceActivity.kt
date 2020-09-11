@@ -62,7 +62,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     onClickCameraOpenBarcodeReader()
     onReadBarcodeFillSearchInput()
     onClickReaderHideKeyboard()
+    onClickHistoryOpenHistoryActivity()
     loadData()
+  }
+
+  private fun onClickHistoryOpenHistoryActivity() {
+    btn_show_history.setOnClickListener {
+      openCountHistoryActivity()
+    }
   }
 
   private fun onClickReaderHideKeyboard() {
@@ -74,7 +81,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   override fun onResume() {
     super.onResume()
     resetReadingState()
-    if (checkCameraPermissions(Manifest.permission.CAMERA)) {
+    if (requestPermission(Manifest.permission.CAMERA)) {
       barcode_reader.start()
     }
   }
@@ -135,10 +142,12 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
   }
 
-  private fun openCountHistoryActivity(item: CargoConferenceItemDto) {
+  private fun openCountHistoryActivity(item: CargoConferenceItemDto? = null) {
     val intent = Intent(this, ConferenceCountsActivity::class.java)
     intent.putExtra(ConferenceCountsActivity.CARGO_TASK_ID, cargoConferenceTaskId)
-    intent.putExtra(ConferenceCountsActivity.ITEM_CODE, item.gtin)
+    item?.let {
+      intent.putExtra(ConferenceCountsActivity.ITEM_CODE, item.gtin)
+    }
     startActivityForResult(intent, ConferenceCountsActivity.END_COUNT_HISTORY_ACTIVITY)
   }
 
@@ -303,6 +312,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         },
         onNullResult = {
           showMessageError(getString(R.string.not_found_product_with_search, search))
+          playErrorSound()
         },
         onError = { resetReadingState() }
       )
@@ -311,12 +321,13 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun openCountItemDialog(item: CargoConferenceItemDto) {
 
+    barcode_reader.pause()
     val totalQuantityCounted = item.countedQuantity?.toInt()
     val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val qtdInputNumber = createInputNumber(
-      value = BigDecimal.ZERO,
       labelBeforeInput = getString(R.string.add_two_dots),
-      labelAfterInput = unitCode
+      labelAfterInput = unitCode,
+      allowNegative = false
     )
     prompt(
       firstTitle = getString(R.string.inform_qtds),
@@ -359,6 +370,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     )
   }
 
+  private fun startCameraActivity() {
+    startActivity(Intent(this, CameraActivity::class.java))
+  }
+
   private fun resetReadingState() {
     barcode_search_input.reset()
     barcode_reader.start()
@@ -371,6 +386,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       createInputNumber(
         labelBeforeInput = getString(R.string.add_two_dots),
         labelAfterInput = unitCode,
+        allowNegative = false
       )
 
     prompt(
@@ -410,6 +426,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
                   this.loadCargoConferenceTask()
                   dialog.hide()
                 },
+                viewsAfterInput = listOf(
+                  createButton(getString(R.string.camera)) {
+                    startCameraActivity()
+                  }),
                 inputType = InputType.TYPE_CLASS_TEXT,
                 inputValue = "",
                 hint = getString(R.string.damage_example),
@@ -426,7 +446,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       inputValue = BigDecimal.ZERO,
       negativeButtonText = getString(R.string.inform_damage)
     )
-    damageCountInput.showKeyboard()
   }
 
   private fun createLayoutGtinCode(item: CargoConferenceItemDto): List<View> {
@@ -457,6 +476,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         view.findViewById<TextView>(R.id.counting_status_divergent)
       private var countingPendingTextView =
         view.findViewById<TextView>(R.id.counting_status_pending)
+      private var countHistoryTextView =
+        view.findViewById<TextView>(R.id.count_history_txt_view)
+      private var countLabelsLayout = view.findViewById<View>(R.id.count_labels_layout)
 
       fun bind(
         item: CargoConferenceItemDto,
@@ -468,6 +490,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         countedQtdTextView.setVisible(item.countedQuantity != null)
         damagedQtdTextView.setVisible(item.hasDamagedQtd())
         storageUnitTextView.setVisible(item.storageUnit != null)
+        countHistoryTextView.setVisible(item.isCounted())
+        countLabelsLayout.setOnClickListener {
+          onClickCargoItem.onLongClick(item)
+        }
 
         item.damagedQuantity?.let { damagedQtd ->
           damagedQtdTextView.text =

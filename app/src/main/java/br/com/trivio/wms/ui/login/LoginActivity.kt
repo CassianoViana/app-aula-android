@@ -131,10 +131,4 @@ class LoginActivity : MyAppCompatActivity() {
       Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
   }
-
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    menuInflater.inflate(R.menu.login, menu)
-    return true
-  }
 }

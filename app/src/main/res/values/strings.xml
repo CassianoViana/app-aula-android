@@ -251,4 +251,10 @@
   <string name="discount_damaged_quantity">Descontando quantidade avariada</string>
   <string name="delete_count">Desfazer essa contagem?</string>
   <string name="the_count_was_undone">Esta contagem foi desfeita</string>
+  <string name="count_history_underline"><u>Histórico de contagem</u></string>
+  <string name="the_count_item_already_modified">O item já havia sido alterado</string>
+  <string name="count_history_break_line">Histórico\nde contagem</string>
+  <string name="title_activity_scrolling">ScrollingActivity</string>
+  <string name="historic">Histórico</string>
+  <string name="camera">Câmera</string>
 </resources>

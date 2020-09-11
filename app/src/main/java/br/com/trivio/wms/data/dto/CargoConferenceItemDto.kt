@@ -6,7 +6,7 @@ data class CargoConferenceItemDto(
   val id: Long = 0,
   val cargoItemId: Long = 0,
   val name: String = "",
-  val gtin: String = "",
+  val gtin: String? = null,
   val sku: String = "",
   val expectedQuantity: BigDecimal? = BigDecimal.ZERO,
   var countedQuantity: BigDecimal? = BigDecimal.ZERO,

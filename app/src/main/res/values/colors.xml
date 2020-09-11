@@ -31,6 +31,7 @@
   <color name="progress_bar_incomplete_part">#1e6699</color>
   <color name="colorLightRedAccent">#DF1111</color>
   <color name="colorLightRedAccentPressed">#C60A0A</color>
+  <color name="blueLink">#5900FF</color>
 </resources>
 
 

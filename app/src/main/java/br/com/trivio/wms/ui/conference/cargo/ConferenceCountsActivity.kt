@@ -12,10 +12,7 @@ import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.Badge
 import br.com.trivio.wms.data.dto.ConferenceCountDto
-import br.com.trivio.wms.extensions.formatTo
-import br.com.trivio.wms.extensions.inflateToViewHolder
-import br.com.trivio.wms.extensions.setVisible
-import br.com.trivio.wms.extensions.showMessageSuccess
+import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.onResult
 import kotlinx.android.synthetic.main.activity_conference_counts.*
 
@@ -38,8 +35,19 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
           R.string.yes
         ) { _, _ ->
           viewModel.undoCount(conferenceCountDto) {
-            loadCountHistory()
-            showMessageSuccess(R.string.the_count_was_undone)
+            onResult(
+              it,
+              onSuccess = {
+                showMessageSuccess(R.string.the_count_was_undone)
+              },
+              onError = {
+                showMessageWarning(R.string.the_count_item_already_modified)
+              },
+              always = {
+                loadCountHistory()
+              },
+              showErrorMessage = false
+            );
           }
         }
         .setNegativeButton(R.string.no, null)
@@ -59,7 +67,7 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
     this.setupToolbar()
 
     conferenceTaskId = intent.getLongExtra(CARGO_TASK_ID, 0)
-    itemCodeSearch = intent.getStringExtra(ITEM_CODE)
+    itemCodeSearch = intent.getStringExtra(ITEM_CODE) ?: ""
     count_list.setAdapter(adapter)
 
     observeViewModel()
@@ -71,12 +79,13 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
   private fun onSearchFilterProducts() {
     input_search_product.setText(itemCodeSearch)
     input_search_product.addOnTextChangeListener {
-      applyFilter(it)
+      itemCodeSearch = it
+      filterItemsBySearch()
     }
   }
 
-  private fun applyFilter(it: String) {
-    setHistoryData(viewModel.filterCountHistory(it))
+  private fun filterItemsBySearch() {
+    setHistoryData(viewModel.filterCountHistory(itemCodeSearch))
   }
 
   private fun onRefreshLoadData() {
@@ -91,7 +100,7 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
         onSuccess = { successResult ->
           setHistoryData(successResult.data)
           if (itemCodeSearch.isNotEmpty()) {
-            applyFilter(itemCodeSearch)
+            filterItemsBySearch()
           }
         },
         always = {

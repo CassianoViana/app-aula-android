@@ -12,6 +12,7 @@ import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
 import br.com.trivio.wms.repository.CargoConferenceRepository
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import java.math.BigDecimal
 
 class CargoConferenceViewModel(
@@ -70,7 +71,6 @@ class CargoConferenceViewModel(
     val value: Result<CargoConferenceDto>? = task.value
     return if (value is Result.Success) {
       val item = value.data.items
-        .filter { it.gtin != null }
         .firstOrNull {
           it.sku == search ||
             it.gtin == search ||
@@ -119,12 +119,12 @@ class CargoConferenceViewModel(
     }
   }
 
-  fun undoCount(conferenceCountDto: ConferenceCountDto, callback: () -> Unit) {
+  fun undoCount(conferenceCountDto: ConferenceCountDto, callback: (Result<ResponseBody>) -> Unit) {
     viewModelScope.launch {
       asyncRequest {
         cargoConferenceRepository.undoCountItem(conferenceCountDto.id)
       }.let {
-        callback()
+        callback(it)
       }
     }
   }

@@ -28,7 +28,7 @@ fun MyAppCompatActivity.createTextView(value: String): TextView {
 }
 
 fun MyAppCompatActivity.createInputNumber(
-  value: BigDecimal? = null,
+  value: BigDecimal? = BigDecimal.ZERO,
   labelBeforeInput: String? = null,
   labelAfterInput: String? = null,
   allowNegative: Boolean = true

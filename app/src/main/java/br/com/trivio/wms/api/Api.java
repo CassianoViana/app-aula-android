@@ -5,12 +5,14 @@ import java.util.List;
 
 import br.com.trivio.wms.data.dto.CargoConferenceDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
+import br.com.trivio.wms.data.dto.ConferenceCountDto;
 import br.com.trivio.wms.data.dto.TaskDto;
 import br.com.trivio.wms.data.dto.TaskStatusDto;
 import br.com.trivio.wms.data.model.UserDetails;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -56,4 +58,9 @@ interface Api {
                                     @Path("quantity") BigDecimal quantity,
                                     @Query("description") String description);
 
+  @GET("cargoConference/countsHistory/{taskId}")
+  Call<List<ConferenceCountDto>> getCountsHistory(@Path("taskId") Long taskId);
+
+  @DELETE("cargoConference/countsHistory/{conferenceCountHistoryItemId}")
+  Call<ResponseBody> undoCountHistoryItem(@Path("conferenceCountHistoryItemId") Long conferenceCountHistoryItemId);
 }

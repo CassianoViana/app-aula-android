@@ -14,7 +14,11 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme.NoActionBar"
     android:usesCleartextTraffic="true">
-    <activity android:name=".ui.conference.cargo.CameraActivity"></activity>
+    <activity
+      android:name=".ui.conference.cargo.ConferenceCountsActivity"
+      android:label="@string/title_activity_conference_counts"
+      android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+    <activity android:name=".ui.conference.cargo.CameraActivity" />
     <activity android:name=".ui.conference.cargo.BarcodeReaderActivity" />
     <activity
       android:name=".ui.conference.cargo.InputNumberActivity"

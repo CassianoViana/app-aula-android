@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.coalesce
 import br.com.trivio.wms.extensions.moveCursorToEnd
+import br.com.trivio.wms.extensions.setKeyboardVisible
 import br.com.trivio.wms.extensions.setVisible
 import kotlinx.android.synthetic.main.custom_number_input.view.*
 import java.math.BigDecimal
@@ -90,5 +91,9 @@ class NumberInput @JvmOverloads constructor(
   fun setValue(value: String) {
     custom_number_input.setText(value)
     custom_number_input.moveCursorToEnd()
+  }
+
+  fun showKeyboard() {
+    custom_number_input.setKeyboardVisible(context)
   }
 }

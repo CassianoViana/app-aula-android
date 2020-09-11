@@ -4,16 +4,40 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import br.com.trivio.wms.components.custom.TopBar
 import br.com.trivio.wms.extensions.handleHomeClickFinish
 
 
 abstract class MyAppCompatActivity : AppCompatActivity() {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    this.setupToolbar()
+  }
+
+  fun setupToolbar() {
+    val topBar = findViewById<TopBar?>(R.id.top_bar)
+    if (topBar != null) {
+      topBar.onClickBack {
+        onFinish()
+      }
+    }
+  }
+
+  open fun onFinish() {
+    finish()
+  }
 
   fun startTask() {
     getSharedPreferences().edit()

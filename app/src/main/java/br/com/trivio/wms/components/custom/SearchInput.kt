@@ -32,6 +32,12 @@ class SearchInput @JvmOverloads constructor(
     }
   }
 
+  fun addOnTextChangeListener(listener: (String) -> Unit) {
+    custom_input_search.addTextChangedListener {
+      listener(it.toString())
+    }
+  }
+
   private fun notifySearch() {
     this.onSearchListener(custom_input_search.text.toString())
   }

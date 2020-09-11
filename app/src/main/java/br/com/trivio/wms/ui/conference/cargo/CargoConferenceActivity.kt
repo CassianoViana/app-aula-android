@@ -10,7 +10,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
@@ -43,6 +42,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     override fun onClick(item: CargoConferenceItemDto) {
       openCountItemDialog(item)
     }
+
+    override fun onLongClick(item: CargoConferenceItemDto) {
+      openCountHistoryActivity(item)
+    }
   })
 
   private val viewModel: CargoConferenceViewModel by viewModels()
@@ -50,8 +53,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_cargo_conference)
-    setupToolbar()
-
     cargoConferenceTaskId = intent.getLongExtra(CARGO_TASK_ID, 0)
     cargo_items_recycler_view.setAdapter(cargoItemsAdapter)
     observeViewModel()
@@ -124,10 +125,21 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun onClickFinish() {
     btn_finish_arrival.setOnClickListener {
-      val intent = Intent(this, EndConferenceActivity::class.java)
-      intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
-      startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
+      openEndConferenceActivity()
     }
+  }
+
+  private fun openEndConferenceActivity() {
+    val intent = Intent(this, EndConferenceActivity::class.java)
+    intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
+    startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
+  }
+
+  private fun openCountHistoryActivity(item: CargoConferenceItemDto) {
+    val intent = Intent(this, ConferenceCountsActivity::class.java)
+    intent.putExtra(ConferenceCountsActivity.CARGO_TASK_ID, cargoConferenceTaskId)
+    intent.putExtra(ConferenceCountsActivity.ITEM_CODE, item.gtin)
+    startActivityForResult(intent, ConferenceCountsActivity.END_COUNT_HISTORY_ACTIVITY)
   }
 
   private fun onRefreshLoadData() {
@@ -137,8 +149,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun observeViewModel() {
-    viewModel.cargoItem.observe(this, Observer {
-      onResult(it,
+    viewModel.cargoItem.observe(this, { result ->
+      onResult(result,
         onSuccess = {
           showMessageSuccess(R.string.counted_success)
           loadCargoConferenceTask()
@@ -147,14 +159,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           cargo_items_recycler_view.stopRefresh()
         })
     })
-    viewModel.task.observe(this, Observer {
-      onResult(it,
-        onSuccess = { result ->
-          if (result.data.isPending()) {
+    viewModel.task.observe(this, { result ->
+      onResult(result,
+        onSuccess = { success ->
+          if (success.data.isPending()) {
             viewModel.startCounting(cargoConferenceTaskId)
             loadCargoConferenceTask()
           }
-          updateUi(result.data)
+          updateUi(success.data)
         },
         onError = {
           showMessageError(R.string.error_while_loading_task)
@@ -164,15 +176,23 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         }
       )
     })
-    viewModel.finishStatus.observe(this, Observer {
-      onResult(it, onSuccess = {
+    viewModel.finishStatus.observe(this, { result ->
+      onResult(result, onSuccess = {
         setResult(TaskDetailsActivity.RESULT_TASK_CHANGED)
         clearTop()
+      })
+    })
+    viewModel.items.observe(this, { result ->
+      onResult(result, onSuccess = {
+        updateCargoItems(it.data)
       })
     })
   }
 
   private fun onBarcodeChangeSearchProduct() {
+    barcode_search_input.addOnTextChangeListener { searchInputValue ->
+      viewModel.filterConferenceItems(searchInputValue)
+    }
     barcode_search_input.addOnSearchListener { searchInputValue ->
       searchProductToCount(searchInputValue)
     }
@@ -194,6 +214,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           loadCargoConferenceTask()
         }
       }
+      ConferenceCountsActivity.END_COUNT_HISTORY_ACTIVITY -> {
+        loadCargoConferenceTask()
+      }
     }
   }
 
@@ -204,7 +227,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         cargoConferenceDto.cargoReferenceCode
       )
     )
-    cargoItemsAdapter.items = cargoConferenceDto.items
+    updateCargoItems(cargoConferenceDto.items)
     updateUiLabelItemsCounted(cargoConferenceDto)
     if (cargoConferenceDto.taskStatus == TaskStatus.DONE) {
       updateUiDisableControls()
@@ -212,6 +235,11 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       updateKeyboardStatusCargo(cargoConferenceDto)
     }
     endLoading()
+  }
+
+  private fun updateCargoItems(items: List<CargoConferenceItemDto>) {
+    cargoItemsAdapter.items = items
+    cargo_items_recycler_view.showEmptyLabel(items.isEmpty())
   }
 
   private fun updateUiDisableControls() {
@@ -274,7 +302,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           openCountItemDialog(it.data)
         },
         onNullResult = {
-          showMessageError(getString(R.string.not_found_product_with_gtin, search))
+          showMessageError(getString(R.string.not_found_product_with_search, search))
         },
         onError = { resetReadingState() }
       )
@@ -284,7 +312,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   private fun openCountItemDialog(item: CargoConferenceItemDto) {
 
     val totalQuantityCounted = item.countedQuantity?.toInt()
-    var unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
+    val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val qtdInputNumber = createInputNumber(
       value = BigDecimal.ZERO,
       labelBeforeInput = getString(R.string.add_two_dots),
@@ -338,7 +366,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun openReportDamageDialog(item: CargoConferenceItemDto) {
 
-    var unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
+    val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val damageCountInput =
       createInputNumber(
         labelBeforeInput = getString(R.string.add_two_dots),
@@ -388,7 +416,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
                 negativeButtonText = getString(R.string.inform_damage)
               )
             } else {
-              viewModel.countItem(item, damagedQtd, "Descontando quantidade avariada")
+              viewModel.countItem(item, damagedQtd, getString(R.string.discount_damaged_quantity))
             }
             dialog.hide()
           }
@@ -398,6 +426,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       inputValue = BigDecimal.ZERO,
       negativeButtonText = getString(R.string.inform_damage)
     )
+    damageCountInput.showKeyboard()
   }
 
   private fun createLayoutGtinCode(item: CargoConferenceItemDto): List<View> {
@@ -456,12 +485,15 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         view.setOnClickListener {
           onClickCargoItem.onClick(item)
         }
+        view.setOnLongClickListener {
+          onClickCargoItem.onLongClick(item)
+          false
+        }
       }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CargoItemCountViewHolder {
-      val items = parent.inflateToViewHolder(R.layout.item_conference_layout)
-      return CargoItemCountViewHolder(items)
+      return CargoItemCountViewHolder(parent.inflateToViewHolder(R.layout.item_conference_layout))
     }
 
     override fun getItemCount(): Int {
@@ -475,6 +507,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
     interface OnClickCargoItem {
       fun onClick(item: CargoConferenceItemDto)
+      fun onLongClick(item: CargoConferenceItemDto)
     }
   }
 }

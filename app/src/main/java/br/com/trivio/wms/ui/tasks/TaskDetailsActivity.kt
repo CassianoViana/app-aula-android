@@ -13,7 +13,6 @@ import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
 import br.com.trivio.wms.extensions.endLoading
-import br.com.trivio.wms.extensions.setupToolbar
 import br.com.trivio.wms.extensions.startLoading
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
@@ -35,7 +34,6 @@ class TaskDetailsActivity : MyAppCompatActivity() {
     super.onCreate(savedInstanceState)
     startTask()
     setContentView(R.layout.activity_task_details)
-    setupToolbar()
     this.taskId = intent.getLongExtra(TASK_ID, 0)
     observeViewModel()
     onClickBtnStartTask()

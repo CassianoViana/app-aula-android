@@ -7,7 +7,6 @@ import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.extensions.setupToolbar
 
 class LoginSettingsActivity : MyAppCompatActivity() {
 
@@ -23,7 +22,6 @@ class LoginSettingsActivity : MyAppCompatActivity() {
         settingsFragment
       )
       .commit()
-    setupToolbar()
   }
 
   class SettingsFragment : PreferenceFragmentCompat() {

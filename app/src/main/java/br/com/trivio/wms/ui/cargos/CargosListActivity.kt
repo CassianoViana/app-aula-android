@@ -6,17 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.Badge
 import br.com.trivio.wms.components.custom.ProgressBar
 import br.com.trivio.wms.data.dto.CargoListDto
-import br.com.trivio.wms.extensions.endLoading
 import br.com.trivio.wms.extensions.inflateToViewHolder
-import br.com.trivio.wms.extensions.setupToolbar
-import br.com.trivio.wms.extensions.startLoading
 import br.com.trivio.wms.onResult
 import kotlinx.android.synthetic.main.activity_cargos.*
 
@@ -34,7 +30,6 @@ class CargosListActivity : MyAppCompatActivity() {
     super.onCreate(savedInstanceState)
     startTask()
     setContentView(R.layout.activity_cargos)
-    setupToolbar()
     observeViewModel()
     bindListAdapter()
     addRefreshListener()
@@ -42,8 +37,8 @@ class CargosListActivity : MyAppCompatActivity() {
   }
 
   private fun onSearchFilterItems() {
-    search_input_cargos.addOnSearchListener {
-      adapter.cargos = viewModel.filter(it)
+    search_input_cargos.addOnTextChangeListener {
+      setCargos(viewModel.filter(it))
     }
   }
 
@@ -63,10 +58,10 @@ class CargosListActivity : MyAppCompatActivity() {
   }
 
   private fun observeViewModel() {
-    viewModel.cargosResult.observe(this, Observer {
+    viewModel.cargosResult.observe(this, {
       onResult(it,
         onSuccess = { success ->
-          adapter.cargos = success.data
+          setCargos(success.data)
         },
         always = {
           endLoading()
@@ -74,6 +69,11 @@ class CargosListActivity : MyAppCompatActivity() {
         }
       )
     })
+  }
+
+  fun setCargos(cargos: List<CargoListDto>) {
+    adapter.cargos = cargos
+    cargos_list.showEmptyLabel(cargos.isEmpty())
   }
 
   private fun loadPendingCargos() {

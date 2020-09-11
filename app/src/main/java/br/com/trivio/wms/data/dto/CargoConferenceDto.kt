@@ -63,7 +63,10 @@ class CargoConferenceDto(
   fun getTotalDivergentItems() = items.filter { it.isCountedWithDivergences() }.count()
   fun isPending() = taskStatus == TaskStatus.PENDING
   fun getPercentProgress() = progress
-  fun isValid(): Boolean = totalInvalid == 0 && totalCountedItems > 0
+  fun isValid(): Boolean {
+    return totalInvalid == 0 && totalCountedItems > 0 && totalToCountItems == 0
+  }
+
   fun getStatusCounting() = when {
     progress == 100 -> {
       STATUS_COUNTING_ALL_COUNTED

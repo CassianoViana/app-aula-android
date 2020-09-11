@@ -18,7 +18,7 @@ fun MyAppCompatActivity.hideKeyboard(editText: EditText) {
   imm.hideSoftInputFromWindow(editText.windowToken, 0)
 }
 
-fun EditText.setKeyboardVisible(context: Context, visible: Boolean) {
+fun EditText.setKeyboardVisible(context: Context, visible: Boolean = true) {
   val imm: InputMethodManager =
     context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
   if (visible) {

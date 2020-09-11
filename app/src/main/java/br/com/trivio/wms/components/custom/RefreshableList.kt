@@ -27,6 +27,7 @@ class RefreshableList @JvmOverloads constructor(
 
   fun stopRefresh() {
     refreshLayout.isRefreshing = false
+    setLoading(false)
   }
 
   fun <T : RecyclerView.ViewHolder> setAdapter(adapter: RecyclerView.Adapter<T>) {
@@ -36,11 +37,15 @@ class RefreshableList @JvmOverloads constructor(
   private var refreshLayout: SwipeRefreshLayout
   private var recyclerView: RecyclerView
 
+  fun showEmptyLabel(show: Boolean) {
+    empty_list_label.setVisible(show)
+  }
+
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_refreshable_list, this, true)
     refreshLayout = findViewById(R.id.swipe_refresh)
     recyclerView = findViewById(R.id.recycler_view)
-
+    showEmptyLabel(false)
     recyclerView.layoutManager = LinearLayoutManager(context)
 
     attrs?.let {

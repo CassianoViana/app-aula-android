@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
+import br.com.trivio.wms.data.dto.ConferenceCountDto
 import br.com.trivio.wms.data.dto.TaskStatusDto
 import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
@@ -19,8 +20,10 @@ class CargoConferenceViewModel(
   ViewModel() {
 
   val task = MutableLiveData<Result<CargoConferenceDto>>()
+  val items = MutableLiveData<Result<List<CargoConferenceItemDto>>>()
   val cargoItem = MutableLiveData<Result<CargoConferenceItemDto>>()
   val finishStatus = MutableLiveData<Result<Boolean>>()
+  val countsHistoryList = MutableLiveData<Result<List<ConferenceCountDto>>>()
 
   fun loadCargoConferenceTask(id: Long) {
     viewModelScope.launch {
@@ -39,6 +42,27 @@ class CargoConferenceViewModel(
       cargoItem.value = asyncRequest {
         cargoConferenceRepository.countItem(item, quantity, description)
       }
+    }
+  }
+
+  fun filterConferenceItems(search: String) {
+    this.items.value = Result.Success(
+      when (val value: Result<CargoConferenceDto>? = task.value) {
+        is Result.Success -> value.data.filteredItems(search)
+        else -> listOf()
+      }
+    )
+  }
+
+  fun filterCountHistory(search: String): List<ConferenceCountDto> {
+    val history = countsHistoryList.value
+    return when (history) {
+      is Result.Success -> history.data.filter {
+        search.isEmpty() || it.gtin == search || it.sku == search || it.product?.isVerySimilar(
+          search
+        ) ?: false
+      }
+      else -> listOf()
     }
   }
 
@@ -83,6 +107,24 @@ class CargoConferenceViewModel(
       }.let { restartedCountingTask ->
         task.value = restartedCountingTask
         callback(restartedCountingTask)
+      }
+    }
+  }
+
+  fun loadCountHistory(taskId: Long) {
+    viewModelScope.launch {
+      countsHistoryList.value = asyncRequest {
+        cargoConferenceRepository.loadCountsHistory(taskId)
+      }
+    }
+  }
+
+  fun undoCount(conferenceCountDto: ConferenceCountDto, callback: () -> Unit) {
+    viewModelScope.launch {
+      asyncRequest {
+        cargoConferenceRepository.undoCountItem(conferenceCountDto.id)
+      }.let {
+        callback()
       }
     }
   }

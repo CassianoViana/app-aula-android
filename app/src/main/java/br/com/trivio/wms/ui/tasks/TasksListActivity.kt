@@ -31,7 +31,6 @@ class TasksListActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_tasks)
-    this.setupToolbar()
     observeViewModel()
     bindListAdapter()
     addRefreshListener()

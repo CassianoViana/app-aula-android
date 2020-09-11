@@ -11,7 +11,8 @@ data class CargoConferenceItemDto(
   val expectedQuantity: BigDecimal? = BigDecimal.ZERO,
   var countedQuantity: BigDecimal? = BigDecimal.ZERO,
   var damagedQuantity: BigDecimal? = BigDecimal.ZERO,
-  var storageUnit: StorageUnitDto? = null
+  var storageUnit: StorageUnitDto? = null,
+  var counts: List<ConferenceCountDto> = listOf()
 ) {
   fun getSearchString(): String {
     return "$name, $gtin, $sku, $expectedQuantity, $countedQuantity"

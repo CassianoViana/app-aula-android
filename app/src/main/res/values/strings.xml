@@ -1,160 +1,254 @@
 <resources>
-    <string name="app_name">Wms</string>
-    <string name="loading_app">Iniciando aplicativo</string>
-    <string name="loading_store">Carregando armazém...</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Siad</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Configurações</string>
+  <string name="app_name">Wms</string>
+  <string name="loading_app">Iniciando aplicativo</string>
+  <string name="loading_store">Carregando armazém...</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="nav_header_title">Siad</string>
+  <string name="nav_header_subtitle">android.studio@android.com</string>
+  <string name="nav_header_desc">Navigation header</string>
+  <string name="action_settings">Configurações</string>
 
-    <string name="menu_tasks">Tarefas</string>
-    <string name="arrival">Recebimento</string>
-    <string name="separation">Separação</string>
-    <string name="expedition">Expedição</string>
-    <string name="inventory">Inventário</string>
-    <string name="fillment">Abastecimento</string>
+  <string name="menu_tasks">Tarefas</string>
+  <string name="arrival">Recebimento</string>
+  <string name="separation">Separação</string>
+  <string name="expedition">Expedição</string>
+  <string name="inventory">Inventário</string>
+  <string name="fillment">Abastecimento</string>
 
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Compartinhar</string>
-    <string name="menu_exit">Sair</string>
-    <string name="title_activity_login">Login</string>
-    <string name="prompt_email">Usuário ou Email</string>
-    <string name="prompt_password">Senha</string>
+  <string name="menu_gallery">Gallery</string>
+  <string name="menu_slideshow">Slideshow</string>
+  <string name="menu_tools">Tools</string>
+  <string name="menu_share">Compartinhar</string>
+  <string name="menu_exit">Sair</string>
+  <string name="title_activity_login">Login</string>
+  <string name="prompt_email">Usuário ou Email</string>
+  <string name="prompt_password">Senha</string>
 
-    <string name="action_sign_in">Entrar</string>
-    <string name="action_sign_in_short">Entrar</string>
-    <string name="welcome">"Bem-vindo"</string>
-    <string name="invalid_username">Usuário inválido</string>
-    <string name="invalid_password">A senha está inválida</string>
-    <string name="login_failed">"Verifique o usuário e a senha"</string>
-    <string name="title_activity_login_settings">Configurações</string>
+  <string name="action_sign_in">Entrar</string>
+  <string name="action_sign_in_short">Entrar</string>
+  <string name="welcome">"Bem-vindo"</string>
+  <string name="invalid_username">Usuário inválido</string>
+  <string name="invalid_password">A senha está inválida</string>
+  <string name="login_failed">"Verifique o usuário e a senha"</string>
+  <string name="title_activity_login_settings">Configurações</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+  <!-- Preference Titles -->
+  <string name="messages_header">Messages</string>
+  <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="server_url">Endereço de conexão</string>
-    <string name="reply_title">Default reply action</string>
+  <!-- Messages Preferences -->
+  <string name="server_url">Endereço de conexão</string>
+  <string name="reply_title">Default reply action</string>
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+  <!-- Sync Preferences -->
+  <string name="sync_title">Sync email periodically</string>
+  <string name="attachment_title">Download incoming attachments</string>
+  <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="connection">Conexão</string>
-    <string name="barcode_reader_connection_established">Coletor\nconectado</string>
-    <string name="barcode_reader_connection_failed">Coletor\ndesconectado</string>
-    <string name="yes">Sim</string>
-    <string name="no">Não</string>
-    <string name="confirm_exit">Fechar o aplicativo?</string>
-    <string name="connection_failed">Não foi possível conectar. Tente mais tarde</string>
-    <string name="default_error_message">Ocorreu um erro. Informe o suporte</string>
-    <string name="could_not_retrieve_token">Erro de verificação de usuário e/ou senha</string>
-    <string name="enter">Entrar</string>
-    <string name="order">Pedido:</string>
-    <string name="open">Abrir</string>
-    <string name="start">Iniciar</string>
-    <string name="continue_task">Continuar</string>
-    <string name="task">Tarefa</string>
-    <string name="task_and_number">Tarefa %d</string>
-    <string name="cargo_conference">Conferência de carga</string>
-    <string name="conference">Conferência</string>
-    <string name="counted_itens">itens contados</string>
-    <string name="search_product">Buscar produto</string>
-    <string name="barcode">Código de barras</string>
-    <string name="products">Produtos</string>
-    <string name="inform_qtd">Informe a quantidade</string>
-    <string name="cancel">Cancelar</string>
-    <string name="ok">OK</string>
-    <string name="quantity">Quantidade</string>
-    <string name="counted_success">Contagem realizada com sucesso. Leia o próximo produto.</string>
-    <string name="filter_per_code">Filtrar por código</string>
-    <string name="please_check_the_quantity">Verifique a quantidade informada</string>
-    <string name="counted_qtd">Quantidade contada</string>
-    <string name="counted_qtd_abbreviated">Qtd contada</string>
-    <string name="items">itens</string>
-    <string name="counted_items">itens contados</string>
-    <string name="xItens">%1$ itens</string>
-    <string name="no_gtin">Gtin não informado</string>
-    <string name="search">Pesquisa</string>
-    <string name="finish_task_label">Finalizar tarefa</string>
-    <string name="counting_finished_message">Todos os itens foram contados. Deseja finalizar a tarefa?</string>
-    <string name="divergent_itens">itens divergentes: %d</string>
-    <string name="every_items_counted_correct">Todos os itens foram contados corretamente</string>
-    <string name="no_sku">Código não informado</string>
-    <string name="counting_finished">A contagem foi finalizada</string>
-    <string name="connection_type">Tipo de conexão</string>
-    <string name="confirm">Confirmar</string>
-    <string name="inform_damage">Informar avaria</string>
-    <string name="read_next_product">Leia o próximo produto</string>
-    <string name="cancelled_operation">Operação cancelada</string>
-    <string name="how_many_items_to_be_added">Adicionar quantos itens à contagem?</string>
-    <string name="how_many_items_were_damaged_template">Quantos %s itens estão avariados?</string>
-    <string name="describe_the_damage_template">O que aconteceu com o produto %s</string>
-    <string name="how_many_items_are_damaged">Quantos itens estão avariados?</string>
-    <string name="damage_example">Está quebrado</string>
-    <string name="describe_damage">Descreva a avaria</string>
-    <string name="damage_was_registered">A avaria foi registrada</string>
-    <string name="error_while_register_damage">Falha ao registrar avaria</string>
-    <string name="loading_string">…</string>
-    <string name="loading_task">Carregando tarefa…</string>
-    <string name="error_while_loading_task">Erro ao carregar tarefa</string>
-    <string name="user">Usuário</string>
-    <string name="lock">Cadeado</string>
-    <string name="logo_siad_content_description">Logo siad. Armazém</string>
-    <string name="arrivals">Recebimentos</string>
-    <string name="pending_arrivals">Recebimentos pendentes</string>
-    <string name="helloUser">Olá, %s</string>
-    <string name="bono">Bono</string>
-    <string name="come_back">Voltar</string>
-    <string name="start_counting">Iniciar contagem</string>
-    <string name="continue_counting">Continuar contagem</string>
-    <string name="product_code">Código do produto</string>
-    <string name="bono_ref_code_template">Bono #%s</string>
-    <string name="all_correct_bono_counted">Parabéns! Todos os itens conferem com o bono da conferência</string>
-    <string name="not_all_correct_bono_counted">Os itens do bono não conferem com a contagem realizada</string>
-    <string name="restart_counting">Reiniciar a\ncontagem</string>
-    <string name="finish_with_divergences">Finalizar com \ndivergências</string>
-    <string name="finish">Finalizar</string>
-    <string name="companies">Empresas</string>
-    <string name="driver">Motorista</string>
-    <string name="generated_at">Gerado em</string>
-    <string name="truck_label">Placa</string>
-    <string name="list_open_cargos">Listar cargas abertas</string>
-    <string name="list_pending_cargos">Listar cargas pententes</string>
-    <string name="the_counting_was_restarted">A contagem foi reiniciada</string>
-    <string name="the_counting_was_finished">A contagem foi finalizada</string>
-    <string name="cargo_conference_number">Conferência de carga %s</string>
-    <string name="the_counting_was_finished_with_divergences">A contagem foi finalizada com divergências</string>
-    <string name="not_counted">Não\ncontado</string>
-    <string name="not_found_product_with_gtin">Produto não encontrado para o GTIN %s</string>
-    <string name="already_conted_x_unities">Quantidade já conferida: %d %s</string>
-    <string name="damages_already_counted">Avarias já contadas: %d %s</string>
-    <string name="counted_to_from">%d/%d</string>
-    <string name="counteds">Contados</string>
-    <string name="to_count">À contar</string>
-    <string name="damage">Avaria</string>
-    <string name="damaged_items">%d itens avariados</string>
-    <string name="inform_qtds">Informar quantidades</string>
-    <string name="finish_arrival">Finalizar recebimento</string>
-    <string name="finish_arrival_break_line">Finalizar\nrecebimento</string>
-    <string name="unit">Unidade</string>
-    <string name="unit_code">UN</string>
-    <string name="all_items_are_counted">Todos os itens foram contados</string>
-    <string name="counting_ok">Contagem conforme</string>
-    <string name="counting_divergent">Contagem divergente</string>
-    <string name="counting_pending">Contagem pendente</string>
-    <string name="add_two_dots">Adicionar:</string>
-    <string name="progress_counting">%d de %d (%dª contagem)</string>
-    <string name="driver_and_truck_break_line">%s - %s</string>
-    <string name="loading__">Carregando...</string>
-    <string name="restarting_count">Reiniciando contagem...</string>
-    <string name="finishing_count">Finalizando contagem...</string>
-    <string name="the_quantity_cannot_be_zero">A quantidade não pode ser zero</string>
+  <string name="attachment_summary_off">Only download attachments when manually requested</string>
+  <string name="connection">Conexão</string>
+  <string name="barcode_reader_connection_established">Coletor\nconectado</string>
+  <string name="barcode_reader_connection_failed">Coletor\ndesconectado</string>
+  <string name="yes">Sim</string>
+  <string name="no">Não</string>
+  <string name="confirm_exit">Fechar o aplicativo?</string>
+  <string name="connection_failed">Não foi possível conectar. Tente mais tarde</string>
+  <string name="default_error_message">Ocorreu um erro. Informe o suporte</string>
+  <string name="could_not_retrieve_token">Erro de verificação de usuário e/ou senha</string>
+  <string name="enter">Entrar</string>
+  <string name="order">Pedido:</string>
+  <string name="open">Abrir</string>
+  <string name="start">Iniciar</string>
+  <string name="continue_task">Continuar</string>
+  <string name="task">Tarefa</string>
+  <string name="task_and_number">Tarefa %d</string>
+  <string name="cargo_conference">Conferência de carga</string>
+  <string name="conference">Conferência</string>
+  <string name="counted_itens">itens contados</string>
+  <string name="search_product">Buscar produto</string>
+  <string name="barcode">Código de barras</string>
+  <string name="products">Produtos</string>
+  <string name="inform_qtd">Informe a quantidade</string>
+  <string name="cancel">Cancelar</string>
+  <string name="ok">OK</string>
+  <string name="quantity">Quantidade</string>
+  <string name="counted_success">Contagem realizada com sucesso. Leia o próximo produto.</string>
+  <string name="filter_per_code">Filtrar por código</string>
+  <string name="please_check_the_quantity">Verifique a quantidade informada</string>
+  <string name="counted_qtd">Quantidade contada</string>
+  <string name="counted_qtd_abbreviated">Qtd contada</string>
+  <string name="items">itens</string>
+  <string name="counted_items">itens contados</string>
+  <string name="xItens">%1$ itens</string>
+  <string name="no_gtin">Gtin não informado</string>
+  <string name="search">Pesquisa</string>
+  <string name="finish_task_label">Finalizar tarefa</string>
+  <string name="counting_finished_message">Todos os itens foram contados. Deseja finalizar a tarefa?</string>
+  <string name="divergent_itens">itens divergentes: %d</string>
+  <string name="every_items_counted_correct">Todos os itens foram contados corretamente</string>
+  <string name="no_sku">Código não informado</string>
+  <string name="counting_finished">A contagem foi finalizada</string>
+  <string name="connection_type">Tipo de conexão</string>
+  <string name="confirm">Confirmar</string>
+  <string name="inform_damage">Informar avaria</string>
+  <string name="read_next_product">Leia o próximo produto</string>
+  <string name="cancelled_operation">Operação cancelada</string>
+  <string name="how_many_items_to_be_added">Adicionar quantos itens à contagem?</string>
+  <string name="how_many_items_were_damaged_template">Quantos %s itens estão avariados?</string>
+  <string name="describe_the_damage_template">O que aconteceu com o produto %s</string>
+  <string name="how_many_items_are_damaged">Quantos itens estão avariados?</string>
+  <string name="damage_example">Está quebrado</string>
+  <string name="describe_damage">Descreva a avaria</string>
+  <string name="damage_was_registered">A avaria foi registrada</string>
+  <string name="error_while_register_damage">Falha ao registrar avaria</string>
+  <string name="loading_string">…</string>
+  <string name="loading_task">Carregando tarefa…</string>
+  <string name="error_while_loading_task">Erro ao carregar tarefa</string>
+  <string name="user">Usuário</string>
+  <string name="lock">Cadeado</string>
+  <string name="logo_siad_content_description">Logo siad. Armazém</string>
+  <string name="arrivals">Recebimentos</string>
+  <string name="pending_arrivals">Recebimentos pendentes</string>
+  <string name="helloUser">Olá, %s</string>
+  <string name="bono">Bono</string>
+  <string name="come_back">Voltar</string>
+  <string name="start_counting">Iniciar contagem</string>
+  <string name="continue_counting">Continuar contagem</string>
+  <string name="product_code">Código do produto</string>
+  <string name="bono_ref_code_template">Bono #%s</string>
+  <string name="all_correct_bono_counted">Parabéns! Todos os itens conferem com o bono da conferência</string>
+  <string name="not_all_correct_bono_counted">Os itens do bono não conferem com a contagem realizada</string>
+  <string name="restart_counting">Reiniciar a\ncontagem</string>
+  <string name="finish_with_divergences">Finalizar com \ndivergências</string>
+  <string name="finish">Finalizar</string>
+  <string name="companies">Empresas</string>
+  <string name="driver">Motorista</string>
+  <string name="generated_at">Gerado em</string>
+  <string name="truck_label">Placa</string>
+  <string name="list_open_cargos">Listar cargas abertas</string>
+  <string name="list_pending_cargos">Listar cargas pententes</string>
+  <string name="the_counting_was_restarted">A contagem foi reiniciada</string>
+  <string name="the_counting_was_finished">A contagem foi finalizada</string>
+  <string name="cargo_conference_number">Conferência de carga %s</string>
+  <string name="the_counting_was_finished_with_divergences">A contagem foi finalizada com divergências</string>
+  <string name="not_counted">Não\ncontado</string>
+  <string name="not_found_product_with_search">Produto não encontrado para a pesquisa\n%s</string>
+  <string name="already_conted_x_unities">Quantidade já conferida: %d %s</string>
+  <string name="damages_already_counted">Avarias já contadas: %d %s</string>
+  <string name="counted_to_from">%d/%d</string>
+  <string name="counteds">Contados</string>
+  <string name="to_count">À contar</string>
+  <string name="damage">Avaria</string>
+  <string name="damaged_items">%d itens avariados</string>
+  <string name="inform_qtds">Informar quantidades</string>
+  <string name="finish_arrival">Finalizar recebimento</string>
+  <string name="finish_arrival_break_line">Finalizar\nrecebimento</string>
+  <string name="unit">Unidade</string>
+  <string name="unit_code">UN</string>
+  <string name="all_items_are_counted">Todos os itens foram contados</string>
+  <string name="counting_ok">Contagem conforme</string>
+  <string name="counting_divergent">Contagem divergente</string>
+  <string name="counting_pending">Contagem pendente</string>
+  <string name="add_two_dots">Adicionar:</string>
+  <string name="progress_counting">%d de %d (%dª contagem)</string>
+  <string name="driver_and_truck_break_line">%s - %s</string>
+  <string name="loading__">Carregando...</string>
+  <string name="restarting_count">Reiniciando contagem...</string>
+  <string name="finishing_count">Finalizando contagem...</string>
+  <string name="the_quantity_cannot_be_zero">A quantidade não pode ser zero</string>
+  <string name="title_activity_conference_counts">ScrollingActivity</string>
+  <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+  <string name="count_history">Histórico de contagem</string>
+  <string name="discount_damaged_quantity">Descontando quantidade avariada</string>
+  <string name="delete_count">Desfazer essa contagem?</string>
+  <string name="the_count_was_undone">Esta contagem foi desfeita</string>
 </resources>

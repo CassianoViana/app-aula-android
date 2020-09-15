@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.setVisible
@@ -39,6 +40,10 @@ class RefreshableList @JvmOverloads constructor(
 
   fun showEmptyLabel(show: Boolean) {
     empty_list_label.setVisible(show)
+  }
+
+  fun scrollTop() {
+    recyclerView.smoothScrollToPosition(0)
   }
 
   init {

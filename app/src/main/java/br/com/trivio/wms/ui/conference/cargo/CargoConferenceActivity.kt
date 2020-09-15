@@ -46,6 +46,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     override fun onLongClick(item: CargoConferenceItemDto) {
       openCountHistoryActivity(item)
     }
+
   })
 
   private val viewModel: CargoConferenceViewModel by viewModels()
@@ -65,6 +66,24 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     onClickHistoryOpenHistoryActivity()
     loadData()
   }
+
+  /*
+  private fun onClickFabScrollToTop() {
+    fab_scroll_top_list.hide()
+    app_bar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+      override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
+        if (p1 == 0) {
+          fab_scroll_top_list.hide()
+        } else {
+          fab_scroll_top_list.show()
+        }
+      }
+    })
+    fab_scroll_top_list.setOnClickListener {
+      cargo_items_recycler_view.scrollTop();
+      app_bar.setExpanded(true)
+    }
+  }*/
 
   private fun onClickHistoryOpenHistoryActivity() {
     btn_show_history.setOnClickListener {
@@ -370,10 +389,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     )
   }
 
-  private fun startCameraActivity() {
-    startActivity(Intent(this, CameraActivity::class.java))
-  }
-
   private fun resetReadingState() {
     barcode_search_input.reset()
     barcode_reader.start()
@@ -426,10 +441,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
                   this.loadCargoConferenceTask()
                   dialog.hide()
                 },
-                viewsAfterInput = listOf(
+                /*viewsAfterInput = listOf(
                   createButton(getString(R.string.camera)) {
                     startCameraActivity()
-                  }),
+                  }),*/
                 inputType = InputType.TYPE_CLASS_TEXT,
                 inputValue = "",
                 hint = getString(R.string.damage_example),

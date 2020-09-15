@@ -26,6 +26,7 @@ class MainActivity : MyAppCompatActivity() {
   private lateinit var menusList: RecyclerView
   private val menus = listOf(
     MenuItem(
+
       R.string.menu_tasks, R.drawable.ic_attach_file_white_24dp
     ) { startActivity(Intent(this, TasksListActivity::class.java)) },
 
@@ -35,7 +36,9 @@ class MainActivity : MyAppCompatActivity() {
     MenuItem(R.string.separation, R.drawable.ic_shopping_cart_black_24dp),
     MenuItem(R.string.expedition, R.drawable.ic_directions_bus_black_24dp),
     MenuItem(R.string.inventory, R.drawable.ic_assignment_black_24dp),
-    MenuItem(R.string.fillment, R.drawable.ic_format_color_fill_black_24dp),
+    MenuItem(R.string.fillment, R.drawable.ic_format_color_fill_black_24dp) {
+      startActivity(Intent(this, ScrollingActivity::class.java))
+    },
     MenuItem(R.string.menu_exit, R.drawable.ic_exit_to_app_black_24dp) {
       exitAppHandler.logout()
     }

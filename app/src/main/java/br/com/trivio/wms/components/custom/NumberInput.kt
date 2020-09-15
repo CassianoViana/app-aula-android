@@ -1,6 +1,7 @@
 package br.com.trivio.wms.components.custom
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -75,6 +76,11 @@ class NumberInput @JvmOverloads constructor(
   fun setLabel(label: String) {
     custom_number_input_label.setVisible(true)
     custom_number_input_label.text = label
+  }
+
+  fun setButtonsDrawable(drawableId: Int) {
+    icon_add.background = context.getDrawable(drawableId)
+    icon_remove.background = context.getDrawable(drawableId)
   }
 
   fun setLabelAfterInput(label: String) {

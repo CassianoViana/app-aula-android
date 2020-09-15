@@ -31,9 +31,13 @@ fun MyAppCompatActivity.createInputNumber(
   value: BigDecimal? = BigDecimal.ZERO,
   labelBeforeInput: String? = null,
   labelAfterInput: String? = null,
-  allowNegative: Boolean = true
+  allowNegative: Boolean = true,
+  backgroundDrawableResourceId: Int? = null
 ): NumberInput {
   val numberInput = NumberInput(this)
+  backgroundDrawableResourceId?.let {
+    numberInput.setButtonsDrawable(it)
+  }
   numberInput.allowNegative = allowNegative
 
   value?.let {

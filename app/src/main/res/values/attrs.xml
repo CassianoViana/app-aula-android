@@ -27,4 +27,8 @@
     <attr name="badge_text" format="string" />
     <attr name="badge_text_color" format="reference|color" />
   </declare-styleable>
+
+  <declare-styleable name="NumberInput">
+    <attr name="buttons_color" format="color" />
+  </declare-styleable>
 </resources>

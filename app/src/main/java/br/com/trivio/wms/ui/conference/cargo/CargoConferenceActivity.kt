@@ -346,7 +346,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     val qtdInputNumber = createInputNumber(
       labelBeforeInput = getString(R.string.add_two_dots),
       labelAfterInput = unitCode,
-      allowNegative = false
+      allowNegative = false,
     )
     prompt(
       firstTitle = getString(R.string.inform_qtds),
@@ -401,7 +401,8 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       createInputNumber(
         labelBeforeInput = getString(R.string.add_two_dots),
         labelAfterInput = unitCode,
-        allowNegative = false
+        allowNegative = false,
+        backgroundDrawableResourceId = R.drawable.light_red_rounded
       )
 
     prompt(

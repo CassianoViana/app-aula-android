@@ -21,8 +21,19 @@ fun MyAppCompatActivity.createButton(name: String, onClick: (() -> Unit) = {}): 
   return button
 }
 
-fun MyAppCompatActivity.createTextView(value: String): TextView {
-  val textView = inflate<TextView>(R.layout.custom_text_view)
+fun MyAppCompatActivity.createTextView(
+  value: String,
+  small: Boolean = false,
+  colorResourceId: Int? = null
+): TextView {
+  val textView = if (!small) {
+    inflate<TextView>(R.layout.custom_text_view)
+  } else {
+    inflate<TextView>(R.layout.custom_small_text_view)
+  }
+  colorResourceId?.let {
+    textView.setTextColor(getColor(it))
+  }
   textView.text = value
   return textView
 }

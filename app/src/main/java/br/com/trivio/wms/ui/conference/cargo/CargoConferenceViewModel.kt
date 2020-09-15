@@ -12,7 +12,6 @@ import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
 import br.com.trivio.wms.repository.CargoConferenceRepository
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 import java.math.BigDecimal
 
 class CargoConferenceViewModel(
@@ -119,7 +118,7 @@ class CargoConferenceViewModel(
     }
   }
 
-  fun undoCount(conferenceCountDto: ConferenceCountDto, callback: (Result<ResponseBody>) -> Unit) {
+  fun undoCount(conferenceCountDto: ConferenceCountDto, callback: (Result<Any>) -> Any) {
     viewModelScope.launch {
       asyncRequest {
         cargoConferenceRepository.undoCountItem(conferenceCountDto.id)

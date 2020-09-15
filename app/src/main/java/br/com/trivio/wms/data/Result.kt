@@ -19,9 +19,14 @@ sealed class Result<out T : Any?> {
   }
 
   companion object {
-    fun <T : Any> call(fn: () -> T): Result<T> {
+    fun <T : Any> call(fn: () -> T?): Result<T> {
       return try {
-        Success(fn())
+        val data = fn()
+        return if (data != null) {
+          Success(data)
+        } else {
+          Null(data)
+        }
       } catch (e: Exception) {
         Error(e)
       }

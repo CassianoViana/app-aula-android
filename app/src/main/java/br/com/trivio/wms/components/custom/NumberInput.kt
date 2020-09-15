@@ -1,9 +1,9 @@
 package br.com.trivio.wms.components.custom
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import br.com.trivio.wms.R
@@ -70,6 +70,15 @@ class NumberInput @JvmOverloads constructor(
   fun addTextChangedListener(listener: (String) -> Unit) {
     custom_number_input.addTextChangedListener {
       listener(custom_number_input.text.toString())
+    }
+  }
+
+  fun addOnDoneListener(listener: (String) -> Unit) {
+    custom_number_input.setOnEditorActionListener { textView, actionId, keyEvent ->
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+        listener(custom_number_input.text.toString())
+      }
+      true
     }
   }
 

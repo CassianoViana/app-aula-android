@@ -101,9 +101,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   override fun onFinish() {
     barcode_reader.stop()
-//    val data = Intent()
-//    data.putExtra(CARGO_TASK_ID, this.cargoConferenceTaskId)
-//    setResult(RESULT_TASK_ID, data)
+    val data = Intent()
+    data.putExtra(CARGO_TASK_ID, this.cargoConferenceTaskId)
+    setResult(RESULT_TASK_ID, data)
     super.onFinish()
   }
 
@@ -336,7 +336,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun openCountItemDialog(item: CargoConferenceItemDto) {
+  private fun openCountItemDialog(
+    item: CargoConferenceItemDto,
+    dialog: Dialog? = null
+  ) {
     val totalQuantityCounted = item.countedQuantity?.toInt()
     val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val qtdInputNumber = createInputNumber(
@@ -345,13 +348,24 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       allowNegative = false,
     )
     prompt(
-      firstTitle = getString(R.string.inform_qtds),
+      dialog = dialog,
+      firstTitle = getString(R.string.inform_qtds_asteristic),
       secondTitle = item.name,
       inputValue = totalQuantityCounted,
       hint = "0",
       inputView = qtdInputNumber,
-      viewsBeforeInput = createLayoutGtinCode(item),
-      viewsAfterInput = mutableListOf<View>().apply {
+      viewsBeforeInputFn = { _, views ->
+        views.apply {
+          add(
+            createTextView(
+              getString(R.string.no_damage_qtd),
+              small = true
+            )
+          )
+          createLayoutGtinCode(item).forEach { add(it) }
+        }
+      },
+      viewsAfterInputFn = { dialog, views ->
         totalQuantityCounted?.let { qtd ->
           if (qtd > 0) {
             val labelWithCountedQtd =
@@ -361,12 +375,21 @@ class CargoConferenceActivity : MyAppCompatActivity() {
                   qtd,
                   unitCode
                 )
-              )
-            this.add(labelWithCountedQtd)
+              ).apply {
+                this.setOnClickListener {
+                  dialog.hide()
+                  openCountHistoryActivity(item)
+                }
+              }
+            views.add(labelWithCountedQtd)
           }
         }
       },
-      negativeButtonText = getString(R.string.inform_damage),
+      negativeButtonText = if (item.damagedQuantity == null) {
+        getString(R.string.inform_damage)
+      } else {
+        getString(R.string.number_damages, item.damagedQuantity?.toInt())
+      },
       positiveAction = fun(dialog: Dialog, _) {
         qtdInputNumber.value?.let { quantity ->
           viewModel.countItem(item, quantity)
@@ -376,8 +399,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           dialog.hide()
         }
       },
-      negativeAction = {
-        openReportDamageDialog(item)
+      negativeAction = { dialog ->
+        openDamageDialog(item, onDamageReported = {
+          openCountItemDialog(item, dialog)
+        })
       },
       closeAction = {
         resetReadingState()
@@ -390,7 +415,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.start()
   }
 
-  private fun openReportDamageDialog(item: CargoConferenceItemDto) {
+  private fun openDamageDialog(
+    item: CargoConferenceItemDto,
+    onDamageReported: (item: CargoConferenceItemDto) -> Unit = {}
+  ) {
 
     val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val damageCountInput =
@@ -404,13 +432,50 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     prompt(
       firstTitle = getString(R.string.how_many_items_are_damaged),
       secondTitle = item.name,
+      positiveAction = { countDamageDialog, _: String ->
+        damageCountInput.value?.let { damagedQtd ->
+          if (damagedQtd.toInt() == 0) {
+            showMessageError(R.string.the_quantity_cannot_be_zero)
+          } else {
+            if (damagedQtd.toInt() > 0) {
+              prompt(
+                firstTitle = getString(R.string.describe_damage),
+                secondTitle = getString(R.string.describe_the_damage_template, item.name),
+                positiveAction = { describeDamageDialog, value ->
+                  viewModel.countItem(item, damagedQtd, value)
+                  this.loadCargoConferenceTask()
+                  item.addDamageQtd(damagedQtd)
+                  describeDamageDialog.hide()
+                  countDamageDialog.hide()
+                  onDamageReported(item)
+                },
+                negativeButtonText = getString(R.string.inform_damage),
+                /*viewsAfterInput = listOf(
+                  createButton(getString(R.string.camera)) {
+                    startCameraActivity()
+                  }),*/
+                inputType = InputType.TYPE_CLASS_TEXT,
+                inputValue = "",
+                hint = getString(R.string.damage_example),
+                viewsBeforeInput = createLayoutGtinCode(item),
+              )
+            } else {
+              viewModel.countItem(item, damagedQtd, getString(R.string.discount_damaged_quantity))
+            }
+          }
+        }
+      },
+      negativeButtonText = getString(R.string.inform_damage),
+      positiveButtonText = getString(R.string.damage_description),
+      inputValue = BigDecimal.ZERO,
       inputView = damageCountInput,
       viewsBeforeInput = createLayoutGtinCode(item),
-      viewsAfterInput = mutableListOf<View>().apply {
+
+      viewsAfterInputFn = { _, views ->
         item.damagedQuantity?.let {
           it.toInt().let { intQtd ->
             if (intQtd > 0) {
-              this.add(
+              views.add(
                 createTextView(
                   getString(
                     R.string.damages_already_counted,
@@ -423,40 +488,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           }
         }
       },
-      positiveAction = { dialog, _: String ->
-        damageCountInput.value?.let { damagedQtd ->
-          if (damagedQtd.toInt() == 0) {
-            showMessageError(R.string.the_quantity_cannot_be_zero)
-          } else {
-            if (damagedQtd.toInt() > 0) {
-              prompt(
-                firstTitle = getString(R.string.describe_damage),
-                secondTitle = getString(R.string.describe_the_damage_template, item.name),
-                viewsBeforeInput = createLayoutGtinCode(item),
-                positiveAction = { dialog, value ->
-                  viewModel.countItem(item, damagedQtd, value)
-                  this.loadCargoConferenceTask()
-                  dialog.hide()
-                },
-                /*viewsAfterInput = listOf(
-                  createButton(getString(R.string.camera)) {
-                    startCameraActivity()
-                  }),*/
-                inputType = InputType.TYPE_CLASS_TEXT,
-                inputValue = "",
-                hint = getString(R.string.damage_example),
-                negativeButtonText = getString(R.string.inform_damage)
-              )
-            } else {
-              viewModel.countItem(item, damagedQtd, getString(R.string.discount_damaged_quantity))
-            }
-            dialog.hide()
-          }
-        }
-      },
-
-      inputValue = BigDecimal.ZERO,
-      negativeButtonText = getString(R.string.inform_damage)
+      drawableConfirmButtonResId = R.drawable.ic_baseline_arrow_forward_18,
     )
   }
 

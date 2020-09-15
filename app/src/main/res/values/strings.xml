@@ -73,7 +73,7 @@
   <string name="cancel">Cancelar</string>
   <string name="ok">OK</string>
   <string name="quantity">Quantidade</string>
-  <string name="counted_success">Contagem realizada com sucesso. Leia o próximo produto.</string>
+  <string name="counted_success">Contagem realizada</string>
   <string name="filter_per_code">Filtrar por código</string>
   <string name="please_check_the_quantity">Verifique a quantidade informada</string>
   <string name="counted_qtd">Quantidade contada</string>
@@ -100,6 +100,7 @@
   <string name="how_many_items_are_damaged">Quantos itens estão avariados?</string>
   <string name="damage_example">Está quebrado</string>
   <string name="describe_damage">Descreva a avaria</string>
+  <string name="damage_description">Descrever avaria</string>
   <string name="damage_was_registered">A avaria foi registrada</string>
   <string name="error_while_register_damage">Falha ao registrar avaria</string>
   <string name="loading_string">…</string>
@@ -142,6 +143,7 @@
   <string name="damage">Avaria</string>
   <string name="damaged_items">%d itens avariados</string>
   <string name="inform_qtds">Informar quantidades</string>
+  <string name="inform_qtds_asteristic">Informar quantidades*</string>
   <string name="finish_arrival">Finalizar recebimento</string>
   <string name="finish_arrival_break_line">Finalizar\nrecebimento</string>
   <string name="unit">Unidade</string>
@@ -257,6 +259,8 @@
   <string name="title_activity_scrolling">ScrollingActivity</string>
   <string name="historic">Histórico</string>
   <string name="camera">Câmera</string>
-    <string name="historic_qtd">Histórico (%d)</string>
+  <string name="historic_qtd">Histórico (%d)</string>
   <string name="delete">Excluir</string>
+  <string name="number_damages">%d avarias</string>
+  <string name="no_damage_qtd">* Quantidade sem avaria</string>
 </resources>

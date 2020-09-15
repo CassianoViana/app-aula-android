@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@drawable/rounded_background"
   android:orientation="vertical">
 
-  <include layout="@layout/button_close_x" />
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="horizontal">
+
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent">
+
+      <include layout="@layout/button_close_x" />
+    </FrameLayout>
+
+  </LinearLayout>
+
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -15,8 +31,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/padding"
     android:paddingRight="@dimen/padding"
-    android:paddingBottom="@dimen/padding_half"
-    >
+    android:paddingBottom="@dimen/padding_half">
 
     <LinearLayout
       android:id="@+id/linearLayout"
@@ -26,19 +41,23 @@
 
       <TextView
         android:id="@+id/first_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quanto"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Quantos \nitens estão avariados?"
+        android:textAlignment="textStart"
         android:textColor="@color/colorPrimary"
+        android:textSize="22dp"
         android:textStyle="bold"
-        android:textSize="22dp" />
+        tools:ignore="RtlCompat" />
 
       <TextView
         android:id="@+id/second_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
         android:text="vocẽ quer cobrar?"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/medium_text" />
     </LinearLayout>
 
@@ -47,13 +66,12 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="0"
-      android:orientation="vertical"/>
+      android:orientation="vertical" />
 
     <EditText
       android:id="@+id/input_value"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="5dp"
       android:hint="0,00"
       android:inputType="number"
       android:textSize="@dimen/huge_text" />
@@ -62,9 +80,8 @@
       android:id="@+id/views_to_add_after_input"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="5dp"
       android:layout_weight="1"
-      android:orientation="vertical"/>
+      android:orientation="vertical" />
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -90,6 +107,7 @@
         android:layout_gravity="bottom"
         android:layout_margin="0dp"
         android:layout_weight="1"
+        android:drawableTint="@color/colorWhite"
         android:text="@string/confirm"
         app:layout_constraintBottom_toBottomOf="parent" />
     </LinearLayout>

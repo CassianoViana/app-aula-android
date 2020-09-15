@@ -60,4 +60,9 @@ data class CargoConferenceItemDto(
       BigDecimal.ZERO
     ) != 0
   }
+
+  fun addDamageQtd(damagedQtd: BigDecimal) {
+    this.countedQuantity = (this.countedQuantity ?: BigDecimal.ZERO).add(damagedQtd)
+    this.damagedQuantity = (damagedQuantity ?: BigDecimal.ZERO).add(damagedQtd)
+  }
 }

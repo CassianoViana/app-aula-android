@@ -41,14 +41,18 @@ class ServerBackend {
   }
 
   private fun <T> executeAndReturn(call: Call<T>): T {
+    val result = executeAndReturnNullable(call);
+    if (result != null) {
+      return result
+    } else {
+      throw IllegalStateException("Não foi possível buscar os dados")
+    }
+  }
+
+  private fun <T> executeAndReturnNullable(call: Call<T>): T? {
     val response = call.execute()
     if (response.isSuccessful) {
-      val result = response.body()
-      if (result != null) {
-        return result
-      } else {
-        throw IllegalStateException("Não foi possível buscar os dados")
-      }
+      return response.body()
     } else {
       throw handleUnauthorizedAndBuildFormattedError<T>(response)
     }
@@ -154,7 +158,7 @@ class ServerBackend {
     return executeAndReturn(api.getCountsHistory(taskId))
   }
 
-  fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?): ResponseBody {
-    return executeAndReturn(api.undoCountHistoryItem(conferenceCountHistoryItemId))
+  fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?) {
+    return execute(api.undoCountHistoryItem(conferenceCountHistoryItemId))
   }
 }

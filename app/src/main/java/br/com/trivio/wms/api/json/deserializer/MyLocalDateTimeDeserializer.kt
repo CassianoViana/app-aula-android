@@ -13,7 +13,8 @@ private val formatters = mapOf<String, DateTimeFormatter>(
   "[0-9]{4}-[0-9]{2}-[0-9]{2}" to ISODateTimeFormat.date(),
   "[0-9]{4}-[0-9]{2}-[0-9]{2}'T'[0-9]{2}:[0-9]{2}" to ISODateTimeFormat.dateHourMinute(),
   "[0-9]{2}/[0-9]{2}/[0-9]{4}" to DateTimeFormat.forPattern("dd/MM/yyyy"),
-  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}" to DateTimeFormat.forPattern("dd/MM/yyyy HH:mm")
+  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}" to DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"),
+  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}" to DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss")
 )
 
 class MyLocalDateTimeDeserializer : JsonDeserializer<LocalDateTime>() {

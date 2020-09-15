@@ -18,25 +18,13 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <Button
-        android:id="@+id/btn_trash_delete_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/light_red_rounded"
-        android:drawableLeft="@drawable/ic_baseline_delete_24"
-        android:drawableTint="@color/colorWhite"
-        android:padding="@dimen/padding_half"
-        android:text="@string/delete"
-        android:textColor="@color/colorWhite"
-        android:tint="@color/colorLightBlueAccent" />
-
       <TextView
+        android:textStyle="bold"
         android:id="@+id/count_date_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="end"
-        android:text="00/00/0000 00:00" />
+        android:text="00/00/0000 00:00:00" />
     </LinearLayout>
 
     <LinearLayout
@@ -115,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="0"
-        android:gravity="end"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -130,8 +118,21 @@
           android:id="@+id/storage_unit_text_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:textAlignment="center"
           android:text="UN"
           android:textSize="25sp" />
+
+        <Button
+          android:id="@+id/btn_trash_delete_count"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@drawable/light_red_rounded"
+          android:drawableLeft="@drawable/ic_baseline_delete_24"
+          android:drawableTint="@color/colorWhite"
+          android:padding="@dimen/padding_half"
+          android:text="@string/delete"
+          android:textColor="@color/colorWhite"
+          android:tint="@color/colorLightBlueAccent" />
 
       </LinearLayout>
 

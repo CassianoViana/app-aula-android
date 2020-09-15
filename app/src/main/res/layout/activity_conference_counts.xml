@@ -5,8 +5,7 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
-  <include layout="@layout/progress_bar"
-    android:visibility="gone"/>
+
 
   <br.com.trivio.wms.components.custom.TopBar
     android:id="@+id/top_bar"
@@ -19,6 +18,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:hint="@string/product_code" />
+
+  <include layout="@layout/progress_bar"
+    android:visibility="gone"/>
 
   <br.com.trivio.wms.components.custom.RefreshableList
     android:id="@+id/count_list"

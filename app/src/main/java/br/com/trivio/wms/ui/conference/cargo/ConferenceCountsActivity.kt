@@ -164,7 +164,7 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
       trashBtn.setOnClickListener {
         onClickDelete(item)
       }
-      dateTxtView.text = item.created?.formatTo("dd/MM/yyyy HH:mm")
+      dateTxtView.text = "(${item.id})" + item.created?.formatTo("dd/MM/yyyy HH:mm:ss")
       itemProductTxtView.text = item.product
       itemCodeTxtView.text = item.sku
       itemGtinTxtView.text = item.gtin

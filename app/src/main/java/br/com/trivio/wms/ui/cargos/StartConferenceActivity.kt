@@ -114,6 +114,16 @@ class StartConferenceActivity : MyAppCompatActivity() {
   private fun openConferenceActivity() {
     val intent = Intent(this, CargoConferenceActivity::class.java)
     intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskId)
-    startActivity(intent)
+    startActivityForResult(intent, CargoConferenceActivity.RESULT_TASK_ID)
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (resultCode == CargoConferenceActivity.RESULT_TASK_ID) {
+      data?.let {
+        this.taskId = it.getLongExtra(CargoConferenceActivity.CARGO_TASK_ID, 0)
+        this.loadCargoDetails()
+      }
+    }
   }
 }

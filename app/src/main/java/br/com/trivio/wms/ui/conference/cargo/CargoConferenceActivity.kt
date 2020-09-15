@@ -36,6 +36,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   companion object {
     const val CARGO_TASK_ID: String = "CARGO_TASK_id"
+    const val RESULT_TASK_ID: Int = 100
   }
 
   private var cargoConferenceTaskId: Long = 0
@@ -65,7 +66,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     onReadBarcodeFillSearchInput()
     onClickReaderHideKeyboard()
     onClickHistoryOpenHistoryActivity()
-    loadData()
+    loadCargoConferenceTask()
   }
 
   /*
@@ -96,6 +97,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.setOnClickListener {
       barcode_search_input.hideKeyboard()
     }
+  }
+
+  override fun onFinish() {
+    barcode_reader.stop()
+//    val data = Intent()
+//    data.putExtra(CARGO_TASK_ID, this.cargoConferenceTaskId)
+//    setResult(RESULT_TASK_ID, data)
+    super.onFinish()
   }
 
   override fun onResume() {
@@ -166,7 +175,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun onRefreshLoadData() {
     cargo_items_recycler_view.setOnRefreshListener {
-      loadData()
+      loadCargoConferenceTask()
     }
   }
 
@@ -217,12 +226,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     }
     barcode_search_input.addOnSearchListener { searchInputValue ->
       searchProductToCount(searchInputValue)
-    }
-  }
-
-  private fun loadData() {
-    lifecycleScope.launchWhenCreated {
-      loadCargoConferenceTask()
     }
   }
 
@@ -370,7 +373,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           item.count(quantity)
           cargoItemsAdapter.notifyDataSetChanged()
           resetReadingState()
-          barcode_search_input.hideKeyboard()
           dialog.hide()
         }
       },
@@ -488,7 +490,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         view.findViewById<TextView>(R.id.counting_status_pending)
       private var countHistoryTextView =
         view.findViewById<Button>(R.id.count_history_btn)
-      private var countLabelsLayout = view.findViewById<View>(R.id.count_labels_layout)
       private var itemToClick = view.findViewById<View>(R.id.item_to_click)
 
       fun bind(

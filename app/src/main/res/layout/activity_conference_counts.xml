@@ -5,6 +5,9 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
+  <include layout="@layout/progress_bar"
+    android:visibility="gone"/>
+
   <br.com.trivio.wms.components.custom.TopBar
     android:id="@+id/top_bar"
     android:layout_width="match_parent"

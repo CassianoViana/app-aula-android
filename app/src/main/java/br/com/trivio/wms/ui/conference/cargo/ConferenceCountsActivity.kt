@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -106,6 +105,7 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
         },
         always = {
           count_list.stopRefresh()
+          endLoading()
         }
       )
     })
@@ -118,6 +118,7 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
 
   fun loadCountHistory() {
     viewModel.loadCountHistory(conferenceTaskId)
+    startLoading()
   }
 
   class ConferenceCountsAdapter(var onClickToDeleteListener: (count: ConferenceCountDto) -> Unit) :

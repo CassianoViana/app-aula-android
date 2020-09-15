@@ -8,129 +8,141 @@
 
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/selectableItemBackground"
-    android:orientation="horizontal"
-    android:padding="@dimen/padding">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_half">
 
     <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:orientation="vertical">
-
-      <TextView
-        android:id="@+id/product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:text="Ábaco"
-        android:textColor="@color/colorDark"
-        android:textSize="@dimen/medium_text" />
-
-
-      <TextView
-        android:id="@+id/sku_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/pound_box_black_18_dp"
-        android:text="12312"
-        android:textColor="@color/lightGrey" />
-
-      <TextView
-        android:id="@+id/gtin_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_barcode_black_18dp"
-        android:text="71231231231"
-        android:textColor="@color/lightGrey" />
-
-      <LinearLayout
-        android:id="@+id/count_labels_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-          android:id="@+id/counting_status_ok"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:drawableLeft="@drawable/ic_baseline_check_circle_18"
-          android:drawableTint="@color/success"
-          android:text="@string/counting_ok"
-          android:textColor="@color/success" />
-
-        <TextView
-          android:id="@+id/counting_status_divergent"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:drawableLeft="@drawable/ic_baseline_error_18"
-          android:drawableTint="@color/error"
-          android:text="@string/counting_divergent"
-          android:textColor="@color/error" />
-
-        <TextView
-          android:id="@+id/counting_status_pending"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:drawableLeft="@drawable/ic_baseline_access_time_18"
-          android:drawableTint="@color/colorPrimaryDark"
-          android:text="@string/counting_pending"
-          android:textColor="@color/colorPrimaryDark" />
-
-        <TextView
-          android:id="@+id/damaged_qtd"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:drawableLeft="@drawable/ic_baseline_broken_image_18"
-          android:drawableTint="@color/warning"
-          android:text="0 itens avariados"
-          android:textColor="@color/warning" />
-
-        <TextView
-          android:id="@+id/count_history_txt_view"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:drawableLeft="@drawable/ic_baseline_format_list_numbered_rtl_24"
-          android:drawableTint="@color/warning"
-          android:gravity="center"
-          android:text="@string/count_history_underline"
-          android:textColor="@color/warning" />
-      </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:orientation="horizontal">
 
       <LinearLayout
+        android:padding="@dimen/padding_half"
+        android:id="@+id/item_to_click"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
-          android:id="@+id/counted_qtd"
+          android:id="@+id/product_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="10"
-          android:textSize="@dimen/large_text" />
+          android:layout_alignParentStart="true"
+          android:text="Ábaco"
+          android:textColor="@color/colorDark"
+          android:textSize="@dimen/medium_text" />
+
 
         <TextView
-          android:id="@+id/storage_unit_text"
+          android:id="@+id/sku_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="CX"
-          android:textColor="@color/colorPrimaryDark"
-          android:textSize="@dimen/medium_large_text" />
+          android:drawableLeft="@drawable/pound_box_black_18_dp"
+          android:text="12312"
+          android:textColor="@color/lightGrey" />
 
+        <TextView
+          android:id="@+id/gtin_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableLeft="@drawable/ic_barcode_black_18dp"
+          android:text="71231231231"
+          android:textColor="@color/lightGrey" />
+
+        <LinearLayout
+          android:id="@+id/count_labels_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            android:id="@+id/counting_status_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_check_circle_18"
+            android:drawableTint="@color/success"
+            android:text="@string/counting_ok"
+            android:textColor="@color/success" />
+
+          <TextView
+            android:id="@+id/counting_status_divergent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_error_18"
+            android:drawableTint="@color/error"
+            android:text="@string/counting_divergent"
+            android:textColor="@color/error" />
+
+          <TextView
+            android:id="@+id/counting_status_pending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_access_time_18"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:text="@string/counting_pending"
+            android:textColor="@color/colorPrimaryDark" />
+
+          <TextView
+            android:id="@+id/damaged_qtd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_broken_image_18"
+            android:drawableTint="@color/warning"
+            android:text="0 itens avariados"
+            android:textColor="@color/warning" />
+        </LinearLayout>
       </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+          android:padding="@dimen/padding_half"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentEnd="true"
+          android:gravity="center"
+          android:orientation="vertical">
+
+          <TextView
+            android:id="@+id/counted_qtd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="@dimen/large_text" />
+
+          <TextView
+            android:id="@+id/storage_unit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CX"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/medium_large_text" />
+
+        </LinearLayout>
+      </LinearLayout>
+
     </LinearLayout>
 
+    <Button
+      android:layout_margin="@dimen/padding_half"
+      android:id="@+id/count_history_btn"
+      android:background="@drawable/light_grey_rounded"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:textColor="@color/warning"
+      android:textAllCaps="true"
+      android:padding="7dp"
+      android:text="@string/historic"
+      android:textSize="13sp" />
   </LinearLayout>
 
 </androidx.cardview.widget.CardView>

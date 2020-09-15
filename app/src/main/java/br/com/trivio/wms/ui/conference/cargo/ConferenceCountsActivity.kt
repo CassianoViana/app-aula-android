@@ -3,6 +3,7 @@ package br.com.trivio.wms.ui.conference.cargo
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -147,7 +148,7 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
 
   class ConferenceCountItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    private val trashBtn = view.findViewById<ImageView>(R.id.btn_trash_delete_count)
+    private val trashBtn = view.findViewById<Button>(R.id.btn_trash_delete_count)
     private val dateTxtView = view.findViewById<TextView>(R.id.count_date_text_view)
     private val itemCodeTxtView = view.findViewById<TextView>(R.id.item_code_text_view)
     private val itemProductTxtView = view.findViewById<TextView>(R.id.count_product_name_text_view)

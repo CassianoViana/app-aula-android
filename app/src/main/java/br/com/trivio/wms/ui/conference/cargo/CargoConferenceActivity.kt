@@ -8,6 +8,7 @@ import android.text.InputType
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -43,7 +44,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       openCountItemDialog(item)
     }
 
-    override fun onLongClick(item: CargoConferenceItemDto) {
+    override fun onClickHistory(item: CargoConferenceItemDto) {
       openCountHistoryActivity(item)
     }
 
@@ -120,19 +121,12 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.start()
   }
 
-  private var waiting = false
   private fun onReadBarcodeFillSearchInput() {
     barcode_reader.onRead = { it ->
+      barcode_reader.pause()
       runOnUiThread {
         playAudio(this, R.raw.beep)
-        if (!waiting) {
-          waiting = true
-          barcode_search_input.applySearch(it)
-          delay(1000) {
-            waiting = false
-            barcode_reader.start()
-          }
-        }
+        barcode_search_input.applySearch(it)
       }
     }
   }
@@ -332,6 +326,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         onNullResult = {
           showMessageError(getString(R.string.not_found_product_with_search, search))
           playErrorSound()
+          resetReadingState()
         },
         onError = { resetReadingState() }
       )
@@ -339,8 +334,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun openCountItemDialog(item: CargoConferenceItemDto) {
-
-    barcode_reader.pause()
     val totalQuantityCounted = item.countedQuantity?.toInt()
     val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val qtdInputNumber = createInputNumber(
@@ -377,6 +370,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           item.count(quantity)
           cargoItemsAdapter.notifyDataSetChanged()
           resetReadingState()
+          barcode_search_input.hideKeyboard()
           dialog.hide()
         }
       },
@@ -493,8 +487,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
       private var countingPendingTextView =
         view.findViewById<TextView>(R.id.counting_status_pending)
       private var countHistoryTextView =
-        view.findViewById<TextView>(R.id.count_history_txt_view)
+        view.findViewById<Button>(R.id.count_history_btn)
       private var countLabelsLayout = view.findViewById<View>(R.id.count_labels_layout)
+      private var itemToClick = view.findViewById<View>(R.id.item_to_click)
 
       fun bind(
         item: CargoConferenceItemDto,
@@ -507,9 +502,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         damagedQtdTextView.setVisible(item.hasDamagedQtd())
         storageUnitTextView.setVisible(item.storageUnit != null)
         countHistoryTextView.setVisible(item.isCounted())
-        countLabelsLayout.setOnClickListener {
-          onClickCargoItem.onLongClick(item)
+        countHistoryTextView.setOnClickListener {
+          onClickCargoItem.onClickHistory(item)
         }
+        countHistoryTextView.text = view.context.getString(R.string.historic_qtd, item.counts.size)
 
         item.damagedQuantity?.let { damagedQtd ->
           damagedQtdTextView.text =
@@ -524,13 +520,13 @@ class CargoConferenceActivity : MyAppCompatActivity() {
         productNameTextView.text = item.name
         skuTextView.text = coalesce(item.sku, R.string.no_sku)
         countedQtdTextView.text = formatNumber(item.countedQuantity)
-        view.setOnClickListener {
+        itemToClick.setOnClickListener {
           onClickCargoItem.onClick(item)
         }
-        view.setOnLongClickListener {
-          onClickCargoItem.onLongClick(item)
+        /*view.setOnLongClickListener {
+          onClickCargoItem.onClickHistory(item)
           false
-        }
+        }*/
       }
     }
 
@@ -549,7 +545,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
     interface OnClickCargoItem {
       fun onClick(item: CargoConferenceItemDto)
-      fun onLongClick(item: CargoConferenceItemDto)
+      fun onClickHistory(item: CargoConferenceItemDto)
     }
   }
 }

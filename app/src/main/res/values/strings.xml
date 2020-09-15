@@ -257,4 +257,6 @@
   <string name="title_activity_scrolling">ScrollingActivity</string>
   <string name="historic">Histórico</string>
   <string name="camera">Câmera</string>
+    <string name="historic_qtd">Histórico (%d)</string>
+  <string name="delete">Excluir</string>
 </resources>

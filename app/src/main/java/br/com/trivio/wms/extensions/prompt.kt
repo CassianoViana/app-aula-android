@@ -81,7 +81,7 @@ fun MyAppCompatActivity.prompt(
       editToShowKeyboard = inputView.custom_number_input
     }
   }
-  showKeyboard(editToShowKeyboard)
+  editToShowKeyboard.setKeyboardVisible(this)
 
   return dialog
 }

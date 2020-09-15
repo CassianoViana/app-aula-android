@@ -18,13 +18,16 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <ImageView
+      <Button
         android:id="@+id/btn_trash_delete_count"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/transparent"
-        android:padding="0dp"
-        android:src="@drawable/ic_baseline_delete_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_red_rounded"
+        android:drawableLeft="@drawable/ic_baseline_delete_24"
+        android:drawableTint="@color/colorWhite"
+        android:padding="@dimen/padding_half"
+        android:text="@string/delete"
+        android:textColor="@color/colorWhite"
         android:tint="@color/colorLightBlueAccent" />
 
       <TextView

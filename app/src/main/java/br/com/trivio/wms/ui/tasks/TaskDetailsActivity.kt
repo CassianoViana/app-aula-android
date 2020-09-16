@@ -12,10 +12,8 @@ import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.TaskDto
 import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
-import br.com.trivio.wms.extensions.endLoading
-import br.com.trivio.wms.extensions.startLoading
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
+import br.com.trivio.wms.ui.cargos.conference.CargoConferenceActivity
 import kotlinx.android.synthetic.main.activity_task_details.*
 import kotlinx.android.synthetic.main.custom_top_bar.*
 

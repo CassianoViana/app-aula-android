@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.com.trivio.wms.ui.login.LoginActivity
-import kotlinx.coroutines.async
 
 class LaunchActivity : AppCompatActivity() {
 
@@ -32,6 +31,6 @@ class LaunchActivity : AppCompatActivity() {
   }
 
   private fun startMainActivity() {
-    startActivity(Intent(this, MainActivity::class.java))
+    startActivity(Intent(this, MenuActivity::class.java))
   }
 }

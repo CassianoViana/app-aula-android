@@ -16,25 +16,26 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme.NoActionBar"
     android:usesCleartextTraffic="true">
+    <activity android:name=".ui.picking.PickingListActivity"></activity>
     <activity
       android:name=".ScrollingActivity"
       android:label="@string/title_activity_scrolling"
-      android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+      android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
     <activity
-      android:name=".ui.conference.cargo.ConferenceCountsActivity"
+      android:name="br.com.trivio.wms.ui.cargos.conference.ConferenceCountsActivity"
       android:label="@string/title_activity_conference_counts"
       android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
     <activity
-      android:name=".ui.conference.cargo.CameraActivity"
+      android:name="br.com.trivio.wms.ui.cargos.conference.CameraActivity"
       android:screenOrientation="portrait" />
-    <activity android:name=".ui.conference.cargo.BarcodeReaderActivity" />
     <activity
-      android:name=".ui.conference.cargo.CargoConferenceActivity"
+      android:name="br.com.trivio.wms.ui.cargos.conference.CargoConferenceActivity"
       android:screenOrientation="portrait" />
     <activity android:name=".ui.tasks.TaskDetailsActivity" />
     <activity android:name=".LaunchActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
+
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
@@ -42,7 +43,7 @@
       android:name=".ui.login.LoginActivity"
       android:label="@string/app_name" />
     <activity
-      android:name=".MainActivity"
+      android:name=".MenuActivity"
       android:label="@string/app_name" />
     <activity
       android:name=".ui.login.LoginSettingsActivity"
@@ -51,6 +52,7 @@
     <activity android:name=".ui.tasks.TasksListActivity" />
     <activity android:name=".ui.cargos.StartConferenceActivity" />
     <activity android:name=".ui.cargos.EndConferenceActivity" />
+      <activity android:name=".ui.picking.StartPickingActivity" />
   </application>
 
 </manifest>

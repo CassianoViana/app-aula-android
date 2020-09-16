@@ -1,4 +1,4 @@
-package br.com.trivio.wms.ui.conference.cargo
+package br.com.trivio.wms.viewmodel.cargo.conference
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

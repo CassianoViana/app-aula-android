@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:custom="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <br.com.trivio.wms.components.custom.TopBar
+      android:id="@+id/top_bar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      custom:title="@string/picking" />
+
+    <br.com.trivio.wms.components.custom.SearchInput
+      android:id="@+id/search_input_cargos"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      custom:hint="@string/order_cargo_or_seller_code" />
+
+    <br.com.trivio.wms.components.custom.RefreshableList
+      android:id="@+id/pickings_list"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1" />
+
+  </LinearLayout>
+
+  <include
+    layout="@layout/progress_bar"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

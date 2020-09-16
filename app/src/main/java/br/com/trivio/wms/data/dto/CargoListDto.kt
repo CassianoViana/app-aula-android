@@ -14,7 +14,7 @@ class CargoListDto(
   val scheduledStart: LocalDateTime? = LocalDateTime(),
   val scheduledEnd: LocalDateTime? = null,
   val taskId: Long = 0,
-  val cargoStatusDto: CargoStatusDto? = null,
+  val cargoStatusDto: StatusDto? = null,
   val quantityItemsToCount: Int = 0,
   val progress: Int = 0
 ) {

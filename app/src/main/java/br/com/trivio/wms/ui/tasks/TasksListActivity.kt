@@ -80,8 +80,8 @@ class TasksListActivity : MyAppCompatActivity() {
       }
 
     class ViewHolder(val layout: View) : RecyclerView.ViewHolder(layout) {
-      private var taskNameText: TextView = layout.findViewById(R.id.name_text)
-      private var taskRefCode: TextView = layout.findViewById(R.id.item_code)
+      private var taskNameText: TextView = layout.findViewById(R.id.ped_cli_txt_view)
+      private var taskRefCode: TextView = layout.findViewById(R.id.cargo_txt_view)
       private var taskStatus: TextView = layout.findViewById(R.id.task_status)
       private var taskDate: TextView = layout.findViewById(R.id.item_date)
 

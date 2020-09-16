@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/refresh_start_picking_activity"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/button_close_x" />
+
+    <LinearLayout
+      android:id="@+id/layout_id_bono"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:paddingLeft="80dp"
+      android:paddingRight="80dp"
+      app:layout_constraintTop_toBottomOf="@+id/btn_icon_x">
+
+      <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order"
+        android:textAllCaps="true" />
+
+      <TextView
+        android:id="@+id/order_number"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:text="138032"
+        android:textSize="@dimen/large_text" />
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/basic_infos"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="@dimen/padding"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/layout_id_bono">
+
+      <br.com.trivio.wms.components.custom.LabelledInfo
+        android:id="@+id/cargo_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:label_title="@string/cargo"
+        app:label_value="00000" />
+
+      <br.com.trivio.wms.components.custom.LabelledInfo
+        android:id="@+id/customer_name_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:label_title="@string/customer"
+        app:label_value="John Doe" />
+
+      <br.com.trivio.wms.components.custom.LabelledInfo
+        android:id="@+id/emited_at_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:label_title="@string/order_emited_at"
+        app:label_value="00/00/0000" />
+
+      <br.com.trivio.wms.components.custom.LabelledInfo
+        android:id="@+id/seller_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:label_title="@string/seller"
+        app:label_value="30001 - Anibal José" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/progress_area_picking"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="horizontal"
+      android:padding="@dimen/padding"
+      app:layout_constraintTop_toBottomOf="@+id/basic_infos">
+
+      <LinearLayout
+        android:id="@+id/layout_qtd_itens_to_pick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/qtd_picked_items"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center_horizontal"
+          android:text="000"
+          android:textSize="60sp" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/separeds" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/qtd_items_to_pick"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center_horizontal"
+          android:text="000"
+          android:textSize="60sp" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/to_separe" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <Button
+      android:id="@+id/btn_choose_equipments"
+      style="@style/button_action.ok"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/margin"
+      android:layout_weight="0"
+      android:drawableRight="@drawable/ic_baseline_arrow_forward_18"
+      android:drawableTint="@color/colorWhite"
+      android:text="@string/choose_equipments_and_start" />
+
+    <Button
+      android:id="@+id/btn_continue_picking"
+      style="@style/button_action.ok"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/margin"
+      android:layout_weight="0"
+      android:text="@string/continue_picking" />
+  </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

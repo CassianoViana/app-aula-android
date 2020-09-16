@@ -3,7 +3,6 @@ package br.com.trivio.wms.ui.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -12,7 +11,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import br.com.trivio.wms.MainActivity
+import br.com.trivio.wms.MenuActivity
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.afterTextChanged
@@ -111,7 +110,7 @@ class LoginActivity : MyAppCompatActivity() {
   }
 
   private fun startMainActivity() {
-    startActivity(Intent(this, MainActivity::class.java))
+    startActivity(Intent(this, MenuActivity::class.java))
   }
 
   override fun onResume() {

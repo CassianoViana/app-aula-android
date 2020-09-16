@@ -41,7 +41,7 @@ class ServerBackend {
   }
 
   private fun <T> executeAndReturn(call: Call<T>): T {
-    val result = executeAndReturnNullable(call);
+    val result = executeAndReturnNullable(call)
     if (result != null) {
       return result
     } else {
@@ -102,21 +102,14 @@ class ServerBackend {
     return token
   }
 
-  fun getUserDetails(): UserDetails {
-    return executeAndReturn(api.userDetails)
-  }
+  fun getUserDetails(): UserDetails = executeAndReturn(api.userDetails)
 
-  fun getTasksByUser(userId: Long): List<TaskDto> {
-    return executeAndReturn(api.getTasksByUser(userId))
-  }
+  fun getTasksByUser(userId: Long): List<TaskDto> = executeAndReturn(api.getTasksByUser(userId))
 
-  fun getTask(id: Long): TaskDto {
-    return executeAndReturn(api.getTask(id))
-  }
+  fun getTask(id: Long): TaskDto = executeAndReturn(api.getTask(id))
 
-  fun getCargoConferenceTask(id: Long): CargoConferenceDto {
-    return executeAndReturn(api.getCargoConference(id, true))
-  }
+  fun getCargoConferenceTask(id: Long): CargoConferenceDto =
+    executeAndReturn(api.getCargoConference(id, true))
 
   fun getCargoConferenceTaskWithoutItems(taskId: Long): CargoConferenceDto {
     return executeAndReturn(api.getCargoConference(taskId, false))
@@ -126,39 +119,33 @@ class ServerBackend {
     return executeAndReturn(api.startCargoConference(taskId))
   }
 
-  fun finishCargoConference(taskId: Long): TaskStatusDto {
-    return executeAndReturn(api.finishCargoConference(taskId))
-  }
+  fun finishCargoConference(taskId: Long): TaskStatusDto =
+    executeAndReturn(api.finishCargoConference(taskId))
 
-  fun restartCargoConference(taskId: Long): CargoConferenceDto {
-    return executeAndReturn(api.restartCargoConference(taskId))
-  }
+  fun restartCargoConference(taskId: Long): CargoConferenceDto =
+    executeAndReturn(api.restartCargoConference(taskId))
 
-  fun getCargosByStatus(status: String): List<CargoListDto> {
-    return executeAndReturn(api.getCargosByStatus(status))
-  }
+  fun getCargosByStatus(status: String): List<CargoListDto> =
+    executeAndReturn(api.getCargosByStatus(status))
 
-  fun getMyPendingCargos(): List<CargoListDto> {
-    return executeAndReturn(api.cargosPendingToOperatorCheck)
-  }
+  fun getMyPendingCargos(): MutableList<CargoListDto> =
+    executeAndReturn(api.cargosPendingToOperatorCheck)
 
   fun countCargoItem(
     cargoConferenceItemDto: CargoConferenceItemDto,
     quantity: BigDecimal,
     description: String? = null
-  ) {
-    return execute(api.countCargoItem(cargoConferenceItemDto.id, quantity, description))
-  }
+  ) = execute(api.countCargoItem(cargoConferenceItemDto.id, quantity, description))
 
-  fun finishTask(taskId: Long) {
-    return execute(api.finishTask(taskId))
-  }
+  fun finishTask(taskId: Long) = execute(api.finishTask(taskId))
 
-  fun loadCountsHistory(taskId: Long): List<ConferenceCountDto> {
-    return executeAndReturn(api.getCountsHistory(taskId))
-  }
+  fun loadCountsHistory(taskId: Long): List<ConferenceCountDto> =
+    executeAndReturn(api.getCountsHistory(taskId))
 
-  fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?) {
-    return execute(api.undoCountHistoryItem(conferenceCountHistoryItemId))
-  }
+  fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?) =
+    execute(api.undoCountHistoryItem(conferenceCountHistoryItemId))
+
+  fun getMyPendingPickings(): List<PickingListDto> = FakeApi.getPickingsPendingToOperatorCheck()
+  fun getPickingTask(taskId:Long): PickingTaskDto = FakeApi.getPickingTask()
+
 }

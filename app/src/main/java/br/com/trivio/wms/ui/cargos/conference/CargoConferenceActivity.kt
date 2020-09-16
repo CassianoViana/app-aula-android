@@ -1,4 +1,4 @@
-package br.com.trivio.wms.ui.conference.cargo
+package br.com.trivio.wms.ui.cargos.conference
 
 import android.Manifest
 import android.app.Dialog
@@ -27,6 +27,7 @@ import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.cargos.EndConferenceActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
+import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_cargo_conference.*
 import kotlinx.coroutines.launch
 import java.math.BigDecimal

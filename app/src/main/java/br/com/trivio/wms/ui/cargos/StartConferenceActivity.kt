@@ -13,8 +13,9 @@ import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.conference.cargo.CargoConferenceActivity
-import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
+import br.com.trivio.wms.ui.cargos.conference.CargoConferenceActivity
+import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
+import br.com.trivio.wms.viewmodel.cargo.CargoDetailsViewModel
 import kotlinx.android.synthetic.main.activity_start_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 

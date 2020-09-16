@@ -14,13 +14,18 @@ import br.com.trivio.wms.components.custom.ProgressBar
 import br.com.trivio.wms.data.dto.CargoListDto
 import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.onResult
-import kotlinx.android.synthetic.main.activity_cargos.*
+import br.com.trivio.wms.viewmodel.cargo.CargoListViewModel
+import kotlinx.android.synthetic.main.activity_cargos_list.*
 
 class CargosListActivity : MyAppCompatActivity() {
 
   private val viewModel: CargoListViewModel by viewModels()
 
   private val adapter = CargosAdapter { cargoItemClicked: CargoListDto ->
+    openStartConferenceActivity(cargoItemClicked)
+  }
+
+  private fun openStartConferenceActivity(cargoItemClicked: CargoListDto) {
     val intent = Intent(this@CargosListActivity, StartConferenceActivity::class.java)
     intent.putExtra(StartConferenceActivity.CARGO_TASK_ID, cargoItemClicked.taskId)
     startActivity(intent)
@@ -29,7 +34,7 @@ class CargosListActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     startTask()
-    setContentView(R.layout.activity_cargos)
+    setContentView(R.layout.activity_cargos_list)
     observeViewModel()
     bindListAdapter()
     addRefreshListener()
@@ -94,8 +99,8 @@ class CargosListActivity : MyAppCompatActivity() {
       }
 
     class ViewHolder(val layout: View) : RecyclerView.ViewHolder(layout) {
-      private var cargoNameText: TextView = layout.findViewById(R.id.name_text)
-      private var cargoRefCode: TextView = layout.findViewById(R.id.item_code)
+      private var cargoNameText: TextView = layout.findViewById(R.id.ped_cli_txt_view)
+      private var cargoRefCode: TextView = layout.findViewById(R.id.cargo_txt_view)
       private var cargoStatus: Badge = layout.findViewById(R.id.cargo_status_badge)
       private var progressBar: ProgressBar = layout.findViewById(R.id.progress_bar)
       private var quantityToCount: TextView =

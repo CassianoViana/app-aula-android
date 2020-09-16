@@ -20,5 +20,9 @@ public enum TaskStatus {
   public boolean isEnded() {
     return this == DONE || this == CANCELLED;
   }
+
+  public boolean isStarted() {
+    return this == DOING;
+  }
 }
 

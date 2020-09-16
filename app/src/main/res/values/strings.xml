@@ -263,4 +263,16 @@
   <string name="delete">Excluir</string>
   <string name="number_damages">%d avarias</string>
   <string name="no_damage_qtd">* Quantidade sem avaria</string>
+  <string name="order_cargo_or_seller_code">Código de pedido, carga ou vendedor</string>
+  <string name="picking">Separação</string>
+    <string name="item_picking_title">PED: %d - %s</string>
+  <string name="cargo_dot">CARGA: %s</string>
+  <string name="cargo">Carga</string>
+  <string name="customer">Cliente</string>
+  <string name="order_emited_at">Pedido emitido em</string>
+  <string name="seller">Vendedor</string>
+  <string name="separeds">Separados</string>
+  <string name="to_separe">À separar</string>
+  <string name="choose_equipments_and_start">Escolher equipamentos e iniciar</string>
+  <string name="continue_picking">Continuar separação</string>
 </resources>

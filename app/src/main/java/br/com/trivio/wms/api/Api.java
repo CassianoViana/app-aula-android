@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.trivio.wms.data.dto.CargoConferenceDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.ConferenceCountDto;
+import br.com.trivio.wms.data.dto.PickingListDto;
 import br.com.trivio.wms.data.dto.TaskDto;
 import br.com.trivio.wms.data.dto.TaskStatusDto;
 import br.com.trivio.wms.data.model.UserDetails;
@@ -63,4 +64,7 @@ interface Api {
 
   @DELETE("cargoConference/countsHistory/{conferenceCountHistoryItemId}")
   Call<ResponseBody> undoCountHistoryItem(@Path("conferenceCountHistoryItemId") Long conferenceCountHistoryItemId);
+
+  @GET("picking/pendingToOperatorCheck")
+  Call<List<PickingListDto>> getPickingsPendingToOperatorCheck();
 }

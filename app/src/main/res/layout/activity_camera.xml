@@ -6,7 +6,7 @@
   android:layout_gravity="center"
   android:gravity="center"
   android:orientation="vertical"
-  tools:context=".ui.conference.cargo.CameraActivity">
+  tools:context=".ui.cargos.conference.cargo.CameraActivity">
 
   <ImageView
     android:id="@+id/camera_image_view"

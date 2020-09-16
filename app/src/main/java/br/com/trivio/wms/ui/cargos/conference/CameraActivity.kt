@@ -1,4 +1,4 @@
-package br.com.trivio.wms.ui.conference.cargo
+package br.com.trivio.wms.ui.cargos.conference
 
 import android.Manifest
 import android.content.Intent

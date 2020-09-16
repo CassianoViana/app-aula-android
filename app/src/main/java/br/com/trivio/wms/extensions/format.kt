@@ -22,7 +22,7 @@ fun coalesce(value1: String?, alternative: Int): String {
 }
 
 @SuppressLint("SimpleDateFormat")
-fun LocalDateTime.formatTo(s: String): CharSequence? {
+fun LocalDateTime.formatTo(s: String): String {
   val c = Calendar.getInstance();
   c[Calendar.YEAR] = this.year
   c[Calendar.DAY_OF_MONTH] = this.dayOfMonth

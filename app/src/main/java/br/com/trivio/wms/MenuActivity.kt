@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.data.model.UserDetails
 import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.ui.cargos.CargosListActivity
+import br.com.trivio.wms.ui.picking.PickingListActivity
 import br.com.trivio.wms.ui.tasks.TasksListActivity
 
 class MenuItem(
@@ -20,7 +21,7 @@ class MenuItem(
   val actionWhenClicked: () -> Any = {}
 )
 
-class MainActivity : MyAppCompatActivity() {
+class MenuActivity : MyAppCompatActivity() {
 
   private lateinit var exitAppHandler: ExitAppHandler
   private lateinit var menusList: RecyclerView
@@ -33,7 +34,9 @@ class MainActivity : MyAppCompatActivity() {
     MenuItem(R.string.arrival, R.drawable.ic_archive_black_24dp) {
       startActivity(Intent(this, CargosListActivity::class.java))
     },
-    MenuItem(R.string.separation, R.drawable.ic_shopping_cart_black_24dp),
+    MenuItem(R.string.separation, R.drawable.ic_shopping_cart_black_24dp){
+      startActivity(Intent(this, PickingListActivity::class.java))
+    },
     MenuItem(R.string.expedition, R.drawable.ic_directions_bus_black_24dp),
     MenuItem(R.string.inventory, R.drawable.ic_assignment_black_24dp),
     MenuItem(R.string.fillment, R.drawable.ic_format_color_fill_black_24dp) {
@@ -48,7 +51,7 @@ class MainActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     //startLockTask()
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.activity_menu)
 
     menusList = findViewById(R.id.menu_list)
     menusList.adapter = MenusListAdapter(menus) { it.actionWhenClicked() }

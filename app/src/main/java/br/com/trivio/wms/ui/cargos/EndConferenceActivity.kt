@@ -13,7 +13,8 @@ import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.extensions.showMessageSuccess
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.conference.cargo.CargoConferenceViewModel
+import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
+import br.com.trivio.wms.viewmodel.cargo.CargoDetailsViewModel
 import kotlinx.android.synthetic.main.activity_end_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 

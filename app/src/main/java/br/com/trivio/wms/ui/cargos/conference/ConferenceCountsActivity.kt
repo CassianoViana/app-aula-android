@@ -1,4 +1,4 @@
-package br.com.trivio.wms.ui.conference.cargo
+package br.com.trivio.wms.ui.cargos.conference
 
 import android.os.Bundle
 import android.view.View
@@ -14,6 +14,7 @@ import br.com.trivio.wms.components.custom.Badge
 import br.com.trivio.wms.data.dto.ConferenceCountDto
 import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.onResult
+import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_conference_counts.*
 
 class ConferenceCountsActivity : MyAppCompatActivity() {

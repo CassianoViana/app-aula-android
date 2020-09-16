@@ -8,11 +8,10 @@
   android:layout_marginEnd="@dimen/item_list_margin">
 
   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical">
-
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -29,7 +28,7 @@
           android:id="@+id/ped_cli_txt_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="Conferência"
+          android:text="PED: 123123 - ALINE WOLF"
           android:textColor="@color/colorDark"
           android:textSize="@dimen/medium_text" />
 
@@ -39,7 +38,7 @@
           android:layout_height="match_parent"
           android:drawableStart="@drawable/pound_box_black_18_dp"
           android:drawableLeft="@drawable/pound_box_black_18_dp"
-          android:text="code"
+          android:text="CARGA: 00000"
           android:textColor="@color/lightGrey" />
 
 
@@ -49,8 +48,19 @@
           android:layout_height="match_parent"
           android:drawableStart="@drawable/ic_calendar_star_black_18dp"
           android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
-          android:text="date"
+          android:text="00/00/0000"
           android:textColor="@color/lightGrey"
+          app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+          android:id="@+id/prioritary_label"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:drawableStart="@drawable/ic_baseline_warning_24"
+          android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
+          android:text="Pedido prioritário"
+          android:drawableTint="@color/colorLightRedAccent"
+          android:textColor="@color/colorLightRedAccent"
           app:layout_constraintStart_toStartOf="parent" />
 
       </LinearLayout>
@@ -58,41 +68,42 @@
       <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_weight="0"
         android:gravity="end"
         android:orientation="vertical">
 
         <TextView
-          android:id="@+id/text_view_quantity_to_count"
+          android:layout_weight="1"
+          android:id="@+id/quantity_to_pick_txt_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="4"
           android:textSize="25sp" />
 
         <br.com.trivio.wms.components.custom.Badge
-          android:id="@+id/cargo_status_badge"
+          android:id="@+id/picking_task_badge"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          app:badge_text="Teste"
+          app:badge_text="STATUS"
           app:badge_text_color="@color/colorWhite" />
       </LinearLayout>
 
     </LinearLayout>
-
     <br.com.trivio.wms.components.custom.ProgressBar
       android:id="@+id/progress_bar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="0dp"
       app:background_color="@color/lighterGray0"
+      android:padding="0dp"
+      app:show_label="false"
       app:bar_height="5dp"
       app:foreground_color="@color/colorLightBlueAccent"
-      app:progress="20"
-      app:show_label="false" />
+      app:progress="20" />
 
   </LinearLayout>
+
 
 
 </androidx.cardview.widget.CardView>

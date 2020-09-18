@@ -81,7 +81,20 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:orientation="vertical" />
+      android:orientation="vertical">
+
+
+      <!--<br.com.trivio.wms.components.custom.RefreshableList
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+      <br.com.trivio.wms.components.custom.Alert
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:alert_text="teste"
+        app:alert_type="warning" />-->
+    </LinearLayout>
 
     <LinearLayout
       android:layout_width="match_parent"

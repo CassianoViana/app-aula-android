@@ -68,15 +68,9 @@ class CargoConferenceDto(
   }
 
   fun getStatusCounting() = when {
-    progress == 100 -> {
-      STATUS_COUNTING_ALL_COUNTED
-    }
-    progress > 0 -> {
-      STATUS_COUNTING_SOME_COUNTED
-    }
-    else -> {
-      STATUS_COUNTING_NONE_COUNTED
-    }
+    progress == 100 -> STATUS_COUNTING_ALL_COUNTED
+    progress > 0 -> STATUS_COUNTING_SOME_COUNTED
+    else -> STATUS_COUNTING_NONE_COUNTED
   }
 
 }

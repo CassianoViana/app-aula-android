@@ -328,7 +328,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
           openCountItemDialog(it.data)
         },
         onNullResult = {
-          showMessageError(getString(R.string.not_found_product_with_search, search))
+          showMessageError(getString(R.string.product_not_found_product_with_search, search))
           playErrorSound()
           resetReadingState()
         },

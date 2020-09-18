@@ -7,103 +7,101 @@
   android:layout_marginTop="@dimen/item_list_margin"
   android:layout_marginEnd="@dimen/item_list_margin">
 
-  <LinearLayout
+  <RelativeLayout
+    android:id="@+id/pick_item_to_click"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:padding="@dimen/padding">
+    android:padding="@dimen/padding_half">
 
-      <LinearLayout
+    <TextView
+      android:id="@+id/position_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_toStartOf="@+id/counted_unit_layout"
+      android:text="00.000.000.000"
+      android:textColor="@color/colorDark"
+      android:textSize="@dimen/medium_text" />
+
+    <TextView
+      android:id="@+id/product_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/position_name"
+      android:layout_alignParentStart="true"
+      android:layout_toStartOf="@+id/counted_unit_layout"
+      android:text="Nome produto"
+      android:textColor="@color/colorDark"
+      android:textSize="@dimen/medium_text" />
+
+    <TextView
+      android:id="@+id/sku_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/product_name"
+      android:drawableLeft="@drawable/pound_box_black_18_dp"
+      android:text="0000"
+      android:textColor="@color/lightGrey" />
+
+    <TextView
+      android:id="@+id/gtin_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/sku_text"
+      android:drawableStart="@drawable/ic_barcode_black_18dp"
+      android:text="00000000"
+      android:textColor="@color/lightGrey" />
+
+    <TextView
+      android:id="@+id/reposition_requested_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/gtin_text"
+      android:drawableStart="@drawable/ic_baseline_warning_24"
+      android:drawableTint="@color/warning"
+      android:text="@string/reposition_requested"
+      android:textColor="@color/colorLightBlueAccent"
+      android:textStyle="bold" />
+
+    <LinearLayout
+      android:id="@+id/counted_unit_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentEnd="true"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:padding="@dimen/padding_half">
+
+      <TextView
+        android:id="@+id/picked_qtd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:text="10"
+        android:textSize="@dimen/large_text" />
 
-        <TextView
-          android:id="@+id/ped_cli_txt_view"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="PED: 123123 - ALINE WOLF"
-          android:textColor="@color/colorDark"
-          android:textSize="@dimen/medium_text" />
-
-        <TextView
-          android:id="@+id/cargo_txt_view"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:drawableStart="@drawable/pound_box_black_18_dp"
-          android:drawableLeft="@drawable/pound_box_black_18_dp"
-          android:text="CARGA: 00000"
-          android:textColor="@color/lightGrey" />
-
-
-        <TextView
-          android:id="@+id/item_date"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:drawableStart="@drawable/ic_calendar_star_black_18dp"
-          android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
-          android:text="00/00/0000"
-          android:textColor="@color/lightGrey"
-          app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-          android:id="@+id/prioritary_label"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:drawableStart="@drawable/ic_baseline_warning_24"
-          android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
-          android:text="Pedido prioritário"
-          android:drawableTint="@color/colorLightRedAccent"
-          android:textColor="@color/colorLightRedAccent"
-          app:layout_constraintStart_toStartOf="parent" />
-
-      </LinearLayout>
-
-      <LinearLayout
-        android:id="@+id/linearLayout4"
+      <TextView
+        android:id="@+id/storage_unit_text"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0"
-        android:gravity="end"
-        android:orientation="vertical">
-
-        <TextView
-          android:layout_weight="1"
-          android:id="@+id/quantity_to_pick_txt_view"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="4"
-          android:textSize="25sp" />
-
-        <br.com.trivio.wms.components.custom.Badge
-          android:id="@+id/picking_task_badge"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:badge_text="STATUS"
-          app:badge_text_color="@color/colorWhite" />
-      </LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="CX"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/small_text" />
 
     </LinearLayout>
-    <br.com.trivio.wms.components.custom.ProgressBar
-      android:id="@+id/progress_bar"
-      android:layout_width="match_parent"
+
+    <br.com.trivio.wms.components.custom.Badge
+      android:id="@+id/picking_status"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:background_color="@color/lighterGray0"
-      android:padding="0dp"
-      app:show_label="false"
-      app:bar_height="5dp"
-      app:foreground_color="@color/colorLightBlueAccent"
-      app:progress="20" />
+      android:layout_below="@id/counted_unit_layout"
+      android:layout_alignParentEnd="true"
+      android:textColor="@color/colorPrimaryDark"
+      app:badge_text="@string/picking_pending"
+      app:badge_text_color="@color/colorWhite" />
 
-  </LinearLayout>
-
+  </RelativeLayout>
 
 
 </androidx.cardview.widget.CardView>

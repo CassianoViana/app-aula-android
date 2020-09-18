@@ -84,7 +84,7 @@ class PickingListActivity : MyAppCompatActivity() {
       }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PickingListViewHolder {
-      return PickingListViewHolder(parent.inflateToViewHolder(R.layout.item_picking_layout))
+      return PickingListViewHolder(parent.inflateToViewHolder(R.layout.item_picking_tasks_list_layout))
     }
 
     override fun onBindViewHolder(holder: PickingListViewHolder, position: Int) {

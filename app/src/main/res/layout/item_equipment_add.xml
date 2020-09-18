@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginStart="@dimen/item_list_margin"
+  android:layout_marginTop="@dimen/item_list_margin"
+  android:layout_marginEnd="@dimen/item_list_margin">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:padding="@dimen/padding">
+
+      <TextView
+        android:id="@+id/equipment_position"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingRight="15dp"
+        android:text="1"
+        android:textSize="@dimen/large_text" />
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/equipment_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Carrinho de Supermercado"
+          android:textColor="@color/colorDark"
+          android:textSize="@dimen/medium_text" />
+
+        <TextView
+          android:id="@+id/equipment_code"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:drawableStart="@drawable/pound_box_black_18_dp"
+          android:drawableLeft="@drawable/pound_box_black_18_dp"
+          android:text="code"
+          android:textColor="@color/lightGrey" />
+
+      </LinearLayout>
+
+      <ImageButton
+        android:id="@+id/btn_remove_equipment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/transparent"
+        android:padding="@dimen/padding"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:tint="@color/error" />
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

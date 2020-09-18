@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.setVisible
 import kotlinx.android.synthetic.main.custom_refreshable_list.view.*
+
 
 class RefreshableList @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

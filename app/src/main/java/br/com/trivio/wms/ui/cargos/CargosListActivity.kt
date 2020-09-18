@@ -127,7 +127,7 @@ class CargosListActivity : MyAppCompatActivity() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-      return ViewHolder(parent.inflateToViewHolder(R.layout.item_cargo_layout))
+      return ViewHolder(parent.inflateToViewHolder(R.layout.item_cargos_list_layout))
     }
 
     override fun getItemCount() = cargos.size

@@ -4,10 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
-import br.com.trivio.wms.data.dto.*
+import br.com.trivio.wms.data.dto.PickingItemDto
+import br.com.trivio.wms.data.dto.PickingTaskDto
+import br.com.trivio.wms.data.dto.TaskStatusDto
 import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
-import br.com.trivio.wms.repository.CargoConferenceRepository
 import br.com.trivio.wms.repository.PickingRepository
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -18,11 +19,14 @@ class PickingViewModel(
   ViewModel() {
 
   val task = MutableLiveData<Result<PickingTaskDto>>()
-  /*val items = MutableLiveData<Result<List<CargoConferenceItemDto>>>()
-  val cargoItem = MutableLiveData<Result<CargoConferenceItemDto>>()
+  val pickingItem = MutableLiveData<Result<PickingItemDto>>()
+  val items = MutableLiveData<Result<List<PickingItemDto>>>()
+  /*
+
   val finishStatus = MutableLiveData<Result<Boolean>>()
   val countsHistoryList = MutableLiveData<Result<List<ConferenceCountDto>>>()
   */
+
 
   fun loadPickingTask(id: Long) {
     viewModelScope.launch {
@@ -31,19 +35,56 @@ class PickingViewModel(
       }
     }
   }
-  /*
 
-  fun countItem(
-    item: CargoConferenceItemDto,
+  fun startPicking(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit = {}) {
+    viewModelScope.launch {
+      val result = asyncRequest { pickingRepository.startPicking(taskId) }
+      callback(result)
+    }
+  }
+
+  fun filterPickingItems(search: String) {
+    this.items.value = Result.Success(
+      when (val value: Result<PickingTaskDto>? = task.value) {
+        is Result.Success -> value.data.filteredItems(search)
+        else -> listOf()
+      }
+    )
+  }
+
+  fun getPickingItem(search: String): Result<PickingItemDto> {
+    val value: Result<PickingTaskDto>? = task.value
+    return if (value is Result.Success) {
+      val item = value.data.items
+        .firstOrNull {
+          it.sku == search ||
+            it.gtin == search ||
+            it.name.isVerySimilar(search) ||
+            it.position.isVerySimilar(search)
+        }
+      if (item == null) {
+        Result.Null(item)
+      } else {
+        Result.Success(item)
+      }
+    } else {
+      Result.Error(IllegalStateException("Não há tarefa de conferẽncia com estado válido"))
+    }
+  }
+
+  fun pickItem(
+    item: PickingItemDto,
     quantity: BigDecimal,
-    description: String? = null
   ) {
     viewModelScope.launch {
-      cargoItem.value = asyncRequest {
-        pickingRepository.countItem(item, quantity, description)
+      pickingItem.value = asyncRequest {
+        pickingRepository.pickItem(item, quantity)
       }
     }
   }
+  /*
+
+
 
   fun filterConferenceItems(search: String) {
     this.items.value = Result.Success(
@@ -66,31 +107,9 @@ class PickingViewModel(
     }
   }
 
-  fun getCargoItem(search: String): Result<CargoConferenceItemDto> {
-    val value: Result<CargoConferenceDto>? = task.value
-    return if (value is Result.Success) {
-      val item = value.data.items
-        .firstOrNull {
-          it.sku == search ||
-            it.gtin == search ||
-            it.name.isVerySimilar(search)
-        }
-      if (item == null) {
-        Result.Null(item)
-      } else {
-        Result.Success(item)
-      }
-    } else {
-      Result.Error(IllegalStateException("Não há tarefa de conferẽncia com estado válido"))
-    }
-  }
 
-  fun startCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit = {}) {
-    viewModelScope.launch {
-      val result = asyncRequest { pickingRepository.startConference(taskId) }
-      callback(result)
-    }
-  }
+
+
 
   fun finishCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit) {
     viewModelScope.launch {

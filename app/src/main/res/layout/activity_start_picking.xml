@@ -132,13 +132,11 @@
 
     <Button
       android:id="@+id/btn_choose_equipments"
-      style="@style/button_action.ok"
+      style="@style/button_action.ok.arrow_right"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/margin"
       android:layout_weight="0"
-      android:drawableRight="@drawable/ic_baseline_arrow_forward_18"
-      android:drawableTint="@color/colorWhite"
       android:text="@string/choose_equipments_and_start" />
 
     <Button

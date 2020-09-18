@@ -21,6 +21,12 @@ fun coalesce(value1: String?, alternative: Int): String {
   return globalData.appContext.getString(alternative)
 }
 
+fun coalesce(value1: String?, alternative: String): String {
+  return if (!value1.isNullOrBlank()) {
+    value1
+  } else alternative
+}
+
 @SuppressLint("SimpleDateFormat")
 fun LocalDateTime.formatTo(s: String): String {
   val c = Calendar.getInstance();
@@ -35,7 +41,7 @@ fun LocalDateTime.formatTo(s: String): String {
 
 fun getPercent(a: Int, b: Int): Int {
   return when (b) {
-      0 -> 0
-      else -> ((a.toFloat() / b) * 100).roundToInt()
+    0 -> 0
+    else -> ((a.toFloat() / b) * 100).roundToInt()
   }
 }

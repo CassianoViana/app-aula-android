@@ -28,6 +28,18 @@
     <attr name="badge_text_color" format="reference|color" />
   </declare-styleable>
 
+  <declare-styleable name="BadgedButton">
+    <attr name="value" format="string" />
+    <attr name="btn_padding" format="dimension" />
+    <attr name="btn_drawable" format="reference" />
+    <attr name="button_text" format="reference|color" />
+  </declare-styleable>
+
+  <declare-styleable name="Alert">
+    <attr name="alert_text" format="string|reference" />
+    <attr name="alert_type" format="string" />
+  </declare-styleable>
+
   <declare-styleable name="NumberInput">
     <attr name="buttons_color" format="color" />
   </declare-styleable>

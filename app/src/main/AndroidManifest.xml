@@ -16,20 +16,23 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme.NoActionBar"
     android:usesCleartextTraffic="true">
-    <activity android:name=".ui.picking.PickingListActivity"></activity>
+    <activity
+      android:name=".ui.equipments.AddEquipmentsActivity"
+      android:screenOrientation="portrait"></activity>
+    <activity android:name=".ui.picking.PickingListActivity" />
     <activity
       android:name=".ScrollingActivity"
       android:label="@string/title_activity_scrolling"
       android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
     <activity
-      android:name="br.com.trivio.wms.ui.cargos.conference.ConferenceCountsActivity"
+      android:name=".ui.cargos.conference.ConferenceCountsActivity"
       android:label="@string/title_activity_conference_counts"
       android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
     <activity
-      android:name="br.com.trivio.wms.ui.cargos.conference.CameraActivity"
+      android:name=".ui.cargos.conference.CameraActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name="br.com.trivio.wms.ui.cargos.conference.CargoConferenceActivity"
+      android:name=".ui.cargos.conference.CargoConferenceActivity"
       android:screenOrientation="portrait" />
     <activity android:name=".ui.tasks.TaskDetailsActivity" />
     <activity android:name=".LaunchActivity">
@@ -52,7 +55,10 @@
     <activity android:name=".ui.tasks.TasksListActivity" />
     <activity android:name=".ui.cargos.StartConferenceActivity" />
     <activity android:name=".ui.cargos.EndConferenceActivity" />
-      <activity android:name=".ui.picking.StartPickingActivity" />
+    <activity
+      android:name=".ui.picking.StartPickingActivity"
+      android:screenOrientation="portrait" />
+    <activity android:name=".ui.picking.PickingActivity" />
   </application>
 
 </manifest>

@@ -10,14 +10,22 @@ class PickingTaskDto(
   var customerName: String? = null,
   var cargoNumber: String? = null,
   var orderDate: LocalDateTime? = null,
-  var status: TaskStatus? = null,
+  var taskStatus: TaskStatus? = null,
   val priorityStatus: StatusDto? = null,
   val quantityItems: Int = 0,
   val sellerName: String? = null,
   val sellerCode: String? = null,
+  val progress: Int = 0,
   val quantityPickedItems: Int = 0,
   val quantityItemsToPick: Int = 0,
+  val items: List<PickingItemDto> = listOf()
 ) {
+
+  companion object {
+    const val STATUS_PICKING_ALL_PICKED = 0
+    const val STATUS_PICKING_NONE_PICKED = 1
+    const val STATUS_PICKING_SOME_PICKED = 2
+  }
 
 
   fun search(search: String): Boolean {
@@ -31,8 +39,22 @@ class PickingTaskDto(
       "customerName=$customerName, " +
       "cargoNumber=$cargoNumber, " +
       "orderDate=$orderDate, " +
-      "status=$status" +
+      "status=$taskStatus" +
       ")"
+  }
+
+  fun isPending() = taskStatus == TaskStatus.PENDING
+
+  fun filteredItems(search: String): List<PickingItemDto> {
+    return if (search.isEmpty()) listOf() else items.filter {
+      matchFilter(it.getSearchString(), search)
+    }
+  }
+
+  fun getStatusPicking() = when {
+    progress == 100 -> STATUS_PICKING_ALL_PICKED
+    progress > 0 -> STATUS_PICKING_SOME_PICKED
+    else -> STATUS_PICKING_NONE_PICKED
   }
 }
 

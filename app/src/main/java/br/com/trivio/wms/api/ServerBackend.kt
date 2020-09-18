@@ -147,5 +147,8 @@ class ServerBackend {
 
   fun getMyPendingPickings(): List<PickingListDto> = FakeApi.getPickingsPendingToOperatorCheck()
   fun getPickingTask(taskId:Long): PickingTaskDto = FakeApi.getPickingTask()
+  fun getEquipments(taskId:Long): List<EquipmentDto> = FakeApi.getEquipments()
+  fun startPicking(taskId: Long) : TaskStatusDto = FakeApi.startPicking(taskId);
+  fun pickItem(item: PickingItemDto, quantity: BigDecimal):PickingItemDto = FakeApi.pickItem(item, quantity)
 
 }

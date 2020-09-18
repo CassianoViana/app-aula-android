@@ -1,5 +1,6 @@
 package br.com.trivio.wms.data.dto
 
+import br.com.trivio.wms.extensions.coalesce
 import java.math.BigDecimal
 
 data class CargoConferenceItemDto(
@@ -45,15 +46,7 @@ data class CargoConferenceItemDto(
     return countedQuantity != null
   }
 
-  fun getUnitCode(default: String): String? {
-    var unitCode = default;
-    storageUnit?.let { storageUnitDto ->
-      storageUnitDto.code?.let { code ->
-        unitCode = code
-      }
-    }
-    return unitCode
-  }
+  fun getUnitCode(default: String) = coalesce(storageUnit?.code, default)
 
   fun hasDamagedQtd(): Boolean {
     return damagedQuantity != null && damagedQuantity?.compareTo(

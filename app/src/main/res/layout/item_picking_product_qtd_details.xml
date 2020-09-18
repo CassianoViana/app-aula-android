@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/product_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/position_name"
+      android:layout_alignParentStart="true"
+      android:layout_toStartOf="@+id/counted_unit_layout"
+      android:text="Nome produto"
+      android:textColor="@color/colorPrimaryDark"
+      android:textSize="@dimen/medium_text" />
+
+    <TextView
+      android:id="@+id/product_sku"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawableLeft="@drawable/pound_box_black_18_dp"
+      android:text="00000"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+      android:id="@+id/product_gtin"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawableLeft="@drawable/ic_barcode_black_18dp"
+      android:text="00000"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/counted_unit_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentEnd="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_half">
+
+    <TextView
+      android:id="@+id/product_qtd"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="10"
+      android:textSize="@dimen/large_text" />
+
+    <TextView
+      android:id="@+id/storage_unit_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="CX"
+      android:textColor="@color/colorPrimaryDark"
+      android:textSize="@dimen/small_text" />
+
+  </LinearLayout>
+</LinearLayout>
+

@@ -151,31 +151,31 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
   class ConferenceCountItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val trashBtn = view.findViewById<Button>(R.id.btn_trash_delete_count)
-    private val dateTxtView = view.findViewById<TextView>(R.id.count_date_text_view)
-    private val itemCodeTxtView = view.findViewById<TextView>(R.id.item_code_text_view)
-    private val itemProductTxtView = view.findViewById<TextView>(R.id.count_product_name_text_view)
-    private val itemGtinTxtView = view.findViewById<TextView>(R.id.item_gtin_text_view)
-    private val userNameTxtView = view.findViewById<TextView>(R.id.count_user_name_text_view)
+    private val dateTextView = view.findViewById<TextView>(R.id.count_date_text_view)
+    private val itemCodeTextView = view.findViewById<TextView>(R.id.item_code_text_view)
+    private val itemProductTextView = view.findViewById<TextView>(R.id.count_product_name_text_view)
+    private val itemGtinTextView = view.findViewById<TextView>(R.id.item_gtin_text_view)
+    private val userNameTextView = view.findViewById<TextView>(R.id.count_user_name_text_view)
     private val countItemTypeBadge = view.findViewById<Badge>(R.id.count_item_type_badge)
-    private val descriptionTxtView = view.findViewById<TextView>(R.id.description_text_view)
-    private val countItemQtdTxtView = view.findViewById<TextView>(R.id.count_item_qtd_text_view)
-    private val storageUnitTxtView = view.findViewById<TextView>(R.id.storage_unit_text_view)
+    private val descriptionTextView = view.findViewById<TextView>(R.id.description_text_view)
+    private val countItemQtdTextView = view.findViewById<TextView>(R.id.count_item_qtd_text_view)
+    private val storageUnitTextView = view.findViewById<TextView>(R.id.storage_unit_text_view)
 
     fun bind(item: ConferenceCountDto, onClickDelete: (item: ConferenceCountDto) -> Unit) {
       trashBtn.setOnClickListener {
         onClickDelete(item)
       }
-      dateTxtView.text = item.created?.formatTo("dd/MM/yyyy HH:mm:ss")
-      itemProductTxtView.text = item.product
-      itemCodeTxtView.text = item.sku
-      itemGtinTxtView.text = item.gtin
-      userNameTxtView.text = item.username
+      dateTextView.text = item.created?.formatTo("dd/MM/yyyy HH:mm:ss")
+      itemProductTextView.text = item.product
+      itemCodeTextView.text = item.sku
+      itemGtinTextView.text = item.gtin
+      userNameTextView.text = item.username
       countItemTypeBadge.text = item.countType?.name
       countItemTypeBadge.backgroundColor = item.countType?.color
-      countItemQtdTxtView.text = item.count?.toInt().toString()
-      storageUnitTxtView.text = item.storageUnitCode
-      descriptionTxtView.setVisible(item.description != null)
-      descriptionTxtView.text = item.description
+      countItemQtdTextView.text = item.count?.toInt().toString()
+      storageUnitTextView.text = item.storageUnitCode
+      descriptionTextView.setVisible(item.description != null)
+      descriptionTextView.text = item.description
     }
   }
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".ui.equipments.AddEquipmentsActivity">
+
+  <br.com.trivio.wms.components.custom.TopBar
+    android:id="@+id/top_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:title="@string/add_equipments" />
+
+  <br.com.trivio.wms.components.custom.BarcodeReader
+    android:id="@+id/barcode_equipments_reader"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/barcode_reader_height" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <br.com.trivio.wms.components.custom.SearchInput
+      android:id="@+id/search_input_equipments"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      app:hint="@string/equipment_code" />
+
+    <ImageView
+      android:id="@+id/btn_open_camera_to_read_equipment"
+      android:layout_width="@dimen/btn_barcode_width"
+      android:layout_height="match_parent"
+      android:background="@color/colorPrimaryDark"
+      android:src="@drawable/ic_barcode_white_24dp" />
+  </LinearLayout>
+
+  <include
+    layout="@layout/progress_bar"
+    android:visibility="gone" />
+
+  <br.com.trivio.wms.components.custom.RefreshableList
+    android:id="@+id/equipments_list"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
+
+  <Button
+    android:id="@+id/btn_continue_to_picking"
+    style="@style/button_action.ok"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/padding_half"
+    android:layout_weight="0"
+    android:text="@string/continue_to_picking" />
+
+</LinearLayout>

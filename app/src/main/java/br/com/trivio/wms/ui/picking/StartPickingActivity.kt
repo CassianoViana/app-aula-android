@@ -12,6 +12,7 @@ import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.onResult
+import br.com.trivio.wms.ui.equipments.AddEquipmentsActivity
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_start_picking.*
 import kotlinx.android.synthetic.main.button_close_x.*
@@ -70,10 +71,10 @@ class StartPickingActivity : MyAppCompatActivity() {
     emited_at_info.text = data.orderDate?.formatTo("dd/MM/yyyy")
     seller_info.text = "${data.sellerCode} - ${data.sellerName}"
     qtd_picked_items.text = data.quantityPickedItems.toString()
-    layout_qtd_itens_to_pick.setVisible(data.status == TaskStatus.DOING)
+    layout_qtd_itens_to_pick.setVisible(data.taskStatus == TaskStatus.DOING)
     qtd_items_to_pick.text = data.quantityItemsToPick.toString()
-    btn_choose_equipments.setVisible(data.status == TaskStatus.PENDING)
-    btn_continue_picking.setVisible(data.status == TaskStatus.DOING)
+    btn_choose_equipments.setVisible(data.taskStatus == TaskStatus.PENDING)
+    btn_continue_picking.setVisible(data.taskStatus == TaskStatus.DOING)
   }
 
   private fun loadPickingDetails() {
@@ -85,11 +86,16 @@ class StartPickingActivity : MyAppCompatActivity() {
   private fun listenClickEvents() {
     btn_icon_x.setOnClickListener { finish() }
     btn_choose_equipments.setOnClickListener {
-      //openEquipmentsActivity()
+      openEquipmentsActivity()
     }
     btn_continue_picking.setOnClickListener {
-      //openPickingActivity
+      //openPickingActivity()
     }
+  }
+
+  private fun openEquipmentsActivity() {
+    val chooseEquipmentsIntent = Intent(this, AddEquipmentsActivity::class.java)
+    startActivity(chooseEquipmentsIntent)
   }
 
   private fun listenRefresh() {

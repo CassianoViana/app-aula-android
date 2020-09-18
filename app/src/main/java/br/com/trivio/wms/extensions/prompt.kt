@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.custom_number_input.view.*
 
 fun MyAppCompatActivity.prompt(
   firstTitle: String,
-  secondTitle: String,
+  secondTitle: String? = null,
   positiveAction: (dialog: Dialog, value: String) -> Unit,
   negativeButtonText: String = getString(R.string.cancel),
   positiveButtonText: String = getString(R.string.confirm),
@@ -21,6 +21,7 @@ fun MyAppCompatActivity.prompt(
   inputType: Int = InputType.TYPE_CLASS_NUMBER,
   inputValue: Any? = null,
   hint: String = "0,00",
+  hideDefaultInputView: Boolean = true,
   inputView: View? = null,
   viewsBeforeInput: List<View> = listOf(),
   viewsAfterInput: List<View> = listOf(),
@@ -40,8 +41,10 @@ fun MyAppCompatActivity.prompt(
     val layoutBeforeInput = layout.findViewById<LinearLayout>(R.id.views_to_add_before_input)
     val layoutAfterInput = layout.findViewById<LinearLayout>(R.id.views_to_add_after_input)
 
-    if (inputView != null) {
+    if (inputView != null || hideDefaultInputView) {
       editText.setVisible(false)
+    }
+    if (inputView != null) {
       val parent = editText.parent as LinearLayout
       val indexOfDefaultInput = parent.indexOfChild(editText)
       inputView.parent?.let {
@@ -59,6 +62,7 @@ fun MyAppCompatActivity.prompt(
 
     val firstTextView = layout.findViewById<TextView>(R.id.first_title)
     val secondTextView = layout.findViewById<TextView>(R.id.second_title)
+    secondTextView.setVisible(secondTitle != null)
     secondTextView.text = secondTitle
     firstTextView.text = firstTitle
 
@@ -127,5 +131,3 @@ private fun addViewsFn(
   viewsAfterInputFn(dialog, views)
   views.forEach { layoutAfterInput.addView(it) }
 }
-
-

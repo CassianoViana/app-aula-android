@@ -97,47 +97,21 @@
         android:padding="@dimen/padding"
         app:layout_constraintTop_toBottomOf="@+id/basic_infos">
 
-        <LinearLayout
+        <br.com.trivio.wms.components.custom.LabelledNumber
+          android:id="@+id/qtd_counted_items"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:gravity="center_horizontal"
-          android:orientation="vertical">
+          app:labelled_number_label="@string/counted_items"
+          app:labelled_number_value="00" />
 
-          <TextView
-            android:id="@+id/quantity_counted_itens"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:text="000"
-            android:textSize="60sp" />
-
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/counteds" />
-        </LinearLayout>
-
-        <LinearLayout
+        <br.com.trivio.wms.components.custom.LabelledNumber
+          android:id="@+id/qtd_items_to_count"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:gravity="center"
-          android:orientation="vertical">
-
-          <TextView
-            android:id="@+id/quantity_items_to_count"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:text="000"
-            android:textSize="60sp" />
-
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/to_count" />
-        </LinearLayout>
+          app:labelled_number_label="@string/to_count"
+          app:labelled_number_value="00" />
 
         <!--<br.com.trivio.wms.components.custom.BarcodeReaderConnectionIndicator
           android:id="@+id/barcode_reader_indicator"
@@ -152,9 +126,8 @@
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    android:background="@android:color/transparent"
+    android:orientation="horizontal">
 
     <Button
       android:id="@+id/btn_start_counting"

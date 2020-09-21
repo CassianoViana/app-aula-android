@@ -4,6 +4,10 @@
     <attr name="hint" format="string" />
   </declare-styleable>
 
+  <declare-styleable name="RefreshsableList">
+    <attr name="refreshable" format="boolean" />
+  </declare-styleable>
+
   <declare-styleable name="ProgressBar">
     <attr name="progress" format="integer" />
     <attr name="label_below_bar" format="string" />
@@ -19,8 +23,15 @@
   </declare-styleable>
 
   <declare-styleable name="LabelledInfo">
+    <attr name="labelled_info_text_align" format="string" />
     <attr name="label_title" format="string" />
     <attr name="label_value" format="string" />
+  </declare-styleable>
+
+  <declare-styleable name="LabelledNumber">
+    <attr name="labelled_number_value" format="string" />
+    <attr name="labelled_number_label" format="string" />
+    <attr name="labelled_number_color" format="reference|color" />
   </declare-styleable>
 
   <declare-styleable name="Badge">

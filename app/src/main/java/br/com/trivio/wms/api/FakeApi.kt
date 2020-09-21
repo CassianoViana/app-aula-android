@@ -59,6 +59,7 @@ object FakeApi {
       sellerCode = "3023",
       sellerName = "Anibal",
       quantityItemsToPick = 100,
+      quantityPartiallyPicked = if (Math.random() * 10 > 5) 15 else 0,
       quantityPickedItems = 23,
       progress = 90,
       items = mutableListOf<PickingItemDto>().apply {
@@ -90,7 +91,8 @@ object FakeApi {
             )
           )
         }
-      }
+      },
+      equipments = getEquipments()
     )
   }
 

@@ -14,8 +14,8 @@ import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.cargos.conference.CargoConferenceActivity
-import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
 import br.com.trivio.wms.viewmodel.cargo.CargoDetailsViewModel
+import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_start_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 
@@ -64,8 +64,8 @@ class StartConferenceActivity : MyAppCompatActivity() {
     company_name_info.loading = loading
     start_date_info.loading = loading
     bono_reference_code.setLoading(loading)
-    quantity_counted_itens.setLoading(loading)
-    quantity_items_to_count.setLoading(loading)
+    qtd_counted_items.setLoading(loading)
+    qtd_items_to_count.setLoading(loading)
   }
 
   private fun updateUi(data: CargoConferenceDto) {
@@ -75,8 +75,8 @@ class StartConferenceActivity : MyAppCompatActivity() {
     company_name_info.text = data.nfesCompanyNames.joinToString("", transform = { "$it\n" })
     start_date_info.text = data.scheduledStart?.formatTo("dd/MM/yyyy - HH:mm").toString()
     progress_area_counting.setVisible(data.progressDescription != null)
-    quantity_counted_itens.text = data.totalCountedItems.toString()
-    quantity_items_to_count.text = data.totalToCountItems.toString()
+    qtd_counted_items.value = data.totalCountedItems.toString()
+    qtd_items_to_count.value = data.totalToCountItems.toString()
     btn_start_counting.setText(
       when (data.taskStatus) {
         TaskStatus.DOING -> R.string.continue_counting

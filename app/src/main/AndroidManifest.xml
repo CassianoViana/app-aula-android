@@ -17,8 +17,8 @@
     android:theme="@style/AppTheme.NoActionBar"
     android:usesCleartextTraffic="true">
     <activity
-      android:name=".ui.equipments.AddEquipmentsActivity"
-      android:screenOrientation="portrait"></activity>
+      android:name=".ui.equipments.AddEquipmentsListActivity"
+      android:screenOrientation="portrait" />
     <activity android:name=".ui.picking.PickingListActivity" />
     <activity
       android:name=".ScrollingActivity"
@@ -54,11 +54,15 @@
     <activity android:name=".ui.cargos.CargosListActivity" />
     <activity android:name=".ui.tasks.TasksListActivity" />
     <activity android:name=".ui.cargos.StartConferenceActivity" />
-    <activity android:name=".ui.cargos.EndConferenceActivity" />
+    <activity android:name=".ui.cargos.FinishConferenceActivity" />
     <activity
       android:name=".ui.picking.StartPickingActivity"
       android:screenOrientation="portrait" />
     <activity android:name=".ui.picking.PickingActivity" />
+    <activity
+      android:name=".ui.equipments.ReleaseEquipmentsListActivity"
+      android:screenOrientation="portrait" />
+    <activity android:name=".ui.picking.FinishPickingActivity" />
   </application>
 
 </manifest>

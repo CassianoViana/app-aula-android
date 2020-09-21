@@ -26,7 +26,8 @@ import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
 import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.equipments.AddEquipmentsActivity
+import br.com.trivio.wms.ui.equipments.AddEquipmentsListActivity
+import br.com.trivio.wms.ui.equipments.ReleaseEquipmentsListActivity
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_picking.*
 import kotlinx.coroutines.launch
@@ -61,7 +62,7 @@ class PickingActivity : MyAppCompatActivity() {
     observeViewModel()
     onBarcodeChangeSearchProduct()
     onRefreshLoadData()
-    onClickFinish()
+    onClickFinishGoToReleaseEquipmentsActivity()
     onClickCameraOpenBarcodeReader()
     onReadBarcodeFillSearchInput()
     onClickReaderHideKeyboard()
@@ -134,22 +135,22 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun onClickFinish() {
-    btn_finish_arrival.setOnClickListener {
-      openEndConferenceActivity()
+  private fun onClickFinishGoToReleaseEquipmentsActivity() {
+    btn_finish_picking.setOnClickListener {
+      openReleaseEquipmentsActivity()
     }
   }
 
-  private fun openEndConferenceActivity() {
-    /*val intent = Intent(this, EndConferenceActivity::class.java)
-    intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.pickingTaskId)
-    startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)*/
+  private fun openReleaseEquipmentsActivity() {
+    val intent = Intent(this, ReleaseEquipmentsListActivity::class.java)
+    intent.putExtra(ReleaseEquipmentsListActivity.PICKING_TASK_ID, this.pickingTaskId)
+    startActivityForResult(intent, ReleaseEquipmentsListActivity.END_ACTIVITY)
   }
 
   private fun openEquipmentsListActivity(item: PickingItemDto? = null) {
-    val intent = Intent(this, AddEquipmentsActivity::class.java)
-    intent.putExtra(AddEquipmentsActivity.PICKING_TASK_ID, pickingTaskId)
-    startActivityForResult(intent, AddEquipmentsActivity.END_ACTIVITY)
+    val intent = Intent(this, AddEquipmentsListActivity::class.java)
+    intent.putExtra(AddEquipmentsListActivity.PICKING_TASK_ID, pickingTaskId)
+    startActivityForResult(intent, AddEquipmentsListActivity.END_ACTIVITY)
   }
 
   private fun onRefreshLoadData() {
@@ -311,11 +312,11 @@ class PickingActivity : MyAppCompatActivity() {
       firstTitle = getString(R.string.warning),
       viewsBeforeInputFn = { _, views ->
         views.add(createPickItemLayout(item))
-          views.add(Alert(this).apply {
-            setType(Alert.TYPE_WARNING)
-            message = getString(R.string.product_not_found_in_picking_task)
-            setMarginVertical()
-          })
+        views.add(Alert(this).apply {
+          setType(Alert.TYPE_WARNING)
+          message = getString(R.string.product_not_found_in_picking_task)
+          setMarginVertical()
+        })
       },
       positiveAction = { dialog, _: String ->
         dialog.hide()
@@ -421,7 +422,6 @@ class PickingActivity : MyAppCompatActivity() {
       }
 
       class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var clickablePosition = view.findViewById<View>(R.id.clickable_position_item)
         private var positionTextView = view.findViewById<TextView>(R.id.position_name_text_view)
         private var positionTypeTextView =
           view.findViewById<TextView>(R.id.position_type_text_view)

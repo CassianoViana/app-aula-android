@@ -19,9 +19,9 @@ import br.com.trivio.wms.extensions.toggleVisibility
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.picking.PickingActivity
 import br.com.trivio.wms.viewmodel.EquipmentsViewModel
-import kotlinx.android.synthetic.main.activity_add_equipments.*
+import kotlinx.android.synthetic.main.activity_add_equipments_list.*
 
-class AddEquipmentsActivity : MyAppCompatActivity() {
+class AddEquipmentsListActivity : MyAppCompatActivity() {
 
   private val viewModel: EquipmentsViewModel by viewModels()
   private var taskId: Long = 0
@@ -38,7 +38,7 @@ class AddEquipmentsActivity : MyAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     this.taskId = intent.getLongExtra(PICKING_TASK_ID, 0)
-    setContentView(R.layout.activity_add_equipments)
+    setContentView(R.layout.activity_add_equipments_list)
     observeViewModel()
     onRefreshReloadList()
     bindListAdapter()
@@ -150,9 +150,6 @@ class AddEquipmentsActivity : MyAppCompatActivity() {
     var btnRemoveEquipment = view.findViewById<ImageButton>(R.id.btn_remove_equipment)
 
     fun bind(dto: EquipmentDto, onClickToRemove: (EquipmentDto) -> Unit, position: Int) {
-      view.setOnClickListener {
-        onClickToRemove(dto)
-      }
       equipmentPosition.text = (position + 1).toString()
       equipmentNameTextView.text = dto.name
       equipmentCodeTextView.text = dto.code

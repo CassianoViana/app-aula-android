@@ -3,22 +3,24 @@ package br.com.trivio.wms.ui.cargos
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.CargoConferenceDto
-import br.com.trivio.wms.extensions.Status
-import br.com.trivio.wms.extensions.setLoading
-import br.com.trivio.wms.extensions.setVisible
-import br.com.trivio.wms.extensions.showMessageSuccess
+import br.com.trivio.wms.data.dto.EquipmentDto
+import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
 import br.com.trivio.wms.viewmodel.cargo.CargoDetailsViewModel
-import kotlinx.android.synthetic.main.activity_end_conference.*
+import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
+import kotlinx.android.synthetic.main.activity_finish_conference.*
 import kotlinx.android.synthetic.main.button_close_x.*
 
-class EndConferenceActivity : MyAppCompatActivity() {
+class FinishConferenceActivity : MyAppCompatActivity() {
 
   private var cargoId: Long = 0
   private var taskId: Long = 0
@@ -33,7 +35,7 @@ class EndConferenceActivity : MyAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_end_conference)
+    setContentView(R.layout.activity_finish_conference)
     this.cargoId = intent.getLongExtra(CARGO_TASK_ID, 0)
     setupObservables()
     listenClickEvents()

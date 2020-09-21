@@ -26,8 +26,8 @@ class Alert @JvmOverloads constructor(
   companion object {
     const val TYPE_WARNING = "warning"
     const val TYPE_INFO = "info"
-    /*const val TYPE_WARNING = "warning"
-    const val TYPE_WARNING = "warning"*/
+    const val TYPE_SUCCESS = "success"
+    const val TYPE_ERROR = "error"
   }
 
   init {
@@ -35,12 +35,15 @@ class Alert @JvmOverloads constructor(
 
     attrs?.let {
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.Alert)
-      styledAttributes.getString(R.styleable.Alert_alert_text)?.let {
+
+      val text = styledAttributes.getString(R.styleable.Alert_alert_text)
+      val type = styledAttributes.getString(R.styleable.Alert_alert_type)
+
+      text?.let {
         this.message = it
       }
-      styledAttributes.getString(R.styleable.Alert_alert_type).let {
-        setType(it)
-      }
+      setType(type)
+
       styledAttributes.recycle()
     }
   }
@@ -54,6 +57,14 @@ class Alert @JvmOverloads constructor(
       TYPE_INFO -> {
         icon = context.getDrawable(R.drawable.ic_baseline_info_30)
         background = context.getDrawable(R.drawable.light_blue_rounded)
+      }
+      TYPE_SUCCESS -> {
+        icon = context.getDrawable(R.drawable.ic_baseline_check_circle_30)
+        background = context.getDrawable(R.drawable.light_green_rounded)
+      }
+      TYPE_ERROR -> {
+        icon = context.getDrawable(R.drawable.ic_baseline_error_30)
+        background = context.getDrawable(R.drawable.light_red_rounded)
       }
     }
   }

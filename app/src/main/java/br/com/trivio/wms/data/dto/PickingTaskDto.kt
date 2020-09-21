@@ -5,7 +5,7 @@ import br.com.trivio.wms.extensions.matchFilter
 import org.joda.time.LocalDateTime
 
 class PickingTaskDto(
-  var id: Long? = null,
+  var id: Long = 0L,
   var orderNumber: Long? = null,
   var customerName: String? = null,
   var cargoNumber: String? = null,
@@ -18,8 +18,12 @@ class PickingTaskDto(
   val progress: Int = 0,
   val quantityPickedItems: Int = 0,
   val quantityItemsToPick: Int = 0,
-  val items: List<PickingItemDto> = listOf()
+  val quantityPartiallyPicked: Int = 0,
+  val items: List<PickingItemDto> = listOf(),
+  val equipments: List<EquipmentDto> = listOf()
 ) {
+
+  val quantityNotFound = this.quantityItemsToPick - this.quantityPickedItems
 
   companion object {
     const val STATUS_PICKING_ALL_PICKED = 0
@@ -55,6 +59,10 @@ class PickingTaskDto(
     progress == 100 -> STATUS_PICKING_ALL_PICKED
     progress > 0 -> STATUS_PICKING_SOME_PICKED
     else -> STATUS_PICKING_NONE_PICKED
+  }
+
+  fun valid(): Boolean {
+    return quantityPartiallyPicked == 0 && quantityNotFound == 0
   }
 }
 

@@ -25,7 +25,7 @@ import br.com.trivio.wms.extensions.Status.Companion.ERROR
 import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
 import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.cargos.EndConferenceActivity
+import br.com.trivio.wms.ui.cargos.FinishConferenceActivity
 import br.com.trivio.wms.ui.tasks.TaskDetailsActivity
 import br.com.trivio.wms.viewmodel.cargo.conference.CargoConferenceViewModel
 import kotlinx.android.synthetic.main.activity_cargo_conference.*
@@ -160,9 +160,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun openEndConferenceActivity() {
-    val intent = Intent(this, EndConferenceActivity::class.java)
-    intent.putExtra(EndConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
-    startActivityForResult(intent, EndConferenceActivity.END_CONFERENCE_ACTIVITY)
+    val intent = Intent(this, FinishConferenceActivity::class.java)
+    intent.putExtra(FinishConferenceActivity.CARGO_TASK_ID, this.cargoConferenceTaskId)
+    startActivityForResult(intent, FinishConferenceActivity.END_CONFERENCE_ACTIVITY)
   }
 
   private fun openCountHistoryActivity(item: CargoConferenceItemDto? = null) {
@@ -233,10 +233,10 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     when (resultCode) {
-      EndConferenceActivity.END_CONFERENCE_ACTIVITY -> {
+      FinishConferenceActivity.END_CONFERENCE_ACTIVITY -> {
         data?.let {
           cargoConferenceTaskId =
-            it.getLongExtra(EndConferenceActivity.RESTARTING_TASK, cargoConferenceTaskId)
+            it.getLongExtra(FinishConferenceActivity.RESTARTING_TASK, cargoConferenceTaskId)
           loadCargoConferenceTask()
         }
       }

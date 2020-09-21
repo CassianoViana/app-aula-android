@@ -12,7 +12,7 @@ import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.equipments.AddEquipmentsActivity
+import br.com.trivio.wms.ui.equipments.AddEquipmentsListActivity
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_start_picking.*
 import kotlinx.android.synthetic.main.button_close_x.*
@@ -94,7 +94,7 @@ class StartPickingActivity : MyAppCompatActivity() {
   }
 
   private fun openEquipmentsActivity() {
-    val chooseEquipmentsIntent = Intent(this, AddEquipmentsActivity::class.java)
+    val chooseEquipmentsIntent = Intent(this, AddEquipmentsListActivity::class.java)
     startActivity(chooseEquipmentsIntent)
   }
 

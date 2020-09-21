@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/refresh_picking_task"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+      layout="@layout/progress_bar"
+      android:visibility="gone" />
+
+    <include layout="@layout/button_close_x" />
+
+    <br.com.trivio.wms.components.custom.LabelledInfo
+      android:id="@+id/label_info_picking_task"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:label_title="@string/pedido_all_caps"
+      app:label_value="00000"
+      app:labelled_info_text_align="center" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginLeft="@dimen/margin"
+      android:layout_marginRight="@dimen/margin"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <br.com.trivio.wms.components.custom.LabelledNumber
+          android:id="@+id/label_input_number_total"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          app:labelled_number_label="@string/total"
+          app:labelled_number_value="000" />
+
+        <br.com.trivio.wms.components.custom.LabelledNumber
+          android:id="@+id/label_input_number_separeds"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          app:labelled_number_label="@string/separeds"
+          app:labelled_number_value="000" />
+
+        <br.com.trivio.wms.components.custom.LabelledNumber
+          android:id="@+id/label_input_number_not_found"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          app:labelled_number_color="@color/colorLightRedAccent"
+          app:labelled_number_label="@string/not_found_plural"
+          app:labelled_number_value="000" />
+      </LinearLayout>
+
+      <br.com.trivio.wms.components.custom.Alert
+        android:id="@+id/alert_partial_picked_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginBottom="@dimen/padding"
+        app:alert_text="14 Itens separados parcialmente"
+        app:alert_type="warning" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_half"
+        android:text="@string/used_equipments"
+        android:textAlignment="center"
+        android:textSize="@dimen/medium_text"
+        android:textStyle="bold" />
+
+      <br.com.trivio.wms.components.custom.RefreshableList
+        android:id="@+id/used_equipments_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="teste"
+        app:refreshable="false" />
+    </LinearLayout>
+
+    <Button
+      android:id="@+id/btn_finish_counting"
+      style="@style/button_action.ok"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/margin"
+      android:layout_weight="0"
+      android:text="@string/finish_picking" />
+  </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

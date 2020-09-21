@@ -54,10 +54,17 @@ class RefreshableList @JvmOverloads constructor(
     recyclerView.layoutManager = LinearLayoutManager(context)
 
     attrs?.let {
-      /*val styledAttributes = context.obtainStyledAttributes(it, R.styleable.SearchInput)
-      val hint = styledAttributes.getString(R.styleable.SearchInput_hint)
-      editTextSearch.hint = hint
-      styledAttributes.recycle()*/
+      val styledAttributes = context.obtainStyledAttributes(it, R.styleable.RefreshsableList)
+      val refreshable = styledAttributes.getBoolean(R.styleable.RefreshsableList_refreshable, true)
+
+      if (!refreshable) {
+        setOnRefreshListener {
+          stopRefresh()
+        }
+      }
+
+      styledAttributes.recycle()
+
     }
 
   }

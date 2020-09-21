@@ -36,9 +36,22 @@ class LabelledInfo @JvmOverloads constructor(
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.LabelledInfo)
       val title = styledAttributes.getString(R.styleable.LabelledInfo_label_title)
       val value = styledAttributes.getString(R.styleable.LabelledInfo_label_value)
+      val alignment = styledAttributes.getString(R.styleable.LabelledInfo_labelled_info_text_align)
 
       titleTextView.text = title
       valueTextView.text = value
+
+      alignment?.let {
+        when (it) {
+          "center" -> TEXT_ALIGNMENT_CENTER
+          "right" -> TEXT_ALIGNMENT_TEXT_END
+          "end" -> TEXT_ALIGNMENT_TEXT_END
+          else -> TEXT_ALIGNMENT_TEXT_START
+        }.let { alignment ->
+          titleTextView.textAlignment = alignment
+          valueTextView.textAlignment = alignment
+        }
+      }
 
       styledAttributes.recycle()
     }

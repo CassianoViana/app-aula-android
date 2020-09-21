@@ -5,13 +5,13 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  tools:context=".ui.equipments.AddEquipmentsActivity">
+  tools:context=".ui.equipments.AddEquipmentsListActivity">
 
   <br.com.trivio.wms.components.custom.TopBar
     android:id="@+id/top_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:title="@string/add_equipments" />
+    app:title="@string/check_equipments" />
 
   <br.com.trivio.wms.components.custom.BarcodeReader
     android:id="@+id/barcode_equipments_reader"
@@ -48,12 +48,12 @@
     android:layout_weight="1" />
 
   <Button
-    android:id="@+id/btn_continue_to_picking"
-    style="@style/button_action.ok"
+    android:id="@+id/btn_continue_to_finish_picking"
+    style="@style/button_action.ok.arrow_right"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/padding_half"
+    android:layout_margin="@dimen/margin"
     android:layout_weight="0"
-    android:text="@string/continue_to_picking" />
+    android:text="@string/proceed_finishing" />
 
 </LinearLayout>

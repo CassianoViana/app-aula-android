@@ -292,9 +292,18 @@
   <string name="picking_success">Separação realizada</string>
   <string name="qtd_aready_separed">Quantidade separada: %d %s</string>
   <string name="reposition_requested">Reposição solicitada</string>
-    <string name="already_exists_reposition_request">Já existe solicitação de reposição para este item</string>
+  <string name="already_exists_reposition_request">Já existe solicitação de reposição para este item</string>
   <string name="cancel_request_picking_reposition">Cancelar solicitação de reposição de picking</string>
   <string name="warning">Atenção</string>
   <string name="understod">Entendi</string>
   <string name="product_not_found_in_picking_task">Produto não faz parte da lista de separação deste pedido</string>
+  <string name="check_equipments">Conferir equipamentos</string>
+  <string name="proceed_finishing">Proceguir com a finalização</string>
+  <string name="total">Total</string>
+  <string name="not_found_plural">Não encontrados</string>
+  <string name="not_found_plural_break_line">Não\nEncontrados</string>
+  <string name="pedido_all_caps">PEDIDO</string>
+  <string name="used_equipments">Equipamentos utilizados:</string>
+  <string name="partial_pick_final_message">%d itens foram separados parcialmente</string>
+  <string name="all_items_were_picked">Todos os itens foram separados corretamente!</string>
 </resources>

@@ -21,6 +21,10 @@ class BarcodeReader @JvmOverloads constructor(
   var onRead: (read: String) -> Unit = { }
   var onError: (e: Exception) -> Unit = { }
 
+  fun setOnReadListener(listener: (String) -> Unit) {
+    this.onRead = listener
+  }
+
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_barcode_reader, this, true)
     codeScannerView = findViewById(R.id.scanner_view)
@@ -56,15 +60,15 @@ class BarcodeReader @JvmOverloads constructor(
     }
   }
 
-  fun start() {
+  fun startRead() {
     codeScanner.startPreview()
   }
 
-  fun pause() {
+  fun pauseReading() {
     codeScanner.stopPreview()
   }
 
-  fun stop() {
-    pause()
+  fun stopReading() {
+    pauseReading()
   }
 }

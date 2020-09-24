@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import br.com.trivio.wms.R
 import kotlinx.android.synthetic.main.custom_alert.view.*
 
-class Alert @JvmOverloads constructor(
+class Message @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
@@ -34,10 +34,10 @@ class Alert @JvmOverloads constructor(
     LayoutInflater.from(context).inflate(R.layout.custom_alert, this, true)
 
     attrs?.let {
-      val styledAttributes = context.obtainStyledAttributes(it, R.styleable.Alert)
+      val styledAttributes = context.obtainStyledAttributes(it, R.styleable.Message)
 
-      val text = styledAttributes.getString(R.styleable.Alert_alert_text)
-      val type = styledAttributes.getString(R.styleable.Alert_alert_type)
+      val text = styledAttributes.getString(R.styleable.Message_message_text)
+      val type = styledAttributes.getString(R.styleable.Message_message_type)
 
       text?.let {
         this.message = it

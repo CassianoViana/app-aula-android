@@ -36,7 +36,7 @@ fun MyAppCompatActivity.prompt(
     val layout = inflate<View>(R.layout.custom_prompt)
     val confirmButton = layout.findViewById<Button>(R.id.positive_action)
     val negativeButton = layout.findViewById<Button>(R.id.negative_action)
-    val editText = layout.findViewById<EditText>(R.id.input_value)
+    var editText = layout.findViewById<EditText>(R.id.input_value)
     val btnClose = layout.findViewById<ImageView>(R.id.btn_icon_x)
     val layoutBeforeInput = layout.findViewById<LinearLayout>(R.id.views_to_add_before_input)
     val layoutAfterInput = layout.findViewById<LinearLayout>(R.id.views_to_add_after_input)
@@ -52,10 +52,18 @@ fun MyAppCompatActivity.prompt(
           it.removeView(inputView)
       }
       parent.addView(inputView, indexOfDefaultInput)
+      if (inputView is EditText) {
+        editText = inputView
+      }
+      if (inputView is NumberInput) {
+        editText = inputView.custom_number_input
+      }
+    } else {
+      editText.hint = hint
     }
 
     editText.inputType = inputType
-    editText.hint = hint
+
     inputValue?.let {
       editText.setText(it.toString())
     }
@@ -101,15 +109,17 @@ fun MyAppCompatActivity.prompt(
     addViewsFn(viewsBeforeInputFn, dialog, layoutBeforeInput)
 
     var editToShowKeyboard: EditText = editText
+    val doneListener = { result: String ->
+      positiveAction(dialog, result)
+    }
     if (inputView != null) {
       if (inputView is NumberInput) {
         editToShowKeyboard = inputView.custom_number_input
-        inputView.addOnDoneListener { result ->
-          positiveAction(dialog, result)
-        }
+        inputView.addOnDoneListener(doneListener)
       }
     }
     editToShowKeyboard.setKeyboardVisible(this)
+    editToShowKeyboard.addOnDoneListener(doneListener)
     layout
   }
 

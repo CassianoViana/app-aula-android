@@ -9,6 +9,7 @@ import br.com.trivio.wms.data.dto.PickingTaskDto
 import br.com.trivio.wms.data.dto.TaskStatusDto
 import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
+import br.com.trivio.wms.extensions.matchRemovingDots
 import br.com.trivio.wms.repository.PickingRepository
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -75,12 +76,45 @@ class PickingViewModel(
   fun pickItem(
     item: PickingItemDto,
     quantity: BigDecimal,
+    callback: (Result<PickingItemDto>) -> Unit
   ) {
     viewModelScope.launch {
       pickingItem.value = asyncRequest {
         pickingRepository.pickItem(item, quantity)
+      }.apply {
+        callback(this)
       }
     }
+  }
+
+  fun validatePosition(
+    item: PickingItemDto,
+    position: String,
+    callback: (Result<PickingItemDto>) -> Unit
+  ) {
+    viewModelScope.launch {
+      val pickTask = task.value
+      var result: Result<PickingItemDto> =
+        Result.Error(java.lang.IllegalStateException("Posição não encontrada"))
+      if (pickTask is Result.Success) {
+        if (item.position.matchRemovingDots(position)) {
+          result = Result.Success(item)
+        }
+      }
+      callback(result)
+    }
+  }
+
+  fun findNextItem(pickedItem: PickingItemDto, callback: (Result<PickingItemDto>) -> Unit) {
+    val pickTask = task.value
+    var result: Result<PickingItemDto> =
+      Result.Error(IllegalArgumentException("Item não encontrado"))
+    if (pickTask is Result.Success) {
+      val pickItems = pickTask.data.items
+      val indexItem = pickItems.indexOf(pickedItem)
+      result = Result.Success(pickItems[indexItem + 1])
+    }
+    callback(result)
   }
   /*
 

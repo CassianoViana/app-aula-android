@@ -101,7 +101,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   override fun onFinish() {
-    barcode_reader.stop()
+    barcode_reader.stopReading()
     val data = Intent()
     data.putExtra(CARGO_TASK_ID, this.cargoConferenceTaskId)
     setResult(RESULT_TASK_ID, data)
@@ -112,14 +112,14 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     super.onResume()
     resetReadingState()
     if (requestPermission(Manifest.permission.CAMERA)) {
-      barcode_reader.start()
+      barcode_reader.startRead()
     }
   }
 
   override fun onPause() {
     super.onPause()
     barcode_search_input.setKeyboardVisible(false)
-    barcode_reader.pause()
+    barcode_reader.pauseReading()
   }
 
   override fun onRequestPermissionsResult(
@@ -128,12 +128,12 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     grantResults: IntArray
   ) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    barcode_reader.start()
+    barcode_reader.startRead()
   }
 
   private fun onReadBarcodeFillSearchInput() {
     barcode_reader.onRead = { it ->
-      barcode_reader.pause()
+      barcode_reader.pauseReading()
       runOnUiThread {
         playAudio(this, R.raw.beep)
         barcode_search_input.applySearch(it)
@@ -145,9 +145,9 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     barcode_reader.setVisible(false)
     btn_open_camera.setOnClickListener {
       if (barcode_reader.toggleVisibility() == VISIBLE) {
-        barcode_reader.start()
+        barcode_reader.startRead()
       } else {
-        barcode_reader.stop()
+        barcode_reader.stopReading()
       }
       barcode_search_input.hideKeyboard()
     }
@@ -413,7 +413,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun resetReadingState() {
     barcode_search_input.reset()
-    barcode_reader.start()
+    barcode_reader.startRead()
   }
 
   private fun openDamageDialog(

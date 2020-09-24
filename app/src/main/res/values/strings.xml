@@ -277,7 +277,7 @@
   <string name="separadas">Separadas</string>
   <string name="to_separe">À separar</string>
   <string name="pick">Separar</string>
-  <string name="choose_equipments_and_start">Escolher equipamentos e iniciar</string>
+  <string name="choose_equipments">Escolher equipamentos</string>
   <string name="continue_picking">Continuar separação</string>
   <string name="add_equipments">Adicionar equipamentos</string>
   <string name="equipment_code">Código do equipamento</string>
@@ -306,4 +306,7 @@
   <string name="used_equipments">Equipamentos utilizados:</string>
   <string name="partial_pick_final_message">%d itens foram separados parcialmente</string>
   <string name="all_items_were_picked">Todos os itens foram separados corretamente!</string>
+  <string name="confirm_position">Confirme a posição\n%s</string>
+  <string name="next">Próximo</string>
+  <string name="position_no_correspondent">Posição não correspondente</string>
 </resources>

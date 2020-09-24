@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <br.com.trivio.wms.components.custom.LabelledIcon
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding"
+    app:labelled_icon_color="@color/green_accent"
+    app:labelled_icon_label="Vá até a posição e leia o código"
+    app:labelled_icon_src="@drawable/ic_baseline_directions_walk_30" />
+
+  <br.com.trivio.wms.components.custom.LabelledInfo
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:label_title="Posição"
+    app:label_value="123.123.123"
+    app:labelled_info_text_align="center" />
+
+  <br.com.trivio.wms.components.custom.BarcodeReader
+    android:layout_width="match_parent"
+    android:layout_height="200dp" />
+
+</LinearLayout>

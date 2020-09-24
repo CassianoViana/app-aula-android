@@ -112,6 +112,10 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
   fun playErrorSound(){
     playAudio(this, R.raw.error)
   }
+
+  fun playBeep(){
+    playAudio(this, R.raw.beep)
+  }
 }
 
 

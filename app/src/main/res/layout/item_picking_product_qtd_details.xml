@@ -22,6 +22,16 @@
       android:textSize="@dimen/medium_text" />
 
     <TextView
+      android:id="@+id/product_position"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawableLeft="@drawable/ic_baseline_inbox_18"
+      android:drawableTint="@color/colorDark"
+      android:text="00000"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
       android:id="@+id/product_sku"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

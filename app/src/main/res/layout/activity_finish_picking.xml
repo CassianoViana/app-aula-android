@@ -63,14 +63,14 @@
           app:labelled_number_value="000" />
       </LinearLayout>
 
-      <br.com.trivio.wms.components.custom.Alert
+      <br.com.trivio.wms.components.custom.Message
         android:id="@+id/alert_partial_picked_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding"
         android:layout_marginBottom="@dimen/padding"
-        app:alert_text="14 Itens separados parcialmente"
-        app:alert_type="warning" />
+        app:message_text="14 Itens separados parcialmente"
+        app:message_type="warning" />
 
       <TextView
         android:layout_width="match_parent"

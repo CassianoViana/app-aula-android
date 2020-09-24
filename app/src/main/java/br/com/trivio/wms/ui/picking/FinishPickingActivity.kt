@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.components.custom.Alert
+import br.com.trivio.wms.components.custom.Message
 import br.com.trivio.wms.data.dto.EquipmentDto
 import br.com.trivio.wms.data.dto.PickingTaskDto
 import br.com.trivio.wms.extensions.inflateToViewHolder
@@ -84,7 +84,7 @@ class FinishPickingActivity : MyAppCompatActivity() {
     label_input_number_not_found.setVisible(data.quantityNotFound > 0)
     if (data.valid()) {
       alert_partial_picked_order.message = getString(R.string.all_items_were_picked)
-      alert_partial_picked_order.setType(Alert.TYPE_SUCCESS)
+      alert_partial_picked_order.setType(Message.TYPE_SUCCESS)
     } else {
       alert_partial_picked_order.setVisible(data.quantityPartiallyPicked > 0)
     }

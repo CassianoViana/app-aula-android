@@ -92,8 +92,8 @@
       <br.com.trivio.wms.components.custom.Alert
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:alert_text="teste"
-        app:alert_type="warning" />-->
+        app:message_text="teste"
+        app:message_type="warning" />-->
     </LinearLayout>
 
     <LinearLayout

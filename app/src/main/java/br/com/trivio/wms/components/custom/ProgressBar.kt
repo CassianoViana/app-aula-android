@@ -16,6 +16,11 @@ class ProgressBar @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
 
+  private var labelColors: Int = context.getColor(R.color.colorWhite)
+    set(value) {
+      label_below_progress_bar.setTextColor(value)
+      label_top_progress_bar.setTextColor(value)
+    }
   private var foregroundBarColor: Int = 0
   private var backgroundBarColor: Int = 0
 
@@ -76,6 +81,12 @@ class ProgressBar @JvmOverloads constructor(
         R.styleable.ProgressBar_background_color,
         getColor(context, R.color.almost_transparent_2)
       )
+
+      this.labelColors = styledAttributes.getColor(
+        R.styleable.ProgressBar_progress_label_color,
+        getColor(context, R.color.colorWhite)
+      )
+
       label_below_progress_bar.setVisible(
         styledAttributes.getBoolean(
           R.styleable.ProgressBar_show_label,

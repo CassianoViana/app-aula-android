@@ -6,3 +6,11 @@ fun String?.coalesce(alternative: String): String {
   }
   return this
 }
+
+fun String.matchOtherReplacing(other: String, old: String, new: String): Boolean {
+  return replace(old, new) == other.replace(old, new)
+}
+
+fun String.matchRemovingDots(other: String): Boolean {
+  return matchOtherReplacing(other, ".", "")
+}

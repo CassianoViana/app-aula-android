@@ -63,9 +63,9 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
   private fun onClickBarcodeThenShowBarcodeReader() {
     btn_open_camera_to_read_equipment.setOnClickListener {
       if (barcode_equipments_reader.toggleVisibility() == View.VISIBLE) {
-        barcode_equipments_reader.start()
+        barcode_equipments_reader.startRead()
       } else {
-        barcode_equipments_reader.stop()
+        barcode_equipments_reader.stopReading()
       }
     }
   }

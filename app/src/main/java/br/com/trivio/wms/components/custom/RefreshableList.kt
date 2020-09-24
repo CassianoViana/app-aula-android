@@ -31,6 +31,11 @@ class RefreshableList @JvmOverloads constructor(
     setLoading(false)
   }
 
+  fun setHorizontal() {
+    val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    recyclerView.layoutManager = layoutManager
+  }
+
   fun <T : RecyclerView.ViewHolder> setAdapter(adapter: RecyclerView.Adapter<T>) {
     recyclerView.adapter = adapter
   }
@@ -56,11 +61,16 @@ class RefreshableList @JvmOverloads constructor(
     attrs?.let {
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.RefreshsableList)
       val refreshable = styledAttributes.getBoolean(R.styleable.RefreshsableList_refreshable, true)
+      val horizontal = styledAttributes.getBoolean(R.styleable.RefreshsableList_horizontal, false)
 
       if (!refreshable) {
         setOnRefreshListener {
           stopRefresh()
         }
+      }
+
+      if (horizontal) {
+        setHorizontal()
       }
 
       styledAttributes.recycle()

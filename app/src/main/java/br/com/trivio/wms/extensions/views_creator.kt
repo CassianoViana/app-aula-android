@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import br.com.trivio.wms.MyAppCompatActivity
@@ -36,6 +37,20 @@ fun MyAppCompatActivity.createTextView(
   }
   textView.text = value
   return textView
+}
+
+fun MyAppCompatActivity.createEditText(
+  value: String? = null,
+  hint: String? = null
+): EditText {
+  val editText = inflate<EditText>(R.layout.custom_edit_text)
+  value?.let {
+    editText.setText(it)
+  }
+  hint?.let {
+    editText.hint = it
+  }
+  return editText
 }
 
 fun MyAppCompatActivity.createInputNumber(

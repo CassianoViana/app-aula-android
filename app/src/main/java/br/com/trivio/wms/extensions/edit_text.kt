@@ -2,6 +2,7 @@ package br.com.trivio.wms.extensions
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 
 /**
@@ -21,4 +22,13 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
 fun EditText.moveCursorToEnd() {
   this.setSelection(this.text.length)
+}
+
+fun EditText.addOnDoneListener(listener: (String) -> Unit) {
+  this.setOnEditorActionListener { textView, actionId, keyEvent ->
+    if (actionId == EditorInfo.IME_ACTION_DONE) {
+      listener(this.text.toString())
+    }
+    true
+  }
 }

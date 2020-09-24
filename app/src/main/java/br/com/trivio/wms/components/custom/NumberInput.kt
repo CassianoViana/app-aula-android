@@ -3,14 +3,10 @@ package br.com.trivio.wms.components.custom
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import br.com.trivio.wms.R
-import br.com.trivio.wms.extensions.coalesce
-import br.com.trivio.wms.extensions.moveCursorToEnd
-import br.com.trivio.wms.extensions.setKeyboardVisible
-import br.com.trivio.wms.extensions.setVisible
+import br.com.trivio.wms.extensions.*
 import kotlinx.android.synthetic.main.custom_number_input.view.*
 import java.math.BigDecimal
 
@@ -74,12 +70,7 @@ class NumberInput @JvmOverloads constructor(
   }
 
   fun addOnDoneListener(listener: (String) -> Unit) {
-    custom_number_input.setOnEditorActionListener { textView, actionId, keyEvent ->
-      if (actionId == EditorInfo.IME_ACTION_DONE) {
-        listener(custom_number_input.text.toString())
-      }
-      true
-    }
+    custom_number_input.addOnDoneListener(listener)
   }
 
   fun setLabel(label: String) {

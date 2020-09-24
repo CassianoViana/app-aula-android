@@ -13,8 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.components.custom.Alert
 import br.com.trivio.wms.components.custom.Badge
+import br.com.trivio.wms.components.custom.BarcodeReader
+import br.com.trivio.wms.components.custom.Message
 import br.com.trivio.wms.components.custom.RefreshableList
 import br.com.trivio.wms.data.dto.PickStockPositionDto
 import br.com.trivio.wms.data.dto.PickingItemDto
@@ -43,7 +44,8 @@ class PickingActivity : MyAppCompatActivity() {
   private var pickingTaskId: Long = 0
   private var pickingItemsAdapter = PickingItemsAdapter(object : PickingItemsAdapter.OnClickItem {
     override fun onClick(item: PickingItemDto) {
-      openPickItemDialog(item)
+      //openPickItemDialog(item)
+      openPositionDialog(item)
     }
 
     /*override fun onClickHistory(item: PickingItemDto) {
@@ -70,6 +72,74 @@ class PickingActivity : MyAppCompatActivity() {
     loadPickingTask()
   }
 
+  private fun openPositionDialog(item: PickingItemDto, dialogToReuse: Dialog? = null) {
+    val positionInput = createEditText(hint = "R00.B00.A00.L00")
+    prompt(
+      dialog = dialogToReuse,
+      firstTitle = getString(R.string.confirm_position, item.position),
+      inputView = positionInput,
+      viewsAfterInputFn = { dialog, views ->
+        views.add(
+          BarcodeReader(this).apply {
+            startRead()
+            setMarginVertical(margin = 20, height = 400)
+            setOnReadListener { position ->
+              positionInput.setText(position)
+              onValidPositionOpenPickDialog(item, position, dialog, onInvalid = {
+                delay {
+                  startRead()
+                }
+              })
+            }
+          })
+      },
+      positiveAction = { dialog, position ->
+        onValidPositionOpenPickDialog(item, position, dialog, onInvalid = {
+          positionInput.selectAll()
+        })
+      }
+    )
+  }
+
+  private fun onValidPositionOpenPickDialog(
+    item: PickingItemDto,
+    position: String,
+    positionDialog: Dialog,
+    onInvalid: () -> Unit = {}
+  ) {
+    viewModel.validatePosition(item, position) {
+      onResult(it,
+        showErrorMessage = false,
+        onSuccess = {
+          playBeep()
+          openNextPickDialog(item, positionDialog)
+        },
+        onError = {
+          playErrorSound()
+          showMessageError(R.string.position_no_correspondent)
+          onInvalid()
+        })
+    }
+  }
+
+  private fun openNextPickDialog(
+    item: PickingItemDto,
+    positionDialog: Dialog
+  ) {
+    openPickItemDialog(item, onFinishPickItem = { pickedItem ->
+      viewModel.findNextItem(pickedItem) {
+        onResult(it,
+          onSuccess = { nextItem ->
+            openPositionDialog(nextItem.data, positionDialog)
+          },
+          onError = {
+            positionDialog.hide()
+          }
+        )
+      }
+    })
+  }
+
   private fun onClickEquipmentsIconOpenEquipmentsActivity() {
     btn_equipments.setOnClickListener {
       openEquipmentsListActivity()
@@ -83,7 +153,7 @@ class PickingActivity : MyAppCompatActivity() {
   }
 
   override fun onFinish() {
-    barcode_reader.stop()
+    barcode_reader.stopReading()
     val data = Intent()
     data.putExtra(PICKING_TASK_ID, this.pickingTaskId)
     setResult(RESULT_TASK_ID, data)
@@ -94,14 +164,14 @@ class PickingActivity : MyAppCompatActivity() {
     super.onResume()
     resetReadingState()
     if (requestPermission(Manifest.permission.CAMERA)) {
-      barcode_reader.start()
+      barcode_reader.startRead()
     }
   }
 
   override fun onPause() {
     super.onPause()
     barcode_search_input.setKeyboardVisible(false)
-    barcode_reader.pause()
+    barcode_reader.pauseReading()
   }
 
   override fun onRequestPermissionsResult(
@@ -110,14 +180,14 @@ class PickingActivity : MyAppCompatActivity() {
     grantResults: IntArray
   ) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    barcode_reader.start()
+    barcode_reader.startRead()
   }
 
   private fun onReadBarcodeFillSearchInput() {
     barcode_reader.onRead = { it ->
-      barcode_reader.pause()
+      barcode_reader.pauseReading()
       runOnUiThread {
-        playAudio(this, R.raw.beep)
+        playBeep()
         barcode_search_input.applySearch(it)
       }
     }
@@ -127,9 +197,9 @@ class PickingActivity : MyAppCompatActivity() {
     barcode_reader.setVisible(false)
     btn_open_camera.setOnClickListener {
       if (barcode_reader.toggleVisibility() == VISIBLE) {
-        barcode_reader.start()
+        barcode_reader.startRead()
       } else {
-        barcode_reader.stop()
+        barcode_reader.stopReading()
       }
       barcode_search_input.hideKeyboard()
     }
@@ -312,8 +382,8 @@ class PickingActivity : MyAppCompatActivity() {
       firstTitle = getString(R.string.warning),
       viewsBeforeInputFn = { _, views ->
         views.add(createPickItemLayout(item))
-        views.add(Alert(this).apply {
-          setType(Alert.TYPE_WARNING)
+        views.add(Message(this).apply {
+          setType(Message.TYPE_WARNING)
           message = getString(R.string.product_not_found_in_picking_task)
           setMarginVertical()
         })
@@ -327,7 +397,7 @@ class PickingActivity : MyAppCompatActivity() {
 
   private fun openPickItemDialog(
     item: PickingItemDto,
-    dialog: Dialog? = null
+    onFinishPickItem: (item: PickingItemDto) -> Any? = {}
   ) {
     val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
     val qtdInputNumber = createInputNumber(
@@ -336,7 +406,6 @@ class PickingActivity : MyAppCompatActivity() {
       allowNegative = false,
     )
     prompt(
-      dialog = dialog,
       firstTitle = getString(R.string.pick),
       hint = "0",
       inputView = qtdInputNumber,
@@ -359,18 +428,22 @@ class PickingActivity : MyAppCompatActivity() {
         }
       },
       negativeButtonText = getString(R.string.not_found),
+      positiveButtonText = getString(R.string.next),
+      drawableConfirmButtonResId = R.drawable.ic_baseline_arrow_forward_18,
       positiveAction = fun(dialog: Dialog, _) {
         qtdInputNumber.value?.let { quantity ->
-          viewModel.pickItem(item, quantity)
-          pickingItemsAdapter.notifyDataSetChanged()
-          resetReadingState()
-          dialog.hide()
+          viewModel.pickItem(item, quantity) { it ->
+            onResult(it, onSuccess = {
+              pickingItemsAdapter.notifyDataSetChanged()
+              resetReadingState()
+              dialog.hide()
+              onFinishPickItem(item)
+            })
+          }
         }
       },
       negativeAction = { dialog ->
-        openStockSearchDialog(item, onPositionSelected = {
-          openPickItemDialog(item, dialog)
-        })
+        openStockSearchDialog(item)
       },
       closeAction = {
         resetReadingState()
@@ -380,12 +453,12 @@ class PickingActivity : MyAppCompatActivity() {
 
   private fun resetReadingState() {
     barcode_search_input.reset()
-    barcode_reader.start()
+    barcode_reader.startRead()
   }
 
   private fun openStockSearchDialog(
     item: PickingItemDto,
-    onPositionSelected: (item: PickingItemDto) -> Unit = {}
+    //onPositionSelected: (item: PickingItemDto) -> Unit = {}
   ) {
 
     prompt(
@@ -395,8 +468,8 @@ class PickingActivity : MyAppCompatActivity() {
           setWeight(1)
         })
         if (item.hasRequestedPickingReposition) {
-          views.add(Alert(this).apply {
-            setType(Alert.TYPE_WARNING)
+          views.add(Message(this).apply {
+            setType(Message.TYPE_WARNING)
             message = getString(R.string.already_exists_reposition_request)
             setMarginVertical()
           })
@@ -460,6 +533,7 @@ class PickingActivity : MyAppCompatActivity() {
   private fun createPickItemLayout(item: PickingItemDto): View {
     return inflate<View>(R.layout.item_picking_product_qtd_details).apply {
       findViewById<TextView>(R.id.product_name).text = item.name
+      findViewById<TextView>(R.id.product_position).text = item.position
       findViewById<TextView>(R.id.product_sku).text = item.sku
       findViewById<TextView>(R.id.product_qtd).text = item.expectedQuantityToPick.toString()
       findViewById<TextView>(R.id.product_gtin).text = coalesce(item.gtin, R.string.no_gtin)

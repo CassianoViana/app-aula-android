@@ -6,6 +6,7 @@
 
   <declare-styleable name="RefreshsableList">
     <attr name="refreshable" format="boolean" />
+    <attr name="horizontal" format="boolean" />
   </declare-styleable>
 
   <declare-styleable name="ProgressBar">
@@ -15,6 +16,7 @@
     <attr name="show_label" format="boolean" />
     <attr name="show_label_top" format="boolean" />
     <attr name="foreground_color" format="reference|color" />
+    <attr name="progress_label_color" format="reference|color" />
     <attr name="background_color" format="reference|color" />
   </declare-styleable>
 
@@ -34,6 +36,12 @@
     <attr name="labelled_number_color" format="reference|color" />
   </declare-styleable>
 
+  <declare-styleable name="LabelledIcon">
+    <attr name="labelled_icon_src" format="reference" />
+    <attr name="labelled_icon_label" format="string" />
+    <attr name="labelled_icon_color" format="reference|color" />
+  </declare-styleable>
+
   <declare-styleable name="Badge">
     <attr name="badge_text" format="string" />
     <attr name="badge_text_color" format="reference|color" />
@@ -46,9 +54,9 @@
     <attr name="button_text" format="reference|color" />
   </declare-styleable>
 
-  <declare-styleable name="Alert">
-    <attr name="alert_text" format="string|reference" />
-    <attr name="alert_type" format="string" />
+  <declare-styleable name="Message">
+    <attr name="message_text" format="string|reference" />
+    <attr name="message_type" format="string" />
   </declare-styleable>
 
   <declare-styleable name="NumberInput">

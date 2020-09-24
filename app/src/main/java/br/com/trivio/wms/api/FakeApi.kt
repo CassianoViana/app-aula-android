@@ -70,7 +70,7 @@ object FakeApi {
               sku = "7891360491293",
               gtin = "123123123123$i",
               name = "oxford",
-              position = "123.123.123.123",
+              position = "132.141.234.12.3$i",
               storageUnit = StorageUnitDto(id = 1, code = "UN"),
               expectedQuantityToPick = BigDecimal((Math.random() * 20).toInt()),
               pickedQuantity = BigDecimal((Math.random() * 20).toInt()),

@@ -15,7 +15,6 @@ class PickingListDto(
   val progress: Int = 0
 ) {
 
-
   fun search(search: String): Boolean {
     return matchFilter(this.toString(), search)
   }

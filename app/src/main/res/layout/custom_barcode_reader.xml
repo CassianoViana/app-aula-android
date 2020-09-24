@@ -5,6 +5,17 @@
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
+  <Button
+    android:id="@+id/btn_toggle_barcode"
+    style="@style/button_action.ok"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin"
+    android:layout_weight="0"
+    android:drawableLeft="@drawable/ic_barcode_black_24dp"
+    android:padding="7dp"
+    android:text="@string/barcode" />
+
   <com.budiyev.android.codescanner.CodeScannerView
     android:id="@+id/scanner_view"
     android:layout_width="match_parent"

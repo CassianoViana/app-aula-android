@@ -71,6 +71,8 @@ object FakeApi {
               gtin = "123123123123$i",
               name = "oxford",
               position = "132.141.234.12.3$i",
+              order = i + 1,
+              totalItemsTask = 10,
               storageUnit = StorageUnitDto(id = 1, code = "UN"),
               expectedQuantityToPick = BigDecimal((Math.random() * 20).toInt()),
               pickedQuantity = BigDecimal((Math.random() * 20).toInt()),

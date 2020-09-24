@@ -97,7 +97,25 @@ class PickingViewModel(
       var result: Result<PickingItemDto> =
         Result.Error(java.lang.IllegalStateException("Posição não encontrada"))
       if (pickTask is Result.Success) {
-        if (item.position.matchRemovingDots(position)) {
+        if (!item.position.matchRemovingDots(position)) {
+          result = Result.Success(item)
+        }
+      }
+      callback(result)
+    }
+  }
+
+  fun validateProduct(
+    item: PickingItemDto,
+    code: String,
+    callback: (Result<PickingItemDto>) -> Unit
+  ) {
+    viewModelScope.launch {
+      val pickTask = task.value
+      var result: Result<PickingItemDto> =
+        Result.Error(java.lang.IllegalStateException("Produto não encontrada"))
+      if (pickTask is Result.Success) {
+        if (!item.matchCode(code)) {
           result = Result.Success(item)
         }
       }
@@ -111,15 +129,14 @@ class PickingViewModel(
       Result.Error(IllegalArgumentException("Item não encontrado"))
     if (pickTask is Result.Success) {
       val pickItems = pickTask.data.items
-      val indexItem = pickItems.indexOf(pickedItem)
-      result = Result.Success(pickItems[indexItem + 1])
+      pickItems.first { it.order == pickedItem.order + 1 }.let {
+        result = Result.Success(it)
+      }
     }
     callback(result)
   }
+
   /*
-
-
-
   fun filterConferenceItems(search: String) {
     this.items.value = Result.Success(
       when (val value: Result<CargoConferenceDto>? = task.value) {

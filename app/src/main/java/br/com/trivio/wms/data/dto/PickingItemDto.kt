@@ -1,6 +1,7 @@
 package br.com.trivio.wms.data.dto
 
 import br.com.trivio.wms.extensions.coalesce
+import br.com.trivio.wms.extensions.matchRemovingDots
 import java.math.BigDecimal
 
 class PickingItemDto(
@@ -8,7 +9,9 @@ class PickingItemDto(
   val sku: String = "",
   val gtin: String = "",
   val name: String = "",
+  val order: Int = 0,
   val position: String = "",
+  val totalItemsTask: Int = 0,
   var storageUnit: StorageUnitDto? = null,
   val expectedQuantityToPick: BigDecimal? = BigDecimal.ZERO,
   var pickedQuantity: BigDecimal? = BigDecimal.ZERO,
@@ -34,6 +37,10 @@ class PickingItemDto(
 
   fun hasItemsPicked(): Boolean {
     return pickedQuantity != null
+  }
+
+  fun matchCode(code: String): Boolean {
+    return gtin.matchRemovingDots(code) || sku.matchRemovingDots(code)
   }
 
 }

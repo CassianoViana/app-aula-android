@@ -72,39 +72,110 @@ class PickingActivity : MyAppCompatActivity() {
     loadPickingTask()
   }
 
+  private fun createBarcodeReader(): BarcodeReader {
+    return BarcodeReader(this).apply {
+      setToggleable()
+      startRead()
+      setMarginVertical(margin = 20, height = 400)
+    }
+  }
+
   private fun openPositionDialog(item: PickingItemDto, dialogToReuse: Dialog? = null) {
     val positionInput = createEditText(hint = "R00.B00.A00.L00")
+    val onValidPositionCode: (Dialog) -> Unit = { positionDialog ->
+      openProductDialog(item,
+        onCloseProductDialogListener = {
+          viewModel.findNextItem(item) { it ->
+            onResult(it,
+              onSuccess = {
+                openPositionDialog(it.data, positionDialog)
+              })
+          }
+        })
+    }
+    val barcodeReader = createBarcodeReader()
     prompt(
       dialog = dialogToReuse,
-      firstTitle = getString(R.string.confirm_position, item.position),
+      firstTitle = getString(
+        R.string.position_x_of_total,
+        item.order,
+        item.totalItemsTask
+      ),
+      secondTitle = getString(
+        R.string.confirm_position,
+        item.position
+      ),
       inputView = positionInput,
       viewsAfterInputFn = { dialog, views ->
-        views.add(
-          BarcodeReader(this).apply {
-            startRead()
-            setMarginVertical(margin = 20, height = 400)
-            setOnReadListener { position ->
-              positionInput.setText(position)
-              onValidPositionOpenPickDialog(item, position, dialog, onInvalid = {
+        views.add(barcodeReader.apply {
+          setOnReadListener { position ->
+            positionInput.setText(position)
+            validatePosition(item, position,
+              onValid = { onValidPositionCode(dialog) },
+              onInvalid = {
                 delay {
                   startRead()
                 }
               })
-            }
-          })
+          }
+        })
       },
       positiveAction = { dialog, position ->
-        onValidPositionOpenPickDialog(item, position, dialog, onInvalid = {
-          positionInput.selectAll()
-        })
+        validatePosition(item, position,
+          onValid = { onValidPositionCode(dialog) },
+          onInvalid = {
+            positionInput.selectAll()
+          })
       }
     )
   }
 
-  private fun onValidPositionOpenPickDialog(
+  private fun openProductDialog(
+    item: PickingItemDto,
+    onCloseProductDialogListener: () -> Unit = {}
+  ) {
+    val productInput = createEditText(hint = "Código de barras")
+    val barcodeReader = createBarcodeReader()
+    val onValidProductCode: (Dialog) -> Any = { productDialog ->
+      openPickItemDialog(item,
+        onFinishPickItem = {
+          productDialog.hide()
+          onCloseProductDialogListener()
+        })
+    }
+    prompt(
+      firstTitle = getString(R.string.product),
+      secondTitle = getString(R.string.confirm_product, item.name),
+      inputView = productInput,
+      viewsAfterInputFn = { dialog, views ->
+        views.add(createPickItemLayout(item))
+        views.add(barcodeReader.apply {
+          setOnReadListener { position ->
+            productInput.setText(position)
+            validateProductCode(item, position,
+              onValid = { onValidProductCode(dialog) },
+              onInvalid = {
+                delay {
+                  startRead()
+                }
+              })
+          }
+        })
+      },
+      positiveAction = { dialog, position ->
+        validateProductCode(item, position,
+          onValid = { onValidProductCode(dialog) },
+          onInvalid = {
+            productInput.selectAll()
+          })
+      }
+    )
+  }
+
+  private fun validatePosition(
     item: PickingItemDto,
     position: String,
-    positionDialog: Dialog,
+    onValid: () -> Unit = {},
     onInvalid: () -> Unit = {}
   ) {
     viewModel.validatePosition(item, position) {
@@ -112,7 +183,7 @@ class PickingActivity : MyAppCompatActivity() {
         showErrorMessage = false,
         onSuccess = {
           playBeep()
-          openNextPickDialog(item, positionDialog)
+          onValid()
         },
         onError = {
           playErrorSound()
@@ -122,22 +193,25 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun openNextPickDialog(
+  private fun validateProductCode(
     item: PickingItemDto,
-    positionDialog: Dialog
+    code: String,
+    onValid: () -> Unit = {},
+    onInvalid: () -> Unit = {}
   ) {
-    openPickItemDialog(item, onFinishPickItem = { pickedItem ->
-      viewModel.findNextItem(pickedItem) {
-        onResult(it,
-          onSuccess = { nextItem ->
-            openPositionDialog(nextItem.data, positionDialog)
-          },
-          onError = {
-            positionDialog.hide()
-          }
-        )
-      }
-    })
+    viewModel.validateProduct(item, code) {
+      onResult(it,
+        showErrorMessage = false,
+        onSuccess = {
+          playBeep()
+          onValid()
+        },
+        onError = {
+          playErrorSound()
+          showMessageError(R.string.code_no_correspondent)
+          onInvalid()
+        })
+    }
   }
 
   private fun onClickEquipmentsIconOpenEquipmentsActivity() {
@@ -435,9 +509,10 @@ class PickingActivity : MyAppCompatActivity() {
           viewModel.pickItem(item, quantity) { it ->
             onResult(it, onSuccess = {
               pickingItemsAdapter.notifyDataSetChanged()
-              resetReadingState()
-              dialog.hide()
               onFinishPickItem(item)
+              delay {
+                dialog.hide()
+              }
             })
           }
         }
@@ -445,9 +520,6 @@ class PickingActivity : MyAppCompatActivity() {
       negativeAction = { dialog ->
         openStockSearchDialog(item)
       },
-      closeAction = {
-        resetReadingState()
-      }
     )
   }
 

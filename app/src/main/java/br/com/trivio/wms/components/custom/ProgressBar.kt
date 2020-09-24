@@ -28,6 +28,10 @@ class ProgressBar @JvmOverloads constructor(
     label_below_progress_bar.text = text
   }
 
+  fun setLabelColor(color: Int) {
+    labelColors = color
+  }
+
   fun setLabelTop(text: String) {
     label_top_progress_bar.text = text
   }

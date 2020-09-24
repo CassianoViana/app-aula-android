@@ -118,6 +118,7 @@
   <style name="button_action.ok">
     <!--<item name="android:drawableLeft">@drawable/ic_check_black_24dp</item>-->
     <item name="android:background">@drawable/light_blue_rounded</item>
+    <item name="android:drawableTint">@color/colorWhite</item>
   </style>
 
   <style name="button_action.ok.arrow_right">

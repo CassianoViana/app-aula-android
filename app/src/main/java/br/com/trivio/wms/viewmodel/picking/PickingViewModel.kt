@@ -97,7 +97,7 @@ class PickingViewModel(
       var result: Result<PickingItemDto> =
         Result.Error(java.lang.IllegalStateException("Posição não encontrada"))
       if (pickTask is Result.Success) {
-        if (!item.position.matchRemovingDots(position)) {
+        if (item.position.matchRemovingDots(position)) {
           result = Result.Success(item)
         }
       }
@@ -115,7 +115,7 @@ class PickingViewModel(
       var result: Result<PickingItemDto> =
         Result.Error(java.lang.IllegalStateException("Produto não encontrada"))
       if (pickTask is Result.Success) {
-        if (!item.matchCode(code)) {
+        if (item.matchCode(code)) {
           result = Result.Success(item)
         }
       }

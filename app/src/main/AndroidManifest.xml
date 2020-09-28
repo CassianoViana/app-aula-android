@@ -59,11 +59,15 @@
     <activity
       android:name=".ui.picking.StartPickingActivity"
       android:screenOrientation="portrait" />
-    <activity android:name=".ui.picking.PickingActivity" />
+    <activity
+      android:name=".ui.picking.PickingActivity"
+      android:screenOrientation="portrait" />
     <activity
       android:name=".ui.equipments.ReleaseEquipmentsListActivity"
       android:screenOrientation="portrait" />
     <activity android:name=".ui.picking.FinishPickingActivity" />
+
+
   </application>
 
 </manifest>

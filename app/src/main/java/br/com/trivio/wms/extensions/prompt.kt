@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
+import br.com.trivio.wms.components.custom.BarcodeReader
 import br.com.trivio.wms.components.custom.NumberInput
 import kotlinx.android.synthetic.main.custom_number_input.view.*
 
@@ -21,11 +22,12 @@ fun MyAppCompatActivity.prompt(
   inputType: Int = InputType.TYPE_CLASS_NUMBER,
   inputValue: Any? = null,
   hint: String = "0,00",
-  hideDefaultInputView: Boolean = true,
+  hideDefaultInputView: Boolean = false,
   inputView: View? = null,
   viewsBeforeInput: List<View> = listOf(),
   viewsAfterInput: List<View> = listOf(),
   viewsBeforeInputFn: (dialog: Dialog, views: MutableList<View>) -> Unit = { _, _ -> },
+  inputViewFn: (dialog: Dialog) -> View? = { _ -> inputView },
   viewsAfterInputFn: (dialog: Dialog, views: MutableList<View>) -> Unit = { _, _ -> },
   drawableConfirmButtonResId: Int? = null,
   dialog: Dialog? = null
@@ -41,22 +43,23 @@ fun MyAppCompatActivity.prompt(
     val layoutBeforeInput = layout.findViewById<LinearLayout>(R.id.views_to_add_before_input)
     val layoutAfterInput = layout.findViewById<LinearLayout>(R.id.views_to_add_after_input)
 
-    if (inputView != null || hideDefaultInputView) {
+    val input = inputViewFn(dialog)
+    if (input != null || hideDefaultInputView) {
       editText.setVisible(false)
     }
-    if (inputView != null) {
+    if (input != null) {
       val parent = editText.parent as LinearLayout
       val indexOfDefaultInput = parent.indexOfChild(editText)
-      inputView.parent?.let {
+      input.parent?.let {
         if (it is ViewGroup)
-          it.removeView(inputView)
+          it.removeView(input)
       }
-      parent.addView(inputView, indexOfDefaultInput)
-      if (inputView is EditText) {
-        editText = inputView
+      parent.addView(input, indexOfDefaultInput)
+      if (input is EditText) {
+        editText = input
       }
-      if (inputView is NumberInput) {
-        editText = inputView.custom_number_input
+      if (input is NumberInput) {
+        editText = input.custom_number_input
       }
     } else {
       editText.hint = hint
@@ -83,9 +86,7 @@ fun MyAppCompatActivity.prompt(
         0
       )
     }
-    confirmButton.setOnClickListener {
-      positiveAction(dialog, editText.text.toString())
-    }
+
     negativeButton.setVisible(negativeAction != null)
     negativeButton.text = negativeButtonText
 
@@ -98,7 +99,7 @@ fun MyAppCompatActivity.prompt(
     }
 
     btnClose.setOnClickListener {
-      closeAction?.let { it.invoke(dialog) }
+      closeAction?.invoke(dialog)
       dialog.hide()
     }
 
@@ -112,14 +113,21 @@ fun MyAppCompatActivity.prompt(
     val doneListener = { result: String ->
       positiveAction(dialog, result)
     }
-    if (inputView != null) {
-      if (inputView is NumberInput) {
-        editToShowKeyboard = inputView.custom_number_input
-        inputView.addOnDoneListener(doneListener)
+    if (input != null) {
+      if (input is NumberInput) {
+        editToShowKeyboard = input.custom_number_input
+      }
+      if (input is BarcodeReader) {
+        editToShowKeyboard = input.getInput()
       }
     }
     editToShowKeyboard.setKeyboardVisible(this)
     editToShowKeyboard.addOnDoneListener(doneListener)
+
+    confirmButton.setOnClickListener {
+      positiveAction(dialog, editToShowKeyboard.text.toString())
+    }
+
     layout
   }
 
@@ -129,6 +137,7 @@ fun MyAppCompatActivity.prompt(
   if (dialog == null) {
     newDialog.show()
   }
+  say(firstTitle)
   return createLayoutFn
 }
 

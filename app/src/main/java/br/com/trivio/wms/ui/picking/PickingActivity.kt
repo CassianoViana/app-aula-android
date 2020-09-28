@@ -72,8 +72,10 @@ class PickingActivity : MyAppCompatActivity() {
     loadPickingTask()
   }
 
-  private fun createBarcodeReader(): BarcodeReader {
+  private fun createBarcodeReader(hint: String): BarcodeReader {
     return BarcodeReader(this).apply {
+      setHint(hint)
+      setInputVisible()
       setToggleable()
       startRead()
       setMarginVertical(margin = 20, height = 400)
@@ -81,7 +83,6 @@ class PickingActivity : MyAppCompatActivity() {
   }
 
   private fun openPositionDialog(item: PickingItemDto, dialogToReuse: Dialog? = null) {
-    val positionInput = createEditText(hint = "R00.B00.A00.L00")
     val onValidPositionCode: (Dialog) -> Unit = { positionDialog ->
       openProductDialog(item,
         onCloseProductDialogListener = {
@@ -93,7 +94,8 @@ class PickingActivity : MyAppCompatActivity() {
           }
         })
     }
-    val barcodeReader = createBarcodeReader()
+    val barcodeReader = createBarcodeReader("R00.B00.A00.L00")
+    val positionInput = barcodeReader.getInput()
     prompt(
       dialog = dialogToReuse,
       firstTitle = getString(
@@ -105,11 +107,10 @@ class PickingActivity : MyAppCompatActivity() {
         R.string.confirm_position,
         item.position
       ),
-      inputView = positionInput,
-      viewsAfterInputFn = { dialog, views ->
-        views.add(barcodeReader.apply {
+      hideDefaultInputView = true,
+      inputViewFn = { dialog ->
+        barcodeReader.apply {
           setOnReadListener { position ->
-            positionInput.setText(position)
             validatePosition(item, position,
               onValid = { onValidPositionCode(dialog) },
               onInvalid = {
@@ -118,7 +119,7 @@ class PickingActivity : MyAppCompatActivity() {
                 }
               })
           }
-        })
+        }
       },
       positiveAction = { dialog, position ->
         validatePosition(item, position,
@@ -134,8 +135,8 @@ class PickingActivity : MyAppCompatActivity() {
     item: PickingItemDto,
     onCloseProductDialogListener: () -> Unit = {}
   ) {
-    val productInput = createEditText(hint = "Código de barras")
-    val barcodeReader = createBarcodeReader()
+    val barcodeReader = createBarcodeReader(hint = "Código de barras")
+    val productInput = barcodeReader.getInput()
     val onValidProductCode: (Dialog) -> Any = { productDialog ->
       openPickItemDialog(item,
         onFinishPickItem = {
@@ -144,15 +145,15 @@ class PickingActivity : MyAppCompatActivity() {
         })
     }
     prompt(
-      firstTitle = getString(R.string.product),
-      secondTitle = getString(R.string.confirm_product, item.name),
-      inputView = productInput,
-      viewsAfterInputFn = { dialog, views ->
+      firstTitle = getString(R.string.confirm_product),
+      hideDefaultInputView = true,
+      viewsBeforeInputFn = { _, views ->
         views.add(createPickItemLayout(item))
-        views.add(barcodeReader.apply {
-          setOnReadListener { position ->
-            productInput.setText(position)
-            validateProductCode(item, position,
+      },
+      inputViewFn = { dialog ->
+        barcodeReader.apply {
+          setOnReadListener { productCode ->
+            validateProductCode(item, productCode,
               onValid = { onValidProductCode(dialog) },
               onInvalid = {
                 delay {
@@ -160,10 +161,10 @@ class PickingActivity : MyAppCompatActivity() {
                 }
               })
           }
-        })
+        }
       },
-      positiveAction = { dialog, position ->
-        validateProductCode(item, position,
+      positiveAction = { dialog, productCode ->
+        validateProductCode(item, productCode,
           onValid = { onValidProductCode(dialog) },
           onInvalid = {
             productInput.selectAll()
@@ -220,6 +221,7 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
+  @Deprecated(message = "O campo de busca direta será removido")
   private fun onClickReaderHideKeyboard() {
     barcode_reader.setOnClickListener {
       barcode_search_input.hideKeyboard()
@@ -257,6 +259,7 @@ class PickingActivity : MyAppCompatActivity() {
     barcode_reader.startRead()
   }
 
+  @Deprecated(message = "O campo de busca direta será removido")
   private fun onReadBarcodeFillSearchInput() {
     barcode_reader.onRead = { it ->
       barcode_reader.pauseReading()
@@ -267,6 +270,7 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
+  @Deprecated(message = "O campo de busca direta será removido")
   private fun onClickCameraOpenBarcodeReader() {
     barcode_reader.setVisible(false)
     btn_open_camera.setOnClickListener {
@@ -346,7 +350,9 @@ class PickingActivity : MyAppCompatActivity() {
     })
   }
 
+  @Deprecated(message = "O campo de busca direta será removido")
   private fun onBarcodeChangeSearchProduct() {
+    layout_search_input.setVisible(false)
     barcode_search_input.addOnTextChangeListener { searchInputValue ->
       viewModel.filterPickingItems(searchInputValue)
     }
@@ -523,9 +529,10 @@ class PickingActivity : MyAppCompatActivity() {
     )
   }
 
+  @Deprecated("O campo será removido")
   private fun resetReadingState() {
-    barcode_search_input.reset()
-    barcode_reader.startRead()
+    //barcode_search_input.reset()
+    //barcode_reader.startRead()
   }
 
   private fun openStockSearchDialog(
@@ -605,11 +612,9 @@ class PickingActivity : MyAppCompatActivity() {
   private fun createPickItemLayout(item: PickingItemDto): View {
     return inflate<View>(R.layout.item_picking_product_qtd_details).apply {
       findViewById<TextView>(R.id.product_name).text = item.name
-      findViewById<TextView>(R.id.product_position).text = item.position
+      //findViewById<TextView>(R.id.product_position).text = item.position
       findViewById<TextView>(R.id.product_sku).text = item.sku
-      findViewById<TextView>(R.id.product_qtd).text = item.expectedQuantityToPick.toString()
       findViewById<TextView>(R.id.product_gtin).text = coalesce(item.gtin, R.string.no_gtin)
-      findViewById<TextView>(R.id.storage_unit_text).text = item.getUnitCode()
     }
   }
 
@@ -637,10 +642,11 @@ class PickingActivity : MyAppCompatActivity() {
       private var itemToClick = view.findViewById<View>(R.id.pick_item_to_click)
 
       fun bind(
+        index: Int,
         item: PickingItemDto,
         onClickPickingItem: OnClickItem
       ) {
-        productPositionTextView.text = item.position
+        productPositionTextView.text = "L${index + 1} - ${item.position}"
         productNameTextView.text = item.name
         skuTextView.text = coalesce(item.sku, R.string.no_sku)
         gtinTextView.text = coalesce(item.gtin, R.string.no_gtin)
@@ -649,7 +655,6 @@ class PickingActivity : MyAppCompatActivity() {
 
         pickingStatusBadge.text = item.status.name
         pickingStatusBadge.backgroundColor = item.status.color
-        pickedQtdTextView.setVisible(item.pickedQuantity != null)
         storageUnitTextView.setVisible(item.storageUnit != null)
 
         /*countHistoryTextView.setVisible(item.isCounted())
@@ -662,7 +667,12 @@ class PickingActivity : MyAppCompatActivity() {
           storageUnitTextView.text = it.code
         }
 
-        pickedQtdTextView.text = formatNumber(item.pickedQuantity)
+        pickedQtdTextView.text = view.context.getString(
+          R.string.one_slash_another,
+          item.pickedQuantity?.toInt(),
+          item.expectedQuantityToPick?.toInt()
+        )
+
         itemToClick.setOnClickListener {
           onClickPickingItem.onClick(item)
         }
@@ -681,9 +691,9 @@ class PickingActivity : MyAppCompatActivity() {
       return items.size
     }
 
-    override fun onBindViewHolder(holder: PickingItemViewHolder, position: Int) {
-      val item = items[position]
-      holder.bind(item, onClickPickingItem)
+    override fun onBindViewHolder(holder: PickingItemViewHolder, index: Int) {
+      val item = items[index]
+      holder.bind(index, item, onClickPickingItem)
     }
 
     interface OnClickItem {

@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="wrap_content"
+  android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
-  <Button
-    android:id="@+id/btn_toggle_barcode"
-    style="@style/button_action.ok"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin"
-    android:layout_weight="0"
-    android:drawableLeft="@drawable/ic_barcode_black_24dp"
-    android:padding="7dp"
-    android:text="@string/barcode" />
+    android:layout_height="wrap_content">
+
+    <EditText
+      android:id="@+id/input_barcode_result"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1000"
+      android:hint="Resultado da leitura"
+      android:inputType="numberSigned" />
+
+    <ImageView
+      android:id="@+id/btn_toggle_barcode"
+      style="@style/button_action.ok"
+      android:layout_width="@dimen/btn_barcode_width"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:src="@drawable/ic_barcode_white_24dp" />
+
+  </LinearLayout>
 
   <com.budiyev.android.codescanner.CodeScannerView
     android:id="@+id/scanner_view"
@@ -25,7 +36,7 @@
     app:flashButtonColor="@android:color/white"
     app:flashButtonVisible="true"
     app:frameAspectRatioHeight="1"
-    app:frameAspectRatioWidth="3"
+    app:frameAspectRatioWidth="4"
     app:frameColor="@color/yellow_lemon"
     app:frameCornersRadius="0dp"
     app:frameCornersSize="20dp"

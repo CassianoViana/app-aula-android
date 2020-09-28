@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import br.com.trivio.wms.components.custom.TopBar
 import br.com.trivio.wms.extensions.handleHomeClickFinish
 import br.com.trivio.wms.extensions.playAudio
+import textToSpeech
 
 
 abstract class MyAppCompatActivity : AppCompatActivity() {
@@ -109,12 +110,16 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
     return findViewById(R.id.layout_progress_bar)
   }
 
-  fun playErrorSound(){
+  fun playErrorSound() {
     playAudio(this, R.raw.error)
   }
 
-  fun playBeep(){
+  fun playBeep() {
     playAudio(this, R.raw.beep)
+  }
+
+  fun say(something: String) {
+    textToSpeech(something, this)
   }
 }
 

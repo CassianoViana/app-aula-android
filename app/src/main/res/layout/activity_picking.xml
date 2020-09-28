@@ -64,8 +64,7 @@
               android:layout_height="match_parent"
               android:layout_marginRight="5dp"
               app:btn_drawable="@drawable/ic_action_shopping_cart_black_18dp"
-              app:btn_padding="7dp"
-              app:value="3" />
+              app:btn_padding="7dp" />
 
             <Button
               android:id="@+id/btn_finish_picking"
@@ -122,6 +121,7 @@
         android:visibility="visible" />
 
       <LinearLayout
+        android:id="@+id/layout_search_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

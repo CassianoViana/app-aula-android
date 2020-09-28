@@ -137,14 +137,13 @@
   <string name="product_not_found_product_with_search">Produto não encontrado para a pesquisa\n%s</string>
   <string name="already_conted_x_unities">Quantidade já conferida: %d %s</string>
   <string name="damages_already_counted">Avarias já contadas: %d %s</string>
-  <string name="counted_to_from">%d/%d</string>
+  <string name="one_slash_another">%d/%d</string>
   <string name="one_of_total">%d de %d</string>
   <string name="counteds">Contados</string>
   <string name="to_count">À contar</string>
   <string name="damage">Avaria</string>
   <string name="damaged_items">%d itens avariados</string>
   <string name="inform_qtds">Informar quantidades</string>
-  <string name="inform_qtds_asteristic">Informar quantidades*</string>
   <string name="finish_arrival">Finalizar recebimento</string>
   <string name="finish_arrival_break_line">Finalizar\nrecebimento</string>
   <string name="unit">Unidade</string>
@@ -265,7 +264,7 @@
   <string name="historic_qtd">Histórico (%d)</string>
   <string name="delete">Excluir</string>
   <string name="number_damages">%d avarias</string>
-  <string name="no_damage_qtd">* Quantidade sem avaria</string>
+  <string name="no_damage_qtd">Aviso: A quantidade informada deve ser de produtos sem avaria</string>
   <string name="order_cargo_or_seller_code">Código de pedido, carga ou vendedor</string>
   <string name="picking">Separação</string>
   <string name="item_picking_title">PED: %d - %s</string>
@@ -308,13 +307,13 @@
   <string name="partial_pick_final_message">%d itens foram separados parcialmente</string>
   <string name="all_items_were_picked">Todos os itens foram separados corretamente!</string>
   <string name="confirm_position">Confirme a posição %s</string>
-  <string name="confirm_product">Confirme o produto %s</string>
+  <string name="confirm_product">Confirme o produto</string>
   <string name="next">Próximo</string>
   <string name="position_no_correspondent">Posição não correspondente</string>
   <string name="code_no_correspondent">Código não correspondente</string>
   <string name="product">Produto</string>
   <string name="position">Posição</string>
-  <string name="position_x_of_total">Posição %d de %d</string>
+  <string name="position_x_of_total">Local %d de %d</string>
   <string name="hide_barcode_reader">Esconder leitor</string>
   <string name="show_barcode_reader">Mostrar leitor</string>
 </resources>

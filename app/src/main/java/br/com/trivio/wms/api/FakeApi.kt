@@ -46,6 +46,7 @@ object FakeApi {
       StatusDto(name = "Atendido", color = "#339900"),
       StatusDto(name = "Atendido parcial", color = "#ffcc00"),
       StatusDto(name = "Não atendido", color = "#ff0000"),
+      StatusDto(name = "Pendente", color = "#9e9e9e"),
     )
     return PickingTaskDto(
       id = 10,

@@ -47,6 +47,12 @@
     <attr name="badge_text_color" format="reference|color" />
   </declare-styleable>
 
+  <declare-styleable name="BarcodeReader">
+    <attr name="barcode_reader_show_input" format="boolean" />
+    <attr name="barcode_reader_input_hint" format="reference|string" />
+    <attr name="barcode_reader_show_btn_toggle_visibility" format="boolean" />
+  </declare-styleable>
+
   <declare-styleable name="BadgedButton">
     <attr name="value" format="string" />
     <attr name="btn_padding" format="dimension" />

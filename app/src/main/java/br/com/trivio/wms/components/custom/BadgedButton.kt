@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.setPadding
 import br.com.trivio.wms.R
+import br.com.trivio.wms.extensions.setVisible
 import kotlinx.android.synthetic.main.custom_badged_button.view.*
 
 class BadgedButton @JvmOverloads constructor(
@@ -21,10 +22,6 @@ class BadgedButton @JvmOverloads constructor(
   var badgeValue: String = ""
     set(value) {
       badge_button_count.text = value
-    }
-
-  var text: String? = ""
-    set(value) {
       field = value
     }
 
@@ -33,7 +30,12 @@ class BadgedButton @JvmOverloads constructor(
 
     attrs?.let {
       val styledAttributes = context.obtainStyledAttributes(it, R.styleable.BadgedButton)
-      this.badgeValue = styledAttributes.getString(R.styleable.BadgedButton_value)
+      val badgeValue = styledAttributes.getString(R.styleable.BadgedButton_value)
+      badgeValue?.let {
+        this.badgeValue = it
+      }
+      badge_button_count.setVisible(badgeValue != null && badgeValue.isNotEmpty())
+
       badge_text.setPadding(
         styledAttributes.getDimensionPixelSize(R.styleable.BadgedButton_btn_padding, 10)
       )

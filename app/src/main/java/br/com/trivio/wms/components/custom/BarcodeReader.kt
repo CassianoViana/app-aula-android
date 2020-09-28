@@ -3,6 +3,7 @@ package br.com.trivio.wms.components.custom
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import br.com.trivio.wms.R
@@ -24,10 +25,6 @@ class BarcodeReader @JvmOverloads constructor(
   var onRead: (read: String) -> Unit = { }
   var onError: (e: Exception) -> Unit = { }
 
-  fun setOnReadListener(listener: (String) -> Unit) {
-    this.onRead = listener
-  }
-
   init {
     LayoutInflater.from(context).inflate(R.layout.custom_barcode_reader, this, true)
     codeScannerView = findViewById(R.id.scanner_view)
@@ -38,6 +35,7 @@ class BarcodeReader @JvmOverloads constructor(
     }
 
     codeScanner.decodeCallback = DecodeCallback {
+      setInputResultValue(it.text)
       if (isVisible)
         onRead(it.text)
     }
@@ -45,36 +43,63 @@ class BarcodeReader @JvmOverloads constructor(
       onError(it)
     }
 
-    setToggleable(false, hideScannerView = false)
+    attrs?.let {
+      val styledAttributes = context.obtainStyledAttributes(it, R.styleable.BarcodeReader)
 
-    /*attrs?.let {
-      val styledAttributes = context.obtainStyledAttributes(it, R.styleable.Badge)
-      val text = styledAttributes.getString(R.styleable.Badge_badge_text)
-      val color =
-        styledAttributes.getColor(
-          R.styleable.Badge_badge_text_color,
-          context.getColor(R.color.colorPrimaryDark)
-        )
+      val toggleAble = styledAttributes.getBoolean(
+        R.styleable.BarcodeReader_barcode_reader_show_btn_toggle_visibility,
+        false
+      )
+
+      val showInput = styledAttributes.getBoolean(
+        R.styleable.BarcodeReader_barcode_reader_show_input,
+        false
+      )
+
+      val inputHint = styledAttributes.getString(
+        R.styleable.BarcodeReader_barcode_reader_input_hint
+      )
+
+      setHint(inputHint)
+      setInputVisible(showInput)
+      setToggleable(toggleAble, hideScannerView = false)
+
       styledAttributes.recycle()
-    }*/
+    }
   }
 
-  private fun updateToggleBtnText() {
+  /*private fun updateToggleBtnText() {
     btn_toggle_barcode.text = if (scanner_view.isVisible) {
       context.getString(R.string.hide_barcode_reader)
     } else {
       context.getString(R.string.show_barcode_reader)
+    }
+  }*/
+
+  private fun setInputResultValue(text: String?) {
+    input_barcode_result.setText(text)
+  }
+
+  fun setInputVisible(visible: Boolean = true) {
+    input_barcode_result.setVisible(visible)
+  }
+
+  fun setHint(hint: String?) {
+    hint?.let {
+      input_barcode_result.hint = it
     }
   }
 
   fun setToggleable(toggleAble: Boolean = true, hideScannerView: Boolean = true) {
     btn_toggle_barcode.setVisible(toggleAble)
     scanner_view.setVisible(!hideScannerView)
-    updateToggleBtnText()
     btn_toggle_barcode.setOnClickListener {
       scanner_view.toggleVisibility()
-      updateToggleBtnText()
     }
+  }
+
+  fun setOnReadListener(listener: (String) -> Unit) {
+    this.onRead = listener
   }
 
   fun setOnClickListener(onClickListener: () -> Any = {}) {
@@ -93,5 +118,9 @@ class BarcodeReader @JvmOverloads constructor(
 
   fun stopReading() {
     pauseReading()
+  }
+
+  fun getInput(): EditText {
+    return input_barcode_result
   }
 }

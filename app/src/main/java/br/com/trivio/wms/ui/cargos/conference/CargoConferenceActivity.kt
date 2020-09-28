@@ -350,7 +350,7 @@ class CargoConferenceActivity : MyAppCompatActivity() {
     )
     prompt(
       dialog = dialog,
-      firstTitle = getString(R.string.inform_qtds_asteristic),
+      firstTitle = getString(R.string.inform_qtds),
       secondTitle = item.name,
       inputValue = totalQuantityCounted,
       hint = "0",

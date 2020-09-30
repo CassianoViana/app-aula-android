@@ -13,10 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
-import br.com.trivio.wms.components.custom.Badge
-import br.com.trivio.wms.components.custom.BarcodeReader
-import br.com.trivio.wms.components.custom.Message
-import br.com.trivio.wms.components.custom.RefreshableList
+import br.com.trivio.wms.components.custom.*
 import br.com.trivio.wms.data.dto.PickStockPositionDto
 import br.com.trivio.wms.data.dto.PickingItemDto
 import br.com.trivio.wms.data.dto.PickingTaskDto
@@ -27,11 +24,12 @@ import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.extensions.Status.Companion.NOT_COMPLETED
 import br.com.trivio.wms.extensions.Status.Companion.SUCCESS
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.equipments.AddEquipmentsListActivity
+import br.com.trivio.wms.ui.equipments.ConfirmEquipmentsListActivity
 import br.com.trivio.wms.ui.equipments.ReleaseEquipmentsListActivity
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_picking.*
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 
 
 class PickingActivity : MyAppCompatActivity() {
@@ -44,8 +42,11 @@ class PickingActivity : MyAppCompatActivity() {
   private var pickingTaskId: Long = 0
   private var pickingItemsAdapter = PickingItemsAdapter(object : PickingItemsAdapter.OnClickItem {
     override fun onClick(item: PickingItemDto) {
-      //openPickItemDialog(item)
       openPositionDialog(item)
+    }
+
+    override fun onLongClick(item: PickingItemDto) {
+      openDevolutionDialog(item)
     }
 
     /*override fun onClickHistory(item: PickingItemDto) {
@@ -53,6 +54,29 @@ class PickingActivity : MyAppCompatActivity() {
     }*/
 
   })
+
+  private fun openDevolutionDialog(item: PickingItemDto) {
+    openCustomContextMenu(
+      this,
+      title = getString(R.string.actions),
+      mutableListOf(
+        MenuItem(getString(R.string.devolve_qtds)) {
+          if (item.hasItemsPicked()) {
+            openPositionDialog(
+              item,
+              callbackOnValidPosition = { dialogPosition ->
+                openDevolveItemDialog(item)
+                dialogPosition.hide()
+              },
+              title = getString(R.string.confirm_position_to_devolve)
+            )
+          } else {
+            showMessageError(R.string.the_item_has_no_qtd_to_devolve)
+          }
+        },
+      )
+    )
+  }
 
   private val viewModel: PickingViewModel by viewModels()
 
@@ -82,15 +106,43 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun openPositionDialog(item: PickingItemDto, dialogToReuse: Dialog? = null) {
-    val onValidPositionCode: (Dialog) -> Unit = { positionDialog ->
+  private fun openPositionDialog(
+    item: PickingItemDto,
+    title: String? = null,
+    callbackOnValidPosition: ((Dialog) -> Unit)? = null,
+    dialogToReuse: Dialog? = null
+  ) {
+    val onValidPositionCode: (Dialog) -> Unit = callbackOnValidPosition ?: { positionDialog ->
       openProductDialog(item,
         onCloseProductDialogListener = {
           viewModel.findNextItem(item) { it ->
             onResult(it,
               onSuccess = {
-                openPositionDialog(it.data, positionDialog)
-              })
+                openPositionDialog(
+                  it.data,
+                  dialogToReuse = positionDialog
+                )
+              },
+              onNullResult = {
+                viewModel.loadPickingTask(pickingTaskId) { result ->
+                  onResult(result, onSuccess = { success ->
+                    val pickingTask = success.data
+                    if (pickingTask.items.all { item -> item.hasItemsPicked() }) {
+                      showMessageSuccess(R.string.all_items_were_picked)
+                    } else {
+                      showMessageSuccess(
+                        getString(
+                          R.string.x_items_were_not_picked_yet,
+                          pickingTask.countItemsNotPicked
+                        ),
+                        say = true
+                      )
+                    }
+                  })
+                }
+                positionDialog.hide()
+              }
+            )
           }
         })
     }
@@ -98,15 +150,12 @@ class PickingActivity : MyAppCompatActivity() {
     val positionInput = barcodeReader.getInput()
     prompt(
       dialog = dialogToReuse,
-      firstTitle = getString(
-        R.string.position_x_of_total,
+      firstTitle = title ?: getString(
+        R.string.confirm_position_x_of_total,
         item.order,
         item.totalItemsTask
       ),
-      secondTitle = getString(
-        R.string.confirm_position,
-        item.position
-      ),
+      viewsBeforeInput = listOf(createTextView(item.position, large = true)),
       hideDefaultInputView = true,
       inputViewFn = { dialog ->
         barcodeReader.apply {
@@ -147,9 +196,7 @@ class PickingActivity : MyAppCompatActivity() {
     prompt(
       firstTitle = getString(R.string.confirm_product),
       hideDefaultInputView = true,
-      viewsBeforeInputFn = { _, views ->
-        views.add(createPickItemLayout(item))
-      },
+      viewsBeforeInput = listOf(createPickItemLayout(item, showQuantities = true)),
       inputViewFn = { dialog ->
         barcodeReader.apply {
           setOnReadListener { productCode ->
@@ -163,12 +210,17 @@ class PickingActivity : MyAppCompatActivity() {
           }
         }
       },
+      drawableConfirmButtonResId = R.drawable.ic_baseline_arrow_forward_18,
       positiveAction = { dialog, productCode ->
         validateProductCode(item, productCode,
           onValid = { onValidProductCode(dialog) },
           onInvalid = {
             productInput.selectAll()
           })
+      },
+      negativeButtonText = getString(R.string.check_stock),
+      negativeAction = {
+        openStockDialog(item)
       }
     )
   }
@@ -295,10 +347,10 @@ class PickingActivity : MyAppCompatActivity() {
     startActivityForResult(intent, ReleaseEquipmentsListActivity.END_ACTIVITY)
   }
 
-  private fun openEquipmentsListActivity(item: PickingItemDto? = null) {
-    val intent = Intent(this, AddEquipmentsListActivity::class.java)
-    intent.putExtra(AddEquipmentsListActivity.PICKING_TASK_ID, pickingTaskId)
-    startActivityForResult(intent, AddEquipmentsListActivity.END_ACTIVITY)
+  private fun openEquipmentsListActivity() {
+    val intent = Intent(this, ConfirmEquipmentsListActivity::class.java)
+    intent.putExtra(ConfirmEquipmentsListActivity.PICKING_TASK_ID, pickingTaskId)
+    startActivity(intent)
   }
 
   private fun onRefreshLoadData() {
@@ -311,7 +363,6 @@ class PickingActivity : MyAppCompatActivity() {
     viewModel.pickingItem.observe(this, { result ->
       onResult(result,
         onSuccess = {
-          showMessageSuccess(R.string.picking_success)
           loadPickingTask()
         },
         always = {
@@ -323,7 +374,6 @@ class PickingActivity : MyAppCompatActivity() {
         onSuccess = { success ->
           if (success.data.isPending()) {
             viewModel.startPicking(pickingTaskId)
-            loadPickingTask()
           }
           updateUi(success.data)
         },
@@ -390,7 +440,6 @@ class PickingActivity : MyAppCompatActivity() {
 
   private fun updateCargoItems(items: List<PickingItemDto>) {
     pickingItemsAdapter.items = items
-    picking_items_recycler_view.showEmptyLabel(items.isEmpty())
   }
 
   private fun updateUiDisableControls() {
@@ -480,51 +529,85 @@ class PickingActivity : MyAppCompatActivity() {
     onFinishPickItem: (item: PickingItemDto) -> Any? = {}
   ) {
     val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
-    val qtdInputNumber = createInputNumber(
+    val inputNumber = createInputNumber(
       labelBeforeInput = getString(R.string.separadas),
       labelAfterInput = unitCode,
       allowNegative = false,
     )
     prompt(
-      firstTitle = getString(R.string.pick),
+      firstTitle = getString(R.string.inform_picked_qtd),
       hint = "0",
-      inputView = qtdInputNumber,
-      viewsBeforeInputFn = { _, views ->
-        views.apply {
-          add(createPickItemLayout(item))
-        }
+      viewsBeforeInput = listOf(createPickItemLayout(item, showQuantities = true)),
+      inputViewFn = {
+        inputNumber
       },
-      viewsAfterInputFn = { _, views ->
-        views.apply {
-          add(
-            createTextView(
-              value = getString(
-                R.string.qtd_aready_separed,
-                item.pickedQuantity?.toInt(),
-                item.getUnitCode()
-              ),
-            )
-          )
-        }
-      },
-      negativeButtonText = getString(R.string.not_found),
+      negativeButtonText = getString(R.string.check_stock),
       positiveButtonText = getString(R.string.next),
       drawableConfirmButtonResId = R.drawable.ic_baseline_arrow_forward_18,
       positiveAction = fun(dialog: Dialog, _) {
-        qtdInputNumber.value?.let { quantity ->
+        inputNumber.value?.let { quantity ->
+          if (quantity <= BigDecimal.ZERO) {
+            showMessageError(R.string.the_quantity_cannot_be_zero)
+            inputNumber.showError()
+            return
+          }
           viewModel.pickItem(item, quantity) { it ->
             onResult(it, onSuccess = {
-              pickingItemsAdapter.notifyDataSetChanged()
-              onFinishPickItem(item)
-              delay {
-                dialog.hide()
+              showMessageSuccess(R.string.item_separed_with_success, say = true) {
+                onFinishPickItem(item)
+                delay {
+                  dialog.hide()
+                }
               }
             })
           }
         }
       },
       negativeAction = { dialog ->
-        openStockSearchDialog(item)
+        openStockDialog(item)
+      },
+    )
+  }
+
+  private fun openDevolveItemDialog(
+    item: PickingItemDto,
+    onFinishPickItem: (item: PickingItemDto) -> Any? = {}
+  ) {
+    val unitCode: String? = item.getUnitCode(getString(R.string.unit_code))
+    val inputNumber = createInputNumber(
+      labelBeforeInput = getString(R.string.devolve),
+      labelAfterInput = unitCode,
+      allowNegative = false,
+    )
+    prompt(
+      firstTitle = getString(R.string.inform_qtd_to_devolve),
+      hint = "0",
+      viewsBeforeInput = listOf(createPickItemLayout(item, showQuantities = true)),
+      inputViewFn = {
+        inputNumber
+      },
+      positiveButtonText = getString(R.string.devolve),
+      positiveAction = fun(dialog: Dialog, _) {
+        inputNumber.value?.let { quantity ->
+          if (quantity <= BigDecimal.ZERO) {
+            showMessageError(R.string.the_quantity_cannot_be_zero)
+            inputNumber.showError()
+            return
+          }
+          viewModel.devolveItem(item, quantity) { it ->
+            onResult(it, onSuccess = {
+              showMessageSuccess(
+                getString(R.string.the_item_was_devolved, quantity.toInt()),
+                say = true
+              ) {
+                onFinishPickItem(item)
+                delay {
+                  dialog.hide()
+                }
+              }
+            })
+          }
+        }
       },
     )
   }
@@ -535,17 +618,17 @@ class PickingActivity : MyAppCompatActivity() {
     //barcode_reader.startRead()
   }
 
-  private fun openStockSearchDialog(
+  private fun openStockDialog(
     item: PickingItemDto,
     //onPositionSelected: (item: PickingItemDto) -> Unit = {}
   ) {
-
+    val stockList = createStockList(item).apply { setWeight(1) }
     prompt(
       firstTitle = getString(R.string.product_stock),
+      viewsBeforeInput = listOf(createPickItemLayout(item)),
+      hideDefaultInputView = true,
       viewsAfterInputFn = { _, views ->
-        views.add(createStockList(item).apply {
-          setWeight(1)
-        })
+        views.add(stockList)
         if (item.hasRequestedPickingReposition) {
           views.add(Message(this).apply {
             setType(Message.TYPE_WARNING)
@@ -554,18 +637,22 @@ class PickingActivity : MyAppCompatActivity() {
           })
         }
       },
-      positiveAction = { dialog, _: String ->
-      },
       positiveButtonText = getString(
         if (item.hasRequestedPickingReposition) R.string.cancel_request_picking_reposition
         else R.string.request_picking_reposition
       ),
-      viewsBeforeInput = listOf(createPickItemLayout(item)),
+      negativeButtonText = getString(R.string.not_localized),
+      positiveAction = { dialog, _: String ->
+      },
+      negativeAction = {
+
+      },
     )
   }
 
   private fun createStockList(item: PickingItemDto): RefreshableList {
     return inflate<RefreshableList>(R.layout.pick_item_stock_positions_list).apply {
+      setMarginVertical()
 
       this.setOnRefreshListener {
         delay(200) {
@@ -609,12 +696,17 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun createPickItemLayout(item: PickingItemDto): View {
+  private fun createPickItemLayout(item: PickingItemDto, showQuantities: Boolean = false): View {
     return inflate<View>(R.layout.item_picking_product_qtd_details).apply {
       findViewById<TextView>(R.id.product_name).text = item.name
       //findViewById<TextView>(R.id.product_position).text = item.position
       findViewById<TextView>(R.id.product_sku).text = item.sku
       findViewById<TextView>(R.id.product_gtin).text = coalesce(item.gtin, R.string.no_gtin)
+      findViewById<LabelledInfo>(R.id.text_view_qtd_solicited).apply {
+        setVisible(showQuantities)
+        text =
+          "${item.pickedQuantity?.toInt()} / ${item.expectedQuantityToPick?.toInt()}  ${item.getUnitCode()}"
+      }
     }
   }
 
@@ -624,7 +716,7 @@ class PickingActivity : MyAppCompatActivity() {
     var items: List<PickingItemDto> = mutableListOf()
       set(value) {
         field = value
-        //notifyDataSetChanged()
+        notifyDataSetChanged()
       }
 
     class PickingItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -673,9 +765,14 @@ class PickingActivity : MyAppCompatActivity() {
           item.expectedQuantityToPick?.toInt()
         )
 
+        itemToClick.setOnLongClickListener {
+          onClickPickingItem.onLongClick(item)
+          true
+        }
         itemToClick.setOnClickListener {
           onClickPickingItem.onClick(item)
         }
+
         /*view.setOnLongClickListener {
           onClickPickingItem.onClickHistory(item)
           false
@@ -698,6 +795,7 @@ class PickingActivity : MyAppCompatActivity() {
 
     interface OnClickItem {
       fun onClick(item: PickingItemDto)
+      fun onLongClick(item: PickingItemDto)
       //fun onClickHistory(item: PickingItemDto)
     }
   }

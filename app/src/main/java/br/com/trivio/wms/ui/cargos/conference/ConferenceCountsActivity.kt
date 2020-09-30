@@ -114,7 +114,6 @@ class ConferenceCountsActivity : MyAppCompatActivity() {
 
   private fun setHistoryData(data: List<ConferenceCountDto>) {
     adapter.items = data
-    count_list.showEmptyLabel(data.isEmpty())
   }
 
   fun loadCountHistory() {

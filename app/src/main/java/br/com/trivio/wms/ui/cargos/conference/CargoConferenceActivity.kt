@@ -142,7 +142,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
   }
 
   private fun onClickCameraOpenBarcodeReader() {
-    barcode_reader.setVisible(false)
     btn_open_camera.setOnClickListener {
       if (barcode_reader.toggleVisibility() == VISIBLE) {
         barcode_reader.startRead()
@@ -265,7 +264,6 @@ class CargoConferenceActivity : MyAppCompatActivity() {
 
   private fun updateCargoItems(items: List<CargoConferenceItemDto>) {
     cargoItemsAdapter.items = items
-    cargo_items_recycler_view.showEmptyLabel(items.isEmpty())
   }
 
   private fun updateUiDisableControls() {

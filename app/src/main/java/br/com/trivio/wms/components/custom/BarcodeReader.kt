@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.extensions.toggleVisibility
+import br.com.trivio.wms.getPreferences
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
@@ -63,6 +64,7 @@ class BarcodeReader @JvmOverloads constructor(
       setHint(inputHint)
       setInputVisible(showInput)
       setToggleable(toggleAble, hideScannerView = false)
+      setVisible(getSettingsVisibilityBarcode())
 
       styledAttributes.recycle()
     }
@@ -90,12 +92,21 @@ class BarcodeReader @JvmOverloads constructor(
     }
   }
 
-  fun setToggleable(toggleAble: Boolean = true, hideScannerView: Boolean = true) {
+  fun setToggleable(
+    toggleAble: Boolean = true, hideScannerView: Boolean = !getSettingsVisibilityBarcode()
+  ) {
     btn_toggle_barcode.setVisible(toggleAble)
     scanner_view.setVisible(!hideScannerView)
     btn_toggle_barcode.setOnClickListener {
       scanner_view.toggleVisibility()
     }
+  }
+
+  private fun getSettingsVisibilityBarcode(): Boolean {
+    return getPreferences(context).getBoolean(
+      "barcode_input_camera_open",
+      true
+    )
   }
 
   fun setOnReadListener(listener: (String) -> Unit) {

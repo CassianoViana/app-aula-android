@@ -38,12 +38,18 @@ class RefreshableList @JvmOverloads constructor(
 
   fun <T : RecyclerView.ViewHolder> setAdapter(adapter: RecyclerView.Adapter<T>) {
     recyclerView.adapter = adapter
+    adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+      override fun onChanged() {
+        super.onChanged()
+        showEmptyLabel(adapter.itemCount == 0)
+      }
+    })
   }
 
   private var refreshLayout: SwipeRefreshLayout
   private var recyclerView: RecyclerView
 
-  fun showEmptyLabel(show: Boolean) {
+  private fun showEmptyLabel(show: Boolean) {
     empty_list_label.setVisible(show)
   }
 

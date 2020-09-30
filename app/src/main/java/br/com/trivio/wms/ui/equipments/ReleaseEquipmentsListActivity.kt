@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -82,7 +81,6 @@ class ReleaseEquipmentsListActivity : MyAppCompatActivity() {
         findViewById<TextView>(R.id.equipment_code).text = item.code
         findViewById<TextView>(R.id.equipment_name).text = item.name
         findViewById<TextView>(R.id.equipment_position).setVisible(false)
-        findViewById<ImageButton>(R.id.btn_remove_equipment).setVisible(false)
       })
       .setPositiveButton(R.string.delete) { _, _ ->
 
@@ -103,11 +101,11 @@ class ReleaseEquipmentsListActivity : MyAppCompatActivity() {
   }
 
   private fun loadEquipments() {
-    viewModel.loadPickings(taskId)
+    viewModel.loadEquipments(taskId)
   }
 
   private fun observeViewModel() {
-    viewModel.equipmentsResult.observe(this, {
+    viewModel.availableEquipments.observe(this, {
       onResult(it,
         onSuccess = {
           setEquipments(it.data)

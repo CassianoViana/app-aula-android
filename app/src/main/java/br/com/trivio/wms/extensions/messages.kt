@@ -32,16 +32,26 @@ fun MyAppCompatActivity.showMessage(
 
 
 fun MyAppCompatActivity.showMessageSuccess(
-  stringResource: Int
+  stringResource: Int,
+  say: Boolean = false,
+  callback: () -> Unit = {}
 ) {
   val text = getString(stringResource)
-  showMessageSuccess(text)
+  showMessageSuccess(text, say, callback)
 }
 
 fun MyAppCompatActivity.showMessageSuccess(
-  text: String
+  text: String,
+  say: Boolean = false,
+  callback: () -> Unit = {}
 ) {
   showMessage(text, colorResource = R.color.success)
+  if (say) {
+    say(text, callback)
+  } else {
+    callback()
+  }
+
 }
 
 fun MyAppCompatActivity.showMessageError(
@@ -61,6 +71,7 @@ fun MyAppCompatActivity.showMessageWarning(
 fun MyAppCompatActivity.showMessageError(
   text: String
 ) {
+  say(text)
   showMessage(text, colorResource = R.color.error)
 }
 

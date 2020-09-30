@@ -16,7 +16,6 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme.NoActionBar"
     android:usesCleartextTraffic="true">
-    <activity android:name=".ui.picking.PickItemActivity"></activity>
     <activity
       android:name=".ui.equipments.AddEquipmentsListActivity"
       android:screenOrientation="portrait" />
@@ -66,6 +65,10 @@
       android:name=".ui.equipments.ReleaseEquipmentsListActivity"
       android:screenOrientation="portrait" />
     <activity android:name=".ui.picking.FinishPickingActivity" />
+    <activity
+      android:name=".ui.equipments.ConfirmEquipmentsListActivity"
+      android:screenOrientation="portrait" />
+    <activity android:name=".ui.settings.SettingsActivity" />
 
 
   </application>

@@ -54,6 +54,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin"
     android:layout_weight="0"
-    android:text="@string/continue_to_picking" />
+    android:text="@string/add" />
 
 </LinearLayout>

@@ -137,6 +137,7 @@ fun MyAppCompatActivity.prompt(
   if (dialog == null) {
     newDialog.show()
   }
+  //say("${firstTitle ?: ""}. ${secondTitle ?: ""}")
   say(firstTitle)
   return createLayoutFn
 }

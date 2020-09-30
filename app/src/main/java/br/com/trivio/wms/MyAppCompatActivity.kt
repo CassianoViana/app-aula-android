@@ -3,6 +3,7 @@ package br.com.trivio.wms
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -114,12 +115,38 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
     playAudio(this, R.raw.error)
   }
 
+  fun playToggle(bool: Boolean) {
+    if (bool) {
+      playBeep()
+    } else {
+      playBeep2()
+    }
+  }
+
   fun playBeep() {
     playAudio(this, R.raw.beep)
   }
 
-  fun say(something: String) {
-    textToSpeech(something, this)
+  fun playBeep2() {
+    playAudio(this, R.raw.error)
+  }
+
+  fun say(something: String, onFinish: () -> Unit = {}) {
+    if (isVoiceEnabled()) {
+      textToSpeech(something, this) {
+        runOnUiThread(onFinish)
+      }
+    } else {
+      onFinish()
+    }
+  }
+
+  private fun isVoiceEnabled(): Boolean {
+    return getPreferences().getBoolean("voice_enabled", true)
+  }
+
+  fun getPreferences(): SharedPreferences {
+    return getPreferences(this)
   }
 }
 

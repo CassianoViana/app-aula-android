@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_half"
-        android:text="@string/used_equipments"
+        android:text="@string/reserved_equipments"
         android:textAlignment="center"
         android:textSize="@dimen/medium_text"
         android:textStyle="bold" />

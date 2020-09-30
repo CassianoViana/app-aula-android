@@ -13,6 +13,7 @@ import br.com.trivio.wms.data.model.UserDetails
 import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.ui.cargos.CargosListActivity
 import br.com.trivio.wms.ui.picking.PickingListActivity
+import br.com.trivio.wms.ui.settings.SettingsActivity
 import br.com.trivio.wms.ui.tasks.TasksListActivity
 
 class MenuItem(
@@ -41,6 +42,9 @@ class MenuActivity : MyAppCompatActivity() {
     MenuItem(R.string.inventory, R.drawable.ic_assignment_black_24dp),
     MenuItem(R.string.fillment, R.drawable.ic_format_color_fill_black_24dp) {
       startActivity(Intent(this, ScrollingActivity::class.java))
+    },
+    MenuItem(R.string.action_settings, R.drawable.ic_settings_black_24dp) {
+      startActivity(Intent(this, SettingsActivity::class.java))
     },
     MenuItem(R.string.menu_exit, R.drawable.ic_exit_to_app_black_24dp) {
       exitAppHandler.logout()

@@ -64,5 +64,9 @@ class PickingTaskDto(
   fun valid(): Boolean {
     return quantityPartiallyPicked == 0 && quantityNotFound == 0
   }
+
+  var countItemsNotPicked: Int = items.count {
+    !it.hasItemsPicked()
+  }
 }
 

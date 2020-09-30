@@ -29,11 +29,13 @@ class PickingViewModel(
   */
 
 
-  fun loadPickingTask(id: Long) {
+  fun loadPickingTask(id: Long, callback: (Result<PickingTaskDto>) -> Unit = {}) {
     viewModelScope.launch {
-      task.value = asyncRequest {
+      val result = asyncRequest {
         pickingRepository.loadPickingTask(id)
       }
+      task.value = result
+      callback(result)
     }
   }
 
@@ -71,6 +73,14 @@ class PickingViewModel(
     } else {
       Result.Error(IllegalStateException("Não há tarefa de conferẽncia com estado válido"))
     }
+  }
+
+  fun devolveItem(
+    item: PickingItemDto,
+    quantity: BigDecimal,
+    callback: (Result<PickingItemDto>) -> Unit
+  ) {
+    pickItem(item, quantity.multiply(BigDecimal(-1)), callback)
   }
 
   fun pickItem(
@@ -129,8 +139,12 @@ class PickingViewModel(
       Result.Error(IllegalArgumentException("Item não encontrado"))
     if (pickTask is Result.Success) {
       val pickItems = pickTask.data.items
-      pickItems.first { it.order == pickedItem.order + 1 }.let {
-        result = Result.Success(it)
+      pickItems.firstOrNull() { it.order == pickedItem.order + 1 }.let {
+        if (it != null) {
+          result = Result.Success(it)
+        } else {
+          result = Result.Null(it)
+        }
       }
     }
     callback(result)

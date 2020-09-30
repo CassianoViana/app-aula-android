@@ -14,6 +14,7 @@ class NumberInput @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+  private var originalTextColor: Int
   var allowNegative: Boolean = true
 
   var textSize: Float
@@ -38,6 +39,9 @@ class NumberInput @JvmOverloads constructor(
 
     custom_number_input_label.setVisible(false)
     custom_number_input_label_after_input.setVisible(false)
+    addListenerToRemoveWarningOnType()
+    this.originalTextColor = custom_number_input.currentTextColor
+
     icon_add.setOnClickListener {
       this.add(1)
     }
@@ -52,6 +56,12 @@ class NumberInput @JvmOverloads constructor(
       styledAttributes.recycle()*/
     }
 
+  }
+
+  private fun addListenerToRemoveWarningOnType() {
+    custom_number_input.addTextChangedListener {
+      showError(false)
+      }
   }
 
   private fun add(quantitySum: Int) {
@@ -101,5 +111,15 @@ class NumberInput @JvmOverloads constructor(
 
   fun showKeyboard() {
     custom_number_input.setKeyboardVisible(context)
+  }
+
+  fun showError(show: Boolean = true) {
+    custom_number_input.setTextColor(
+      if (show) {
+        context.getColor(R.color.error)
+      } else {
+        originalTextColor
+      }
+    )
   }
 }

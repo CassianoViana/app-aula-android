@@ -36,7 +36,7 @@ class PickingItemDto(
   }
 
   fun hasItemsPicked(): Boolean {
-    return pickedQuantity != null
+    return pickedQuantity != null && pickedQuantity!! > BigDecimal.ZERO
   }
 
   fun matchCode(code: String): Boolean {

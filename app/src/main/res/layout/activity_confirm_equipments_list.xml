@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".ui.equipments.AddEquipmentsListActivity">
+
+  <br.com.trivio.wms.components.custom.TopBar
+    android:id="@+id/top_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:title="@string/reserved_equipments" />
+
+  <include
+    layout="@layout/progress_bar"
+    android:visibility="gone" />
+
+  <br.com.trivio.wms.components.custom.RefreshableList
+    android:id="@+id/equipments_list"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <Button
+      android:id="@+id/btn_add_more"
+      style="@style/button_action.ok"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="@dimen/margin"
+      android:text="@string/add_equipments" />
+
+    <Button
+      android:id="@+id/btn_continue_to_picking"
+      style="@style/button_action.ok.arrow_right"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="@dimen/margin"
+      android:text="@string/continue_task" />
+  </LinearLayout>
+
+</LinearLayout>

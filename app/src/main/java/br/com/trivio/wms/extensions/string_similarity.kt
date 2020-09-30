@@ -18,6 +18,16 @@ fun matchFilter(originalString: String, comparisonString: String): Boolean {
   return stringSimilarity(a, b) >= 80 || a.contains(b)
 }
 
+fun String.similarity(another: String): Int {
+  var similarity = stringSimilarity(this, another);
+  if (similarity < 80) {
+    if (this.contains(another)) {
+      similarity = 50
+    }
+  }
+  return similarity
+}
+
 fun String.isVerySimilar(another: String): Boolean {
   return matchFilter(this, another)
 }

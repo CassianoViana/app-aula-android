@@ -78,7 +78,6 @@ class CargosListActivity : MyAppCompatActivity() {
 
   fun setCargos(cargos: List<CargoListDto>) {
     adapter.cargos = cargos
-    cargos_list.showEmptyLabel(cargos.isEmpty())
   }
 
   private fun loadPendingCargos() {

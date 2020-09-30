@@ -146,9 +146,13 @@ class ServerBackend {
     execute(api.undoCountHistoryItem(conferenceCountHistoryItemId))
 
   fun getMyPendingPickings(): List<PickingListDto> = FakeApi.getPickingsPendingToOperatorCheck()
-  fun getPickingTask(taskId:Long): PickingTaskDto = FakeApi.getPickingTask()
-  fun getEquipments(taskId:Long): List<EquipmentDto> = FakeApi.getEquipments()
-  fun startPicking(taskId: Long) : TaskStatusDto = FakeApi.startPicking(taskId);
-  fun pickItem(item: PickingItemDto, quantity: BigDecimal):PickingItemDto = FakeApi.pickItem(item, quantity)
+  fun getPickingTask(taskId: Long): PickingTaskDto = FakeApi.getPickingTask()
+  fun getEquipments(taskId: Long): List<EquipmentDto> = FakeApi.getEquipments()
+  fun startPicking(taskId: Long): TaskStatusDto = FakeApi.startPicking(taskId);
+  fun pickItem(item: PickingItemDto, quantity: BigDecimal): PickingItemDto =
+    FakeApi.pickItem(item, quantity)
+
+  fun addEquipments(ids: LongArray, taskId:Long): LongArray = FakeApi.addEquipments(ids)
+  fun removeEquipment(id: Long, taskId:Long): EquipmentDto = FakeApi.removeEquipment(id)
 
 }

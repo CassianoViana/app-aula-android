@@ -25,12 +25,13 @@ fun MyAppCompatActivity.createButton(name: String, onClick: (() -> Unit) = {}): 
 fun MyAppCompatActivity.createTextView(
   value: String,
   small: Boolean = false,
+  large: Boolean = false,
   colorResourceId: Int? = null
 ): TextView {
-  val textView = if (!small) {
-    inflate<TextView>(R.layout.custom_text_view)
-  } else {
-    inflate<TextView>(R.layout.custom_small_text_view)
+  val textView = when {
+    large -> inflate(R.layout.custom_large_text_view)
+    small -> inflate(R.layout.custom_small_text_view)
+    else -> inflate<TextView>(R.layout.custom_text_view)
   }
   colorResourceId?.let {
     textView.setTextColor(getColor(it))

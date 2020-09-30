@@ -4,20 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.EquipmentDto
-import br.com.trivio.wms.extensions.inflate
 import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.extensions.toggleVisibility
 import br.com.trivio.wms.onResult
-import br.com.trivio.wms.ui.picking.PickingActivity
 import br.com.trivio.wms.viewmodel.EquipmentsViewModel
 import kotlinx.android.synthetic.main.activity_add_equipments_list.*
 
@@ -28,11 +25,11 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
 
   companion object {
     const val PICKING_TASK_ID = "PICKING_TASK_ID"
-    const val END_ACTIVITY = 100
+    const val MUTED = "MUTED"
   }
 
-  private val adapter = EquipmentsListAdapter(onClickToRemoveEquipment = { item ->
-    removeEquipment(item)
+  private val adapter = EquipmentsListAdapter(onClickToSelect = { item ->
+    addEquipment(item)
   })
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,21 +40,35 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
     onRefreshReloadList()
     bindListAdapter()
     loadEquipments()
-    setBarcodeReaderVisible(false)
+    onBarcodeChangeFilter()
     onClickBarcodeThenShowBarcodeReader()
     onClickContinueOpenToPickingActivity()
+    if (!intent.getBooleanExtra(MUTED, false))
+      say(getString(R.string.message_select_picking_equipments))
+  }
+
+  private fun onBarcodeChangeFilter() {
+    search_input_equipments.addOnTextChangeListener {
+      setEquipments(viewModel.filter(it))
+    }
   }
 
   private fun onClickContinueOpenToPickingActivity() {
     btn_continue_to_picking.setOnClickListener {
-      openPickingActivity()
+      viewModel.idsEquipmentsToAdd.value?.let { equipmentIdsToAdd ->
+        viewModel.addEquipmentsByIds(equipmentIdsToAdd, taskId) { result ->
+          onResult(result, onSuccess = {
+            openConfirmEquipmentsActivity()
+          })
+        }
+      }
     }
   }
 
-  private fun openPickingActivity() {
-    val pickingIntent = Intent(this, PickingActivity::class.java)
-    pickingIntent.putExtra(PickingActivity.PICKING_TASK_ID, taskId)
-    startActivity(pickingIntent)
+  private fun openConfirmEquipmentsActivity() {
+    val confirmEquipmentsIntent = Intent(this, ConfirmEquipmentsListActivity::class.java)
+    confirmEquipmentsIntent.putExtra(ConfirmEquipmentsListActivity.PICKING_TASK_ID, taskId)
+    startActivity(confirmEquipmentsIntent)
   }
 
   private fun onClickBarcodeThenShowBarcodeReader() {
@@ -70,26 +81,9 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun setBarcodeReaderVisible(visible: Boolean = true) {
-    barcode_equipments_reader.setVisible(visible)
-  }
-
-  private fun removeEquipment(item: EquipmentDto) {
-
-    AlertDialog.Builder(this)
-      .setTitle(R.string.confirm_remove_equipment)
-      .setView(inflate<View>(R.layout.item_equipment_add).apply {
-        findViewById<TextView>(R.id.equipment_code).text = item.code
-        findViewById<TextView>(R.id.equipment_name).text = item.name
-        findViewById<TextView>(R.id.equipment_position).setVisible(false)
-        findViewById<ImageButton>(R.id.btn_remove_equipment).setVisible(false)
-      })
-      .setPositiveButton(R.string.delete) { _, _ ->
-
-      }
-      .setNegativeButton(R.string.cancel, { _, _ -> })
-      .create()
-      .show()
+  private fun addEquipment(equipment: EquipmentDto) {
+    viewModel.toggleAddEquipment(equipment)
+    adapter.notifyDataSetChanged()
   }
 
   private fun onRefreshReloadList() {
@@ -103,11 +97,14 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
   }
 
   private fun loadEquipments() {
-    viewModel.loadPickings(taskId)
+    viewModel.loadEquipments(taskId)
   }
 
   private fun observeViewModel() {
-    viewModel.equipmentsResult.observe(this, {
+    viewModel.idsEquipmentsToAdd.observe(this, {
+      updateLabelQtdSelecteds(it.size)
+    })
+    viewModel.availableEquipments.observe(this, {
       onResult(it,
         onSuccess = {
           setEquipments(it.data)
@@ -124,7 +121,16 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
     adapter.items = data
   }
 
-  class EquipmentsListAdapter(val onClickToRemoveEquipment: (EquipmentDto) -> Unit) :
+  private fun updateLabelQtdSelecteds(totalToAdd: Int) {
+    totalToAdd.apply {
+      btn_continue_to_picking.text = when {
+        this > 0 -> getString(R.string.add_parentesis, this)
+        else -> getString(R.string.add)
+      }
+    }
+  }
+
+  class EquipmentsListAdapter(val onClickToSelect: (EquipmentDto) -> Unit) :
     RecyclerView.Adapter<EquipmentListViewHolder>() {
     var items: List<EquipmentDto> = mutableListOf()
       set(value) {
@@ -137,7 +143,7 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
     }
 
     override fun onBindViewHolder(holder: EquipmentListViewHolder, position: Int) {
-      holder.bind(items[position], onClickToRemoveEquipment, position)
+      holder.bind(items[position], onClickToSelect)
     }
 
     override fun getItemCount() = items.size
@@ -146,18 +152,30 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
   class EquipmentListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     var equipmentNameTextView = view.findViewById<TextView>(R.id.equipment_name)
     var equipmentCodeTextView = view.findViewById<TextView>(R.id.equipment_code)
-    var equipmentPosition = view.findViewById<TextView>(R.id.equipment_position)
-    var btnRemoveEquipment = view.findViewById<ImageButton>(R.id.btn_remove_equipment)
+    var btnSelectEquipment = view.findViewById<Button>(R.id.btn_add_equipment)
 
-    fun bind(dto: EquipmentDto, onClickToRemove: (EquipmentDto) -> Unit, position: Int) {
-      equipmentPosition.text = (position + 1).toString()
+    fun bind(dto: EquipmentDto, onClickToSelect: (EquipmentDto) -> Unit) {
       equipmentNameTextView.text = dto.name
       equipmentCodeTextView.text = dto.code
-      btnRemoveEquipment.setOnClickListener {
-        onClickToRemove(dto)
+      btnSelectEquipment.apply {
+        text = view.context.getString(
+          if (dto.selected) {
+            R.string.remove
+          } else {
+            R.string.select
+          }
+        )
+        background = view.context.getDrawable(
+          if (dto.selected) {
+            R.drawable.light_red_rounded
+          } else {
+            R.drawable.light_blue_rounded
+          }
+        )
       }
-
+      btnSelectEquipment.setOnClickListener {
+        onClickToSelect(dto)
+      }
     }
-
   }
 }

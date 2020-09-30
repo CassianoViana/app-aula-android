@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.PreferenceManager
@@ -79,8 +80,12 @@ class MyApplication : Application() {
   }
 }
 
+fun getPreferences(context: Context): SharedPreferences {
+  return PreferenceManager.getDefaultSharedPreferences(context)
+}
+
 fun loadApiSettingsFromPreferences(context: Context) {
-  val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+  val preferences = getPreferences(context)
   val isDevMode = preferences.getBoolean("developer_mode", false)
   val addressPrefKey = if (isDevMode) "local_url" else "server_url"
   val address = preferences.getString(addressPrefKey, "https://api.wms.trivio.com.br")

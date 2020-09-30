@@ -7,14 +7,15 @@ import java.math.BigDecimal
 
 object FakeApi {
 
-  fun getEquipments(): List<EquipmentDto> {
+  fun getEquipments(qtd: Int = 30): List<EquipmentDto> {
     return mutableListOf<EquipmentDto>().apply {
-      for (i in 0 until 30) {
+      for (i in 0 until qtd) {
         this.add(
           EquipmentDto(
             id = i.toLong(),
             name = "Equipment $i",
-            code = "${i}000"
+            code = "${i}000",
+            selected = false
           )
         )
       }
@@ -95,7 +96,7 @@ object FakeApi {
           )
         }
       },
-      equipments = getEquipments()
+      equipments = getEquipments(5)
     )
   }
 
@@ -113,6 +114,19 @@ object FakeApi {
       storageUnit = StorageUnitDto(id = 1, referenceCode = "UD"),
       status = StatusDto("Atendido", "#339900"),
       hasRequestedPickingReposition = true,
+    )
+  }
+
+  fun addEquipments(ids: LongArray): LongArray {
+    return ids
+  }
+
+  fun removeEquipment(id: Long): EquipmentDto {
+    return EquipmentDto(
+      id = id,
+      name = "Equipment $id",
+      code = "${id}000",
+      selected = false
     )
   }
 

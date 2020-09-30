@@ -83,7 +83,7 @@ class FinishPickingActivity : MyAppCompatActivity() {
     setEquipmetnsListData(data.equipments)
     label_input_number_not_found.setVisible(data.quantityNotFound > 0)
     if (data.valid()) {
-      alert_partial_picked_order.message = getString(R.string.all_items_were_picked)
+      alert_partial_picked_order.message = getString(R.string.all_items_were_picked_correctly)
       alert_partial_picked_order.setType(Message.TYPE_SUCCESS)
     } else {
       alert_partial_picked_order.setVisible(data.quantityPartiallyPicked > 0)

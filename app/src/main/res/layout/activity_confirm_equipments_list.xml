@@ -33,7 +33,10 @@
       style="@style/button_action.ok"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="@dimen/margin"
+      android:layout_marginStart="@dimen/margin"
+      android:layout_marginTop="@dimen/margin"
+      android:layout_marginEnd="@dimen/margin_half"
+      android:layout_marginBottom="@dimen/margin"
       android:text="@string/add_equipments" />
 
     <Button
@@ -41,7 +44,10 @@
       style="@style/button_action.ok.arrow_right"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="@dimen/margin"
+      android:layout_marginStart="@dimen/margin_half"
+      android:layout_marginTop="@dimen/margin"
+      android:layout_marginEnd="@dimen/margin"
+      android:layout_marginBottom="@dimen/margin"
       android:text="@string/continue_task" />
   </LinearLayout>
 

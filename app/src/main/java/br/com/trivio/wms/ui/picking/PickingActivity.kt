@@ -86,12 +86,8 @@ class PickingActivity : MyAppCompatActivity() {
     pickingTaskId = intent.getLongExtra(PICKING_TASK_ID, 0)
     picking_items_recycler_view.setAdapter(pickingItemsAdapter)
     observeViewModel()
-    onBarcodeChangeSearchProduct()
     onRefreshLoadData()
     onClickFinishGoToReleaseEquipmentsActivity()
-    onClickCameraOpenBarcodeReader()
-    onReadBarcodeFillSearchInput()
-    onClickReaderHideKeyboard()
     onClickEquipmentsIconOpenEquipmentsActivity()
     loadPickingTask()
   }
@@ -273,15 +269,7 @@ class PickingActivity : MyAppCompatActivity() {
     }
   }
 
-  @Deprecated(message = "O campo de busca direta será removido")
-  private fun onClickReaderHideKeyboard() {
-    barcode_reader.setOnClickListener {
-      barcode_search_input.hideKeyboard()
-    }
-  }
-
   override fun onFinish() {
-    barcode_reader.stopReading()
     val data = Intent()
     data.putExtra(PICKING_TASK_ID, this.pickingTaskId)
     setResult(RESULT_TASK_ID, data)
@@ -291,15 +279,6 @@ class PickingActivity : MyAppCompatActivity() {
   override fun onResume() {
     super.onResume()
     resetReadingState()
-    if (requestPermission(Manifest.permission.CAMERA)) {
-      barcode_reader.startRead()
-    }
-  }
-
-  override fun onPause() {
-    super.onPause()
-    barcode_search_input.setKeyboardVisible(false)
-    barcode_reader.pauseReading()
   }
 
   override fun onRequestPermissionsResult(
@@ -308,31 +287,6 @@ class PickingActivity : MyAppCompatActivity() {
     grantResults: IntArray
   ) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    barcode_reader.startRead()
-  }
-
-  @Deprecated(message = "O campo de busca direta será removido")
-  private fun onReadBarcodeFillSearchInput() {
-    barcode_reader.onRead = { it ->
-      barcode_reader.pauseReading()
-      runOnUiThread {
-        playBeep()
-        barcode_search_input.applySearch(it)
-      }
-    }
-  }
-
-  @Deprecated(message = "O campo de busca direta será removido")
-  private fun onClickCameraOpenBarcodeReader() {
-    barcode_reader.setVisible(false)
-    btn_open_camera.setOnClickListener {
-      if (barcode_reader.toggleVisibility() == VISIBLE) {
-        barcode_reader.startRead()
-      } else {
-        barcode_reader.stopReading()
-      }
-      barcode_search_input.hideKeyboard()
-    }
   }
 
   private fun onClickFinishGoToReleaseEquipmentsActivity() {
@@ -400,17 +354,6 @@ class PickingActivity : MyAppCompatActivity() {
     })
   }
 
-  @Deprecated(message = "O campo de busca direta será removido")
-  private fun onBarcodeChangeSearchProduct() {
-    layout_search_input.setVisible(false)
-    barcode_search_input.addOnTextChangeListener { searchInputValue ->
-      viewModel.filterPickingItems(searchInputValue)
-    }
-    barcode_search_input.addOnSearchListener { searchInputValue ->
-      searchProductToCount(searchInputValue)
-    }
-  }
-
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     when (resultCode) {
@@ -430,9 +373,7 @@ class PickingActivity : MyAppCompatActivity() {
   private fun updateUi(cargoConferenceDto: PickingTaskDto) {
     updateCargoItems(cargoConferenceDto.items)
     updateUiLabelItemsCounted(cargoConferenceDto)
-    if (cargoConferenceDto.taskStatus == TaskStatus.DONE) {
-      updateUiDisableControls()
-    } else {
+    if (cargoConferenceDto.taskStatus != TaskStatus.DONE) {
       updateStatusCargo(cargoConferenceDto)
     }
     endLoading()
@@ -440,10 +381,6 @@ class PickingActivity : MyAppCompatActivity() {
 
   private fun updateCargoItems(items: List<PickingItemDto>) {
     pickingItemsAdapter.items = items
-  }
-
-  private fun updateUiDisableControls() {
-    barcode_search_input.isEnabled = false
   }
 
   private fun updateStatusCargo(dto: PickingTaskDto) {
@@ -487,41 +424,6 @@ class PickingActivity : MyAppCompatActivity() {
 
   override fun endLoading() {
     picking_items_recycler_view.setLoading(false)
-  }
-
-  private fun searchProductToCount(search: String) {
-    lifecycleScope.launch {
-      onResult(viewModel.getPickingItem(search),
-        onSuccess = {
-          openAlertProductNotFoundInPickingTask(it.data)
-          openPickItemDialog(it.data)
-        },
-        onNullResult = {
-          showMessageError(getString(R.string.product_not_found_product_with_search, search))
-          playErrorSound()
-          resetReadingState()
-        },
-        onError = { resetReadingState() }
-      )
-    }
-  }
-
-  private fun openAlertProductNotFoundInPickingTask(item: PickingItemDto) {
-    prompt(
-      firstTitle = getString(R.string.warning),
-      viewsBeforeInputFn = { _, views ->
-        views.add(createPickItemLayout(item))
-        views.add(Message(this).apply {
-          setType(Message.TYPE_WARNING)
-          message = getString(R.string.product_not_found_in_picking_task)
-          setMarginVertical()
-        })
-      },
-      positiveAction = { dialog, _: String ->
-        dialog.hide()
-      },
-      positiveButtonText = getString(R.string.understod),
-    )
   }
 
   private fun openPickItemDialog(

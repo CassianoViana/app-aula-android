@@ -2,16 +2,18 @@
 
   <PreferenceCategory app:title="@string/assistant">
     <SwitchPreferenceCompat
+      app:defaultValue="@bool/voice_enabled_default_value"
       app:key="voice_enabled"
-      app:title="Utilizar voz para instruções" />
+      app:title="@string/use_voice_to_instructions" />
   </PreferenceCategory>
 
   <PreferenceCategory app:title="@string/barcode_reader">
     <SwitchPreferenceCompat
+      app:defaultValue="@bool/input_camera_open_default_value"
       app:key="barcode_input_camera_open"
-      app:summaryOff="Os campos de leitura de códigos devem ser digitados ou lidos por leitor bluetooth"
-      app:summaryOn="Abre automaticamente os campos de leitura de código de barra"
-      app:title="Utilizar câmera por padrão" />
+      app:summaryOff="@string/message_settings_summary_use_camera_off"
+      app:summaryOn="@string/message_settings_summary_use_camera_on"
+      app:title="@string/use_camera_per_default" />
   </PreferenceCategory>
 
   <!--<SwitchPreferenceCompat

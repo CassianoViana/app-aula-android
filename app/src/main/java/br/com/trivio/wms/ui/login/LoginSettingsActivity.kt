@@ -59,13 +59,12 @@ class LoginSettingsActivity : MyAppCompatActivity() {
     private fun validateUrl(
       editPrefText: EditTextPreference?,
       key: String,
-      defaultUrl: String = "https://api.wms.trivio.com.br"
     ) {
       editPrefText?.let {
         val url = it.text
         if (isNotValidUrl(url)) {
           preferenceManager.sharedPreferences.edit()
-            .putString(key, defaultUrl).apply()
+            .putString(key, url).apply()
         }
       }
     }
@@ -73,7 +72,7 @@ class LoginSettingsActivity : MyAppCompatActivity() {
     private fun isNotValidUrl(url: String?) = !URLUtil.isValidUrl(url)
 
     fun validateUrls() {
-      validateUrl(localUrl, "local_url", "http://192.168.15.x.x")
+      validateUrl(localUrl, "local_url")
       validateUrl(serverUrl, "server_url")
     }
 

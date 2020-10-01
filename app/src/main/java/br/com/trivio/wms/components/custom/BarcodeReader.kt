@@ -105,7 +105,7 @@ class BarcodeReader @JvmOverloads constructor(
   private fun getSettingsVisibilityBarcode(): Boolean {
     return getPreferences(context).getBoolean(
       "barcode_input_camera_open",
-      true
+      context.resources.getBoolean(R.bool.input_camera_open_default_value)
     )
   }
 

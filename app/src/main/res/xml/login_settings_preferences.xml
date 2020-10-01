@@ -4,6 +4,7 @@
   <PreferenceCategory app:title="@string/connection">
 
     <EditTextPreference
+      app:defaultValue="https://api.wms.trivio.com.br"
       app:key="server_url"
       app:title="@string/server_url"
       app:useSimpleSummaryProvider="true" />
@@ -16,6 +17,7 @@
       app:title="Modo desenvolvedor" />
 
     <EditTextPreference
+      app:defaultValue="http://192.168.15.x:8080"
       android:shouldDisableView="true"
       app:key="local_url"
       app:title="Endereço API local"

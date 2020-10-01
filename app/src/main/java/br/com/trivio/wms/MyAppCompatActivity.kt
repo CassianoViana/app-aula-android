@@ -142,7 +142,10 @@ abstract class MyAppCompatActivity : AppCompatActivity() {
   }
 
   private fun isVoiceEnabled(): Boolean {
-    return getPreferences().getBoolean("voice_enabled", true)
+    return getPreferences().getBoolean(
+      "voice_enabled",
+      resources.getBoolean(R.bool.voice_enabled_default_value)
+    )
   }
 
   fun getPreferences(): SharedPreferences {

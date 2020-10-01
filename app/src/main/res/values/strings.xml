@@ -343,4 +343,8 @@
   <string name="voice">Voz</string>
   <string name="assistant">Assistente</string>
   <string name="barcode_reader">Leitor de códigos</string>
+    <string name="use_voice_to_instructions">Utilizar voz para instruções</string>
+  <string name="message_settings_summary_use_camera_off">Os campos de leitura de códigos devem ser digitados ou lidos por leitor bluetooth</string>
+  <string name="message_settings_summary_use_camera_on">Abre automaticamente os campos de leitura de código de barra</string>
+  <string name="use_camera_per_default">Utilizar câmera por padrão</string>
 </resources>

@@ -29,6 +29,7 @@ class LoginSettingsActivity : MyAppCompatActivity() {
     private var developerMode: CheckBoxPreference? = null
     private var serverUrl: EditTextPreference? = null
     private var localUrl: EditTextPreference? = null
+    private var useFakeApi: CheckBoxPreference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
       setPreferencesFromResource(R.xml.login_settings_preferences, rootKey)
@@ -54,6 +55,7 @@ class LoginSettingsActivity : MyAppCompatActivity() {
       localUrl = preferenceScreen.findPreference("local_url")
       serverUrl = preferenceScreen.findPreference("server_url")
       developerMode = findPreference<CheckBoxPreference>("developer_mode")
+      useFakeApi = findPreference<CheckBoxPreference>("use_fake_api")
     }
 
     private fun validateUrl(

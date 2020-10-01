@@ -7,7 +7,7 @@ import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.CargoConferenceDto
 import br.com.trivio.wms.data.dto.CargoConferenceItemDto
 import br.com.trivio.wms.data.dto.ConferenceCountDto
-import br.com.trivio.wms.data.dto.TaskStatusDto
+import br.com.trivio.wms.data.dto.StatusDto
 import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
 import br.com.trivio.wms.repository.CargoConferenceRepository
@@ -85,14 +85,14 @@ class CargoConferenceViewModel(
     }
   }
 
-  fun startCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit = {}) {
+  fun startCounting(taskId: Long, callback: (Result<StatusDto>) -> Unit = {}) {
     viewModelScope.launch {
       val result = asyncRequest { cargoConferenceRepository.startConference(taskId) }
       callback(result)
     }
   }
 
-  fun finishCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit) {
+  fun finishCounting(taskId: Long, callback: (Result<StatusDto>) -> Unit) {
     viewModelScope.launch {
       val result = asyncRequest { cargoConferenceRepository.finishConference(taskId) }
       callback(result)

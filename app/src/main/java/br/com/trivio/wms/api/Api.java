@@ -8,7 +8,7 @@ import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.ConferenceCountDto;
 import br.com.trivio.wms.data.dto.PickingListDto;
 import br.com.trivio.wms.data.dto.TaskDto;
-import br.com.trivio.wms.data.dto.TaskStatusDto;
+import br.com.trivio.wms.data.dto.StatusDto;
 import br.com.trivio.wms.data.model.UserDetails;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,10 +40,10 @@ interface Api {
   Call<CargoConferenceDto> getCargoConference(@Path("taskId") Long taskId, @Query("fetchItems") Boolean fetchItems);
 
   @POST("cargoConference/{taskId}/start")
-  Call<TaskStatusDto> startCargoConference(@Path("taskId") Long taskId);
+  Call<StatusDto> startCargoConference(@Path("taskId") Long taskId);
 
   @POST("cargoConference/{taskId}/finish")
-  Call<TaskStatusDto> finishCargoConference(@Path("taskId") Long taskId);
+  Call<StatusDto> finishCargoConference(@Path("taskId") Long taskId);
 
   @POST("cargoConference/{taskId}/restart")
   Call<CargoConferenceDto> restartCargoConference(@Path("taskId") Long taskId);
@@ -65,6 +65,6 @@ interface Api {
   @DELETE("cargoConference/countsHistory/{conferenceCountHistoryItemId}")
   Call<ResponseBody> undoCountHistoryItem(@Path("conferenceCountHistoryItemId") Long conferenceCountHistoryItemId);
 
-  @GET("picking/pendingToOperatorCheck")
-  Call<List<PickingListDto>> getPickingsPendingToOperatorCheck();
+  @GET("picking/pendingToOperatorPick")
+  Call<List<PickingListDto>> getPickingsPendingToOperatorPick();
 }

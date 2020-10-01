@@ -2,10 +2,11 @@ package br.com.trivio.wms.api
 
 import br.com.trivio.wms.data.dto.*
 import br.com.trivio.wms.data.model.TaskStatus
+import br.com.trivio.wms.data.model.UserDetails
 import org.joda.time.LocalDateTime
 import java.math.BigDecimal
 
-object FakeApi {
+object FakeApi : DataApi {
 
   fun getEquipments(qtd: Int = 30): List<EquipmentDto> {
     return mutableListOf<EquipmentDto>().apply {
@@ -22,7 +23,7 @@ object FakeApi {
     }
   }
 
-  fun getPickingsPendingToOperatorCheck(): List<PickingListDto> {
+  override fun getMyPendingPickings(): List<PickingListDto> {
     return mutableListOf<PickingListDto>().apply {
       for (i in 0 until 30) {
         this.add(
@@ -40,6 +41,77 @@ object FakeApi {
         )
       }
     }
+  }
+
+  override fun login(usernamePassword: UsernamePassword): String {
+    return "fake-token"
+  }
+
+  override fun getUserDetails(): UserDetails {
+    return UserDetails(
+      id = 20,
+      ownerId = 1,
+      name = "Jon Doe",
+      username = "Doe",
+      roleDescription = "Developer",
+      "DEV"
+    )
+  }
+
+  override fun getTasksByUser(userId: Long): List<TaskDto> {
+    return listOf()
+  }
+
+  override fun getTask(id: Long): TaskDto {
+    return TaskDto()
+  }
+
+  override fun getCargoConferenceTask(id: Long, fetchItens: Boolean): CargoConferenceDto {
+    return CargoConferenceDto()
+  }
+
+  override fun getCargoConferenceTaskWithoutItems(taskId: Long): CargoConferenceDto {
+    return CargoConferenceDto()
+  }
+
+  override fun startCargoConference(taskId: Long): StatusDto {
+    return StatusDto()
+  }
+
+  override fun finishCargoConference(taskId: Long): StatusDto {
+    return StatusDto()
+  }
+
+  override fun restartCargoConference(taskId: Long): CargoConferenceDto {
+    return CargoConferenceDto()
+  }
+
+  override fun getCargosByStatus(status: String): List<CargoListDto> {
+    return listOf()
+  }
+
+  override fun getMyPendingCargos(): MutableList<CargoListDto> {
+    return mutableListOf()
+  }
+
+  override fun countCargoItem(
+    cargoConferenceItemDto: CargoConferenceItemDto,
+    quantity: BigDecimal,
+    description: String?
+  ) {
+
+  }
+
+  override fun finishTask(taskId: Long) {
+
+  }
+
+  override fun loadCountsHistory(taskId: Long): List<ConferenceCountDto> {
+    return listOf()
+  }
+
+  override fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?) {
+
   }
 
   fun getPickingTask(): PickingTaskDto {
@@ -100,8 +172,8 @@ object FakeApi {
     )
   }
 
-  fun startPicking(taskId: Long): TaskStatusDto {
-    return TaskStatusDto(name = "DOING", color = "#ff0000")
+  fun startPicking(taskId: Long): StatusDto {
+    return StatusDto(name = "DOING", color = "#ff0000")
   }
 
   fun pickItem(item: PickingItemDto, quantity: BigDecimal): PickingItemDto {
@@ -129,5 +201,6 @@ object FakeApi {
       selected = false
     )
   }
+
 
 }

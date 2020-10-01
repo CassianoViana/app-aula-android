@@ -11,7 +11,16 @@ class ServerBackendTest {
 
   @Before
   fun config() {
-    retrofitConfig.config(apiAddress)
+    retrofitConfig.config(apiAddress) {
+        val loginActivity = LoginActivity::class.java
+        try {
+            lifecycleCallback.closeAllActivities()
+        } finally {
+            val intent = Intent(context, loginActivity)
+            intent.flags = FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+    }
   }
 
   @Test

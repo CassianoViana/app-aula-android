@@ -13,15 +13,26 @@
 
   <PreferenceCategory app:title="Avançado">
     <CheckBoxPreference
+      app:defaultValue="false"
       app:key="developer_mode"
       app:title="Modo desenvolvedor" />
 
     <EditTextPreference
-      app:defaultValue="http://192.168.15.x:8080"
       android:shouldDisableView="true"
+      app:defaultValue="http://192.168.15.x:8080"
       app:key="local_url"
       app:title="Endereço API local"
       app:useSimpleSummaryProvider="true" />
+
+
+  </PreferenceCategory>
+
+  <PreferenceCategory app:title="Demo">
+    <CheckBoxPreference
+      app:defaultValue="false"
+      app:key="use_fake_api"
+      app:summary="Com esta opção, os dados não vem de uma API real, e sim são gerados pelo próprio aplicativo"
+      app:title="Utilizar API falsa" />
   </PreferenceCategory>
 
   <!--<PreferenceCategory app:title="@string/sync_header">

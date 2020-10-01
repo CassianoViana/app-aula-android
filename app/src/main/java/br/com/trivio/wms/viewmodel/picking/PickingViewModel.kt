@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.trivio.wms.data.Result
 import br.com.trivio.wms.data.dto.PickingItemDto
 import br.com.trivio.wms.data.dto.PickingTaskDto
-import br.com.trivio.wms.data.dto.TaskStatusDto
+import br.com.trivio.wms.data.dto.StatusDto
 import br.com.trivio.wms.extensions.asyncRequest
 import br.com.trivio.wms.extensions.isVerySimilar
 import br.com.trivio.wms.extensions.matchRemovingDots
@@ -39,7 +39,7 @@ class PickingViewModel(
     }
   }
 
-  fun startPicking(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit = {}) {
+  fun startPicking(taskId: Long, callback: (Result<StatusDto>) -> Unit = {}) {
     viewModelScope.launch {
       val result = asyncRequest { pickingRepository.startPicking(taskId) }
       callback(result)
@@ -176,7 +176,7 @@ class PickingViewModel(
 
 
 
-  fun finishCounting(taskId: Long, callback: (Result<TaskStatusDto>) -> Unit) {
+  fun finishCounting(taskId: Long, callback: (Result<StatusDto>) -> Unit) {
     viewModelScope.launch {
       val result = asyncRequest { pickingRepository.finishConference(taskId) }
       callback(result)

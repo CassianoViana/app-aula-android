@@ -9,7 +9,7 @@ data class TaskDto(
   var orderReferenceCode: String? = null,
   var name: String? = null,
   var status: TaskStatus? = null,
-  var statusDto: TaskStatusDto? = null,
+  var statusDto: StatusDto? = null,
   var type: TaskType? = null,
   var typeDto: TaskTypeDto? = null,
   var currentExecutorsNames: String? = null,

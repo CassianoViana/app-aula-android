@@ -87,11 +87,11 @@ fun getPreferences(context: Context): SharedPreferences {
 fun loadApiSettingsFromPreferences(context: Context) {
   val preferences = getPreferences(context)
   val isDevMode = preferences.getBoolean("developer_mode", false)
+  val useFakeApi = preferences.getBoolean("use_fake_api", false)
   val addressPrefKey = if (isDevMode) "local_url" else "server_url"
   val address = preferences.getString(addressPrefKey, "https://api.wms.trivio.com.br")
   if (address != null) {
-    serverBackend.config(address)
-    serverBackend.onUnauthorized = {
+    serverBackend.config(address, useFakeApi) {
       val loginActivity = LoginActivity::class.java
       try {
         lifecycleCallback.closeAllActivities()

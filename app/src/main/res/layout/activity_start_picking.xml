@@ -78,7 +78,6 @@
     </LinearLayout>
 
     <LinearLayout
-      android:id="@+id/progress_area_picking"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="1"
@@ -86,48 +85,30 @@
       android:padding="@dimen/padding"
       app:layout_constraintTop_toBottomOf="@+id/basic_infos">
 
-      <LinearLayout
-        android:id="@+id/layout_qtd_itens_to_pick"
-        android:layout_width="wrap_content"
+      <br.com.trivio.wms.components.custom.LabelledNumber
+        android:id="@+id/qtd_completely_picked_items"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        app:labelled_number_label="@string/separeds_totaly"
+        app:labelled_number_value="000" />
 
-        <TextView
-          android:id="@+id/qtd_picked_items"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:gravity="center_horizontal"
-          android:text="000"
-          android:textSize="60sp" />
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/separeds" />
-      </LinearLayout>
-
-      <LinearLayout
-        android:layout_width="wrap_content"
+      <br.com.trivio.wms.components.custom.LabelledNumber
+        android:id="@+id/qtd_picked_partially_items"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        app:labelled_number_label="@string/picked_partially"
+        app:labelled_number_value="000" />
 
-        <TextView
-          android:id="@+id/qtd_items_to_pick"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:gravity="center_horizontal"
-          android:text="000"
-          android:textSize="60sp" />
+      <br.com.trivio.wms.components.custom.LabelledNumber
+        android:id="@+id/qtd_items_to_pick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:labelled_number_label="@string/to_pick"
+        app:labelled_number_value="000" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/to_separe" />
-      </LinearLayout>
     </LinearLayout>
 
     <Button

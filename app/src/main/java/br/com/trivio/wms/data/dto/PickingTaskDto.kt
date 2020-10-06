@@ -16,14 +16,14 @@ class PickingTaskDto(
   val sellerName: String? = null,
   val sellerCode: String? = null,
   val progress: Int = 0,
-  val quantityPickedItems: Int = 0,
-  val quantityItemsToPick: Int = 0,
+  val quantityCompletelyPickedItems: Int = 0,
+  val quantityItemsNotPicked: Int = 0,
   val quantityPartiallyPicked: Int = 0,
   val items: List<PickingItemDto> = listOf(),
   val equipments: List<EquipmentDto> = listOf()
 ) {
 
-  val quantityNotFound = this.quantityItemsToPick - this.quantityPickedItems
+  val quantityNotFound = this.quantityItemsNotPicked - this.quantityCompletelyPickedItems
 
   companion object {
     const val STATUS_PICKING_ALL_PICKED = 0
@@ -62,7 +62,7 @@ class PickingTaskDto(
   }
 
   fun valid(): Boolean {
-    return quantityPartiallyPicked == 0 && quantityNotFound == 0
+    return quantityPartiallyPicked == 0 && quantityNotFound == 0 && quantityCompletelyPickedItems > 0 && quantityItemsNotPicked == 0
   }
 
   var countItemsNotPicked: Int = items.count {

@@ -8,10 +8,11 @@
   android:layout_marginEnd="@dimen/item_list_margin">
 
   <LinearLayout
-    android:background="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -56,11 +57,9 @@
           android:id="@+id/prioritary_label"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
-          android:drawableStart="@drawable/ic_baseline_warning_24"
-          android:drawableLeft="@drawable/ic_calendar_star_black_18dp"
-          android:text="Pedido prioritário"
-          android:drawableTint="@color/colorLightRedAccent"
-          android:textColor="@color/colorLightRedAccent"
+          android:text="Prioridade: Normal"
+          android:textColor="@color/blueLink"
+          android:textStyle="bold"
           app:layout_constraintStart_toStartOf="parent" />
 
       </LinearLayout>
@@ -75,12 +74,18 @@
         android:orientation="vertical">
 
         <TextView
-          android:layout_weight="1"
           android:id="@+id/quantity_to_pick_txt_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_weight="0"
           android:text="4"
           android:textSize="25sp" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="5dp"
+          android:layout_weight="1"
+          android:text="@string/items" />
 
         <br.com.trivio.wms.components.custom.Badge
           android:id="@+id/picking_task_badge"
@@ -91,19 +96,19 @@
       </LinearLayout>
 
     </LinearLayout>
+
     <br.com.trivio.wms.components.custom.ProgressBar
       android:id="@+id/progress_bar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:background_color="@color/lighterGray0"
       android:padding="0dp"
-      app:show_label="false"
+      app:background_color="@color/lighterGray0"
       app:bar_height="5dp"
       app:foreground_color="@color/colorLightBlueAccent"
-      app:progress="20" />
+      app:progress="20"
+      app:show_label="false" />
 
   </LinearLayout>
-
 
 
 </androidx.cardview.widget.CardView>

@@ -76,7 +76,7 @@ class FinishPickingActivity : MyAppCompatActivity() {
   private fun updateUi(data: PickingTaskDto) {
     label_info_picking_task.text = data.orderNumber.toString()
     label_input_number_total.value = data.quantityItems.toString()
-    label_input_number_separeds.value = data.quantityPickedItems.toString()
+    label_input_number_separeds.value = data.quantityCompletelyPickedItems.toString()
     label_input_number_not_found.value = data.quantityNotFound.toString()
     alert_partial_picked_order.message =
       getString(R.string.partial_pick_final_message, data.quantityPartiallyPicked)

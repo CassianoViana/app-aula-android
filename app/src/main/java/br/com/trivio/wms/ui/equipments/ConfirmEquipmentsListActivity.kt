@@ -42,9 +42,9 @@ class ConfirmEquipmentsListActivity : MyAppCompatActivity() {
     observeViewModel()
     onRefreshReloadList()
     bindListAdapter()
-    loadTask()
     onClickToAddMoreThenGoToAddEquipmentsActivity()
     onClickContinueOpenToPickingActivity()
+    loadTask()
   }
 
   private fun onClickToAddMoreThenGoToAddEquipmentsActivity() {
@@ -78,17 +78,19 @@ class ConfirmEquipmentsListActivity : MyAppCompatActivity() {
         findViewById<View>(R.id.btn_remove_equipment).setVisible(false)
       })
       .setPositiveButton(R.string.delete) { _, _ ->
-        equipmentViewModel.removeEquipment(equipment, taskId) { result ->
-          onResult(result, onSuccess = {
-            showMessageSuccess(R.string.success_on_remove_equipment)
-            adapter.removeEquipment(equipment)
-          })
+        equipmentViewModel.removeEquipment(equipment) { result ->
+          onResult(result,
+            onSuccess = {
+              showMessageSuccess(R.string.success_on_remove_equipment)
+              adapter.removeEquipment(equipment)
+            }
+          )
         }
       }
-      .setNegativeButton(R.string.cancel, { _, _ -> })
+      .setNegativeButton(R.string.cancel) { _, _ -> }
       .create()
       .show()
- }
+  }
 
   private fun onRefreshReloadList() {
     equipments_list.setOnRefreshListener {
@@ -106,9 +108,14 @@ class ConfirmEquipmentsListActivity : MyAppCompatActivity() {
 
   private fun observeViewModel() {
     viewModel.task.observe(this, { result ->
-      onResult(result, onSuccess = {
-        setEquipments(it.data.equipments)
-      })
+      onResult(result,
+        onSuccess = {
+          setEquipments(it.data.equipments)
+        },
+        always = {
+          equipments_list.stopRefresh()
+        }
+      )
     })
   }
 

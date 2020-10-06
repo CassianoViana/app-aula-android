@@ -28,6 +28,13 @@ class EquipmentsViewModel(
   fun loadEquipments(taskId: Long) {
     viewModelScope.launch {
       availableEquipments.value = asyncRequest { equipmentRepository.getEquipments(taskId) }
+      val value = availableEquipments.value
+      if (value is Result.Success<List<EquipmentDto>>) {
+        idsEquipmentsToAdd.value = value.data
+          .filter { it.selected }
+          .map { it.id }
+          .toMutableList()
+      }
     }
   }
 
@@ -44,11 +51,11 @@ class EquipmentsViewModel(
 
   fun removeEquipment(
     equipment: EquipmentDto,
-    taskId: Long,
-    callback: (Result<EquipmentDto>) -> Unit
+    callback: (Result<Any>) -> Unit
   ) {
     viewModelScope.launch {
-      val resultRemoveEquipment = equipmentRepository.removeEquipment(equipment.id, taskId)
+      val resultRemoveEquipment =
+        asyncRequest { equipmentRepository.removeEquipment(equipment.id) }
       callback(resultRemoveEquipment)
     }
   }
@@ -70,11 +77,12 @@ class EquipmentsViewModel(
   fun addEquipmentsByIds(
     equipmentsIds: List<Long>,
     taskId: Long,
-    callback: (Result<LongArray>) -> Unit
+    callback: (Result<List<Long>>) -> Unit
   ) {
     viewModelScope.launch {
-      val successfullyAddedIds =
-        equipmentRepository.addEquipments(equipmentsIds.toLongArray(), taskId)
+      val successfullyAddedIds = asyncRequest {
+        equipmentRepository.addEquipments(equipmentsIds, taskId)
+      }
       callback(successfullyAddedIds)
     }
   }

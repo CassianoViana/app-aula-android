@@ -30,7 +30,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/position_name"
       android:layout_alignParentStart="true"
-      android:layout_toStartOf="@+id/counted_unit_layout"
+      android:layout_toStartOf="@+id/picking_status"
       android:text="Nome produto"
       android:textColor="@color/colorDark"
       android:textSize="@dimen/medium_text" />

@@ -6,9 +6,11 @@ import java.util.List;
 import br.com.trivio.wms.data.dto.CargoConferenceDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.ConferenceCountDto;
+import br.com.trivio.wms.data.dto.EquipmentDto;
 import br.com.trivio.wms.data.dto.PickingListDto;
-import br.com.trivio.wms.data.dto.TaskDto;
+import br.com.trivio.wms.data.dto.PickingTaskDto;
 import br.com.trivio.wms.data.dto.StatusDto;
+import br.com.trivio.wms.data.dto.TaskDto;
 import br.com.trivio.wms.data.model.UserDetails;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -67,4 +69,16 @@ interface Api {
 
   @GET("picking/pendingToOperatorPick")
   Call<List<PickingListDto>> getPickingsPendingToOperatorPick();
+
+  @GET("picking/{taskId}")
+  Call<PickingTaskDto> getPickingTask(@Path("taskId") Long taskId);
+
+  @GET("picking/equipments/{taskId}")
+  Call<List<EquipmentDto>> getEquipmentsFreeAndSelectedToTask(@Path("taskId") Long taskId);
+
+  @POST("picking/setEquipments/{taskId}")
+  Call<List<Long>> setSelectedEquipments(@Path("taskId") Long taskId, @Body List<Long> equipmentsIds);
+
+  @DELETE("picking/equipment/remove/{equipmentId}")
+  Call<ResponseBody> removeEquipment(@Path("equipmentId") Long equipmentId);
 }

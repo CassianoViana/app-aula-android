@@ -28,4 +28,8 @@ interface DataApi {
   fun finishTask(taskId: Long)
   fun loadCountsHistory(taskId: Long): List<ConferenceCountDto>
   fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?)
+  fun getPickingTask(taskId: Long): PickingTaskDto
+  fun getEquipments(taskId: Long): List<EquipmentDto>
+  fun setSelectedEquipments(taskId: Long, equipmentsIds: List<Long>): List<Long>
+  fun removeEquipment(id: Long): Any
 }

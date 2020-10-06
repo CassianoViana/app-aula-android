@@ -102,6 +102,16 @@ object RealApi : DataApi {
     )
   }
 
+  override fun getEquipments(taskId: Long): List<EquipmentDto> {
+    return executeAndReturn(api.getEquipmentsFreeAndSelectedToTask(taskId))
+  }
+
+  override fun setSelectedEquipments(taskId: Long, equipmentsIds: List<Long>): List<Long> =
+    executeAndReturn(api.setSelectedEquipments(taskId, equipmentsIds))
+
+  override fun removeEquipment(id: Long) =
+    execute(api.removeEquipment(id))
+
   override fun getUserDetails(): UserDetails = executeAndReturn(api.userDetails)
 
   override fun getTasksByUser(userId: Long): List<TaskDto> =
@@ -145,6 +155,9 @@ object RealApi : DataApi {
 
   override fun undoCountHistoryItem(conferenceCountHistoryItemId: Long?) =
     execute(api.undoCountHistoryItem(conferenceCountHistoryItemId))
+
+  override fun getPickingTask(taskId: Long): PickingTaskDto =
+    executeAndReturn(api.getPickingTask(taskId))
 
   override fun getMyPendingPickings(): MutableList<PickingListDto> =
     executeAndReturn(api.pickingsPendingToOperatorPick)

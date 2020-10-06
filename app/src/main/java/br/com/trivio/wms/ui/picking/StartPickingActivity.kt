@@ -62,17 +62,24 @@ class StartPickingActivity : MyAppCompatActivity() {
     emited_at_info.loading = loading
     seller_info.loading = loading
     qtd_items_to_pick.setLoading(loading)
-    qtd_picked_items.setLoading(loading)
+    order_number.setLoading(loading)
+    qtd_completely_picked_items.setLoading(loading)
+    qtd_picked_partially_items.setLoading(loading)
+    if (loading) {
+      btn_choose_equipments.setVisible(false)
+      btn_continue_picking.setVisible(false)
+    }
   }
 
   private fun updateUi(data: PickingTaskDto) {
     order_number.text = data.orderNumber.toString()
     customer_name_info.text = data.customerName
+    cargo_info.text = data.cargoNumber
     emited_at_info.text = data.orderDate?.formatTo("dd/MM/yyyy")
     seller_info.text = "${data.sellerCode} - ${data.sellerName}"
-    qtd_picked_items.text = data.quantityPickedItems.toString()
-    layout_qtd_itens_to_pick.setVisible(data.taskStatus == TaskStatus.DOING)
-    qtd_items_to_pick.text = data.quantityItemsToPick.toString()
+    qtd_completely_picked_items.value = data.quantityCompletelyPickedItems.toString()
+    qtd_picked_partially_items.value = data.quantityPartiallyPicked.toString()
+    qtd_items_to_pick.value = data.quantityItemsNotPicked.toString()
     btn_choose_equipments.setVisible(data.taskStatus == TaskStatus.PENDING)
     btn_continue_picking.setVisible(data.taskStatus == TaskStatus.DOING)
   }
@@ -89,12 +96,13 @@ class StartPickingActivity : MyAppCompatActivity() {
       openEquipmentsActivity()
     }
     btn_continue_picking.setOnClickListener {
-      //openPickingActivity()
+      openPickingActivity()
     }
   }
 
   private fun openEquipmentsActivity() {
     val chooseEquipmentsIntent = Intent(this, AddEquipmentsListActivity::class.java)
+    chooseEquipmentsIntent.putExtra(AddEquipmentsListActivity.PICKING_TASK_ID, taskId)
     startActivity(chooseEquipmentsIntent)
   }
 
@@ -105,9 +113,10 @@ class StartPickingActivity : MyAppCompatActivity() {
   }
 
   private fun openPickingActivity() {
-    /*val intent = Intent(this, CargoConferenceActivity::class.java)
-    intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskId)
-    startActivityForResult(intent, CargoConferenceActivity.RESULT_TASK_ID)*/
+    val intent = Intent(this, PickingActivity::class.java)
+    intent.putExtra(PickingActivity.PICKING_TASK_ID, taskId)
+    finish()
+    startActivity(intent)
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -8,7 +8,8 @@ import java.math.BigDecimal
 
 object FakeApi : DataApi {
 
-  fun getEquipments(qtd: Int = 30): List<EquipmentDto> {
+  override fun getEquipments(taskId: Long): List<EquipmentDto> {
+    val qtd = 30
     return mutableListOf<EquipmentDto>().apply {
       for (i in 0 until qtd) {
         this.add(
@@ -21,6 +22,10 @@ object FakeApi : DataApi {
         )
       }
     }
+  }
+
+  override fun setSelectedEquipments(taskId: Long, equipmentsIds: List<Long>): List<Long> {
+    return equipmentsIds
   }
 
   override fun getMyPendingPickings(): List<PickingListDto> {
@@ -56,6 +61,10 @@ object FakeApi : DataApi {
       roleDescription = "Developer",
       "DEV"
     )
+  }
+
+  override fun getPickingTask(taskId: Long): PickingTaskDto {
+    TODO("Not yet implemented")
   }
 
   override fun getTasksByUser(userId: Long): List<TaskDto> {
@@ -132,9 +141,9 @@ object FakeApi : DataApi {
       quantityItems = 100,
       sellerCode = "3023",
       sellerName = "Anibal",
-      quantityItemsToPick = 100,
+      quantityItemsNotPicked = 100,
       quantityPartiallyPicked = if (Math.random() * 10 > 5) 15 else 0,
-      quantityPickedItems = 23,
+      quantityCompletelyPickedItems = 23,
       progress = 90,
       items = mutableListOf<PickingItemDto>().apply {
         for (i in 0 until 50) {
@@ -193,7 +202,7 @@ object FakeApi : DataApi {
     return ids
   }
 
-  fun removeEquipment(id: Long): EquipmentDto {
+  override fun removeEquipment(id: Long): EquipmentDto {
     return EquipmentDto(
       id = id,
       name = "Equipment $id",

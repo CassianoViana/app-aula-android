@@ -276,7 +276,7 @@
   <string name="seller">Vendedor</string>
   <string name="separeds">Separados</string>
   <string name="separadas">Separadas</string>
-  <string name="to_separe">À separar</string>
+  <string name="to_pick">À separar</string>
   <string name="pick">Separar</string>
   <string name="choose_equipments">Escolher equipamentos</string>
   <string name="continue_picking">Continuar separação</string>
@@ -347,4 +347,8 @@
   <string name="message_settings_summary_use_camera_off">Os campos de leitura de códigos devem ser digitados ou lidos por leitor bluetooth</string>
   <string name="message_settings_summary_use_camera_on">Abre automaticamente os campos de leitura de código de barra</string>
   <string name="use_camera_per_default">Utilizar câmera por padrão</string>
+    <string name="priority">Prioridade: %s</string>
+    <string name="locale_item_picking">L%d - %s</string>
+  <string name="picked_partially">Separados parcialmente</string>
+    <string name="separeds_totaly">Separados totalmente</string>
 </resources>

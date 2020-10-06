@@ -120,7 +120,7 @@ class PickingListActivity : MyAppCompatActivity() {
 
       pickingListDto.priorityStatus?.let {
         priorityLabelTextView.setTextColor(Color.parseColor(it.color))
-        priorityLabelTextView.text = it.name
+        priorityLabelTextView.text = view.context.getString(R.string.priority, it.name)
       }
       qtdToPickTextView.text = pickingListDto.quantityItems.toString()
       progressBar.setProgress(pickingListDto.progress)

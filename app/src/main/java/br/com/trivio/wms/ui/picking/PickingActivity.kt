@@ -1,15 +1,12 @@
 package br.com.trivio.wms.ui.picking
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
@@ -28,7 +25,6 @@ import br.com.trivio.wms.ui.equipments.ConfirmEquipmentsListActivity
 import br.com.trivio.wms.ui.equipments.ReleaseEquipmentsListActivity
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_picking.*
-import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 
@@ -381,6 +377,7 @@ class PickingActivity : MyAppCompatActivity() {
 
   private fun updateCargoItems(items: List<PickingItemDto>) {
     pickingItemsAdapter.items = items
+    pickingItemsAdapter.notifyDataSetChanged()
   }
 
   private fun updateStatusCargo(dto: PickingTaskDto) {
@@ -401,7 +398,7 @@ class PickingActivity : MyAppCompatActivity() {
     count_progress_bar.setLabelTop(
       getString(
         R.string.progress_picking,
-        pickingTaskDto.quantityPickedItems,
+        pickingTaskDto.quantityCompletelyPickedItems,
         pickingTaskDto.quantityItems,
       )
     )
@@ -574,7 +571,7 @@ class PickingActivity : MyAppCompatActivity() {
         fun bind(dto: PickStockPositionDto) {
           positionTextView.text = dto.name
           positionTypeTextView.text = dto.type
-          positionQtdItemsTextView.text = dto.qtdItems.toInt().toString()
+          positionQtdItemsTextView.text = dto.qtdItems?.toInt().toString()
           positionUnitTextView.text = dto.unity
           /*clickablePosition.setOnClickListener {
 
@@ -616,10 +613,25 @@ class PickingActivity : MyAppCompatActivity() {
     RecyclerView.Adapter<PickingItemsAdapter.PickingItemViewHolder>() {
 
     var items: List<PickingItemDto> = mutableListOf()
-      set(value) {
-        field = value
-        notifyDataSetChanged()
-      }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PickingItemViewHolder {
+      return PickingItemViewHolder(parent.inflateToViewHolder(R.layout.item_picking_layout))
+    }
+
+    override fun getItemCount(): Int {
+      return items.size
+    }
+
+    override fun onBindViewHolder(holder: PickingItemViewHolder, index: Int) {
+      val item = items[index]
+      holder.bind(index, item, onClickPickingItem)
+    }
+
+    interface OnClickItem {
+      fun onClick(item: PickingItemDto)
+      fun onLongClick(item: PickingItemDto)
+      //fun onClickHistory(item: PickingItemDto)
+    }
 
     class PickingItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
       private var productPositionTextView = view.findViewById<TextView>(R.id.position_name)
@@ -635,12 +647,14 @@ class PickingActivity : MyAppCompatActivity() {
       private var pickingStatusBadge = view.findViewById<Badge>(R.id.picking_status)
       private var itemToClick = view.findViewById<View>(R.id.pick_item_to_click)
 
+
       fun bind(
         index: Int,
         item: PickingItemDto,
-        onClickPickingItem: OnClickItem
+        onClickPickingItem: PickingItemsAdapter.OnClickItem
       ) {
-        productPositionTextView.text = "L${index + 1} - ${item.position}"
+        productPositionTextView.text =
+          view.context.getString(R.string.locale_item_picking, index + 1, item.position)
         productNameTextView.text = item.name
         skuTextView.text = coalesce(item.sku, R.string.no_sku)
         gtinTextView.text = coalesce(item.gtin, R.string.no_gtin)
@@ -661,11 +675,15 @@ class PickingActivity : MyAppCompatActivity() {
           storageUnitTextView.text = it.code
         }
 
-        pickedQtdTextView.text = view.context.getString(
-          R.string.one_slash_another,
-          item.pickedQuantity?.toInt(),
-          item.expectedQuantityToPick?.toInt()
-        )
+        pickedQtdTextView.text = if (item.pickedQuantity != null) {
+          view.context.getString(
+            R.string.one_slash_another,
+            item.pickedQuantity?.toInt(),
+            item.expectedQuantityToPick?.toInt()
+          )
+        } else {
+          item.expectedQuantityToPick?.toInt().toString()
+        }
 
         itemToClick.setOnLongClickListener {
           onClickPickingItem.onLongClick(item)
@@ -680,25 +698,6 @@ class PickingActivity : MyAppCompatActivity() {
           false
         }*/
       }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PickingItemViewHolder {
-      return PickingItemViewHolder(parent.inflateToViewHolder(R.layout.item_picking_layout))
-    }
-
-    override fun getItemCount(): Int {
-      return items.size
-    }
-
-    override fun onBindViewHolder(holder: PickingItemViewHolder, index: Int) {
-      val item = items[index]
-      holder.bind(index, item, onClickPickingItem)
-    }
-
-    interface OnClickItem {
-      fun onClick(item: PickingItemDto)
-      fun onLongClick(item: PickingItemDto)
-      //fun onClickHistory(item: PickingItemDto)
     }
   }
 }

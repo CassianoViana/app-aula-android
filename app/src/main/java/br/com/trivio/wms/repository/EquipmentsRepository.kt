@@ -1,7 +1,6 @@
 package br.com.trivio.wms.repository
 
 import br.com.trivio.wms.data.Result
-import br.com.trivio.wms.data.dto.EquipmentDto
 import br.com.trivio.wms.serverBackend
 
 class EquipmentsRepository {
@@ -10,11 +9,11 @@ class EquipmentsRepository {
     serverBackend.getEquipments(taskId)
   }
 
-  fun addEquipments(ids: LongArray, taskId: Long): Result<LongArray> = Result.call {
+  fun addEquipments(ids: List<Long>, taskId: Long): Result<List<Long>> = Result.call {
     serverBackend.addEquipments(ids, taskId)
   }
 
-  fun removeEquipment(id: Long, taskId: Long): Result<EquipmentDto> = Result.call {
-    serverBackend.removeEquipment(id, taskId)
+  fun removeEquipment(id: Long): Result<Any> = Result.call {
+    serverBackend.removeEquipment(id)
   }
 }

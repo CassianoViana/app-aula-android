@@ -12,7 +12,6 @@ import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.EquipmentDto
 import br.com.trivio.wms.extensions.inflateToViewHolder
-import br.com.trivio.wms.extensions.setVisible
 import br.com.trivio.wms.extensions.toggleVisibility
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.viewmodel.EquipmentsViewModel
@@ -39,12 +38,16 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
     observeViewModel()
     onRefreshReloadList()
     bindListAdapter()
-    loadEquipments()
     onBarcodeChangeFilter()
     onClickBarcodeThenShowBarcodeReader()
     onClickContinueOpenToPickingActivity()
     if (!intent.getBooleanExtra(MUTED, false))
       say(getString(R.string.message_select_picking_equipments))
+  }
+
+  override fun onResume() {
+    super.onResume()
+    loadEquipments()
   }
 
   private fun onBarcodeChangeFilter() {
@@ -57,9 +60,10 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
     btn_continue_to_picking.setOnClickListener {
       viewModel.idsEquipmentsToAdd.value?.let { equipmentIdsToAdd ->
         viewModel.addEquipmentsByIds(equipmentIdsToAdd, taskId) { result ->
-          onResult(result, onSuccess = {
-            openConfirmEquipmentsActivity()
-          })
+          onResult(result,
+            onSuccess = {
+              openConfirmEquipmentsActivity()
+            })
         }
       }
     }
@@ -118,7 +122,7 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
   }
 
   private fun setEquipments(data: List<EquipmentDto>) {
-    adapter.items = data
+    adapter.items = data.sortedBy { it.name }
   }
 
   private fun updateLabelQtdSelecteds(totalToAdd: Int) {

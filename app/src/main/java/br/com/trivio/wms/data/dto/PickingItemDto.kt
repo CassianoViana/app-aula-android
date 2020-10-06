@@ -15,7 +15,7 @@ class PickingItemDto(
   var storageUnit: StorageUnitDto? = null,
   val expectedQuantityToPick: BigDecimal? = BigDecimal.ZERO,
   var pickedQuantity: BigDecimal? = BigDecimal.ZERO,
-  var status: StatusDto,
+  var status: StatusDto = StatusDto(),
   val stockPositions: List<PickStockPositionDto> = mutableListOf(),
   val hasRequestedPickingReposition: Boolean = false
 ) {

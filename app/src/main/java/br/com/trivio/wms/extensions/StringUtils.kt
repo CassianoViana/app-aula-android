@@ -1,5 +1,7 @@
 package br.com.trivio.wms.extensions
 
+import java.util.*
+
 fun String?.coalesce(alternative: String): String {
   if (this == null || this.isEmpty()) {
     return alternative;
@@ -12,5 +14,9 @@ fun String.matchOtherReplacing(other: String, old: String, new: String): Boolean
 }
 
 fun String.matchRemovingDots(other: String): Boolean {
-  return matchOtherReplacing(other, ".", "")
+  return this.toUpperCase(Locale.getDefault()).matchOtherReplacing(
+    other.toUpperCase(Locale.getDefault()),
+    ".",
+    ""
+  )
 }

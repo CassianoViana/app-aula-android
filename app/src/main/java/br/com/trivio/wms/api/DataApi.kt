@@ -32,4 +32,7 @@ interface DataApi {
   fun getEquipments(taskId: Long): List<EquipmentDto>
   fun setSelectedEquipments(taskId: Long, equipmentsIds: List<Long>): List<Long>
   fun removeEquipment(id: Long): Any
+  fun startPickingTask(taskId: Long): StatusDto
+  fun pickItem(item: PickingItemDto, quantity: BigDecimal, position: String): PickingItemDto
+  fun finishPickingTask(taskId: Long): StatusDto;
 }

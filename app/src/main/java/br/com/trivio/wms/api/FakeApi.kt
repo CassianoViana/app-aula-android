@@ -185,7 +185,15 @@ object FakeApi : DataApi {
     return StatusDto(name = "DOING", color = "#ff0000")
   }
 
-  fun pickItem(item: PickingItemDto, quantity: BigDecimal): PickingItemDto {
+  override fun finishPickingTask(taskId: Long): StatusDto {
+    return StatusDto(name = "DONE")
+  }
+
+  override fun pickItem(
+    item: PickingItemDto,
+    quantity: BigDecimal,
+    position: String
+  ): PickingItemDto {
     return PickingItemDto(
       id = 0,
       sku = "123",
@@ -211,5 +219,7 @@ object FakeApi : DataApi {
     )
   }
 
-
+  override fun startPickingTask(taskId: Long): StatusDto {
+    return StatusDto(name = "DOING", color = "#1668c3")
+  }
 }

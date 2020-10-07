@@ -6,9 +6,9 @@ import java.math.BigDecimal
 
 class PickingItemDto(
   val id: Long = 0,
-  val sku: String = "",
-  val gtin: String = "",
-  val name: String = "",
+  val sku: String? = null,
+  val gtin: String? = null,
+  val name: String? = null,
   val order: Int = 0,
   val position: String = "",
   val totalItemsTask: Int = 0,
@@ -19,7 +19,6 @@ class PickingItemDto(
   val stockPositions: List<PickStockPositionDto> = mutableListOf(),
   val hasRequestedPickingReposition: Boolean = false
 ) {
-
 
   fun getSearchString(): String {
     return toString()
@@ -40,7 +39,7 @@ class PickingItemDto(
   }
 
   fun matchCode(code: String): Boolean {
-    return gtin.matchRemovingDots(code) || sku.matchRemovingDots(code)
+    return (gtin ?: "").matchRemovingDots(code) || (sku ?: "").matchRemovingDots(code)
   }
 
 }

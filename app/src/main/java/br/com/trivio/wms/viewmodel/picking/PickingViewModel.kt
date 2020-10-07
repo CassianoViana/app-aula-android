@@ -62,7 +62,7 @@ class PickingViewModel(
         .firstOrNull {
           it.sku == search ||
             it.gtin == search ||
-            it.name.isVerySimilar(search) ||
+            (it.name ?: "").isVerySimilar(search) ||
             it.position.isVerySimilar(search)
         }
       if (item == null) {
@@ -80,17 +80,23 @@ class PickingViewModel(
     quantity: BigDecimal,
     callback: (Result<PickingItemDto>) -> Unit
   ) {
-    pickItem(item, quantity.multiply(BigDecimal(-1)), callback)
+    pickItem(
+      item = item,
+      position = item.position,
+      quantity = quantity.multiply(BigDecimal(-1)),
+      callback = callback
+    )
   }
 
   fun pickItem(
     item: PickingItemDto,
+    position: String = "",
     quantity: BigDecimal,
     callback: (Result<PickingItemDto>) -> Unit
   ) {
     viewModelScope.launch {
       pickingItem.value = asyncRequest {
-        pickingRepository.pickItem(item, quantity)
+        pickingRepository.pickItem(item, position, quantity)
       }.apply {
         callback(this)
       }
@@ -148,6 +154,15 @@ class PickingViewModel(
       }
     }
     callback(result)
+  }
+
+  fun finishPicking(taskId: Long, callback: (Result<StatusDto>) -> Unit) {
+    viewModelScope.launch {
+      val status = asyncRequest {
+        pickingRepository.finishPicking(taskId)
+      }
+      callback(status)
+    }
   }
 
   /*

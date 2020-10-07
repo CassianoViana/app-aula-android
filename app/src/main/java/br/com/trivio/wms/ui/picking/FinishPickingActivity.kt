@@ -14,6 +14,7 @@ import br.com.trivio.wms.data.dto.PickingTaskDto
 import br.com.trivio.wms.extensions.inflateToViewHolder
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
+import br.com.trivio.wms.extensions.showMessageSuccess
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_finish_picking.*
@@ -116,18 +117,6 @@ class FinishPickingActivity : MyAppCompatActivity() {
         )
       }
     }
-    btn_finish_with_divergences.setOnClickListener {
-      startLoading(R.string.finishing_count)
-      cargoConferenceViewModel.finishCounting(taskId) { result ->
-        onResult(
-          result,
-          onSuccess = {
-            showMessageSuccess(R.string.the_counting_was_finished_with_divergences)
-            backToScreenThatInitiatedTheProcess()
-          }
-        )
-      }
-    }
     btn_finish_counting.setOnClickListener {
       startLoading(R.string.finishing_count)
       cargoConferenceViewModel.finishCounting(taskId) {
@@ -138,6 +127,21 @@ class FinishPickingActivity : MyAppCompatActivity() {
       }
     }*/
     btn_icon_x.setOnClickListener { finish() }
+    btn_finish_picking.setOnClickListener {
+      startLoading(R.string.finishing_picking)
+      viewModel.finishPicking(taskId) { result ->
+        onResult(
+          result,
+          onSuccess = {
+            showMessageSuccess(R.string.the_picking_was_finished)
+            backToScreenThatInitiatedTheProcess()
+          },
+          always = {
+            endLoading()
+          }
+        )
+      }
+    }
   }
 
   private fun backToScreenThatInitiatedTheProcess() {

@@ -7,6 +7,7 @@ import br.com.trivio.wms.data.dto.CargoConferenceDto;
 import br.com.trivio.wms.data.dto.CargoListDto;
 import br.com.trivio.wms.data.dto.ConferenceCountDto;
 import br.com.trivio.wms.data.dto.EquipmentDto;
+import br.com.trivio.wms.data.dto.PickingItemDto;
 import br.com.trivio.wms.data.dto.PickingListDto;
 import br.com.trivio.wms.data.dto.PickingTaskDto;
 import br.com.trivio.wms.data.dto.StatusDto;
@@ -81,4 +82,15 @@ interface Api {
 
   @DELETE("picking/equipment/remove/{equipmentId}")
   Call<ResponseBody> removeEquipment(@Path("equipmentId") Long equipmentId);
+
+  @POST("picking/{taskId}/start")
+  Call<StatusDto> startPickingTask(@Path("taskId") Long taskId);
+
+  @POST("picking/pick/{pickingItemId}/{position}/{quantity}")
+  Call<PickingItemDto> pickItem(@Path("pickingItemId") Long pickingItemId,
+                                @Path("position") String position,
+                                @Path("quantity") BigDecimal quantity);
+
+  @POST("picking/{taskId}/finish")
+  Call<StatusDto> finishPickingTask(@Path("taskId") Long taskId);
 }

@@ -29,6 +29,7 @@ class PickingListActivity : MyAppCompatActivity() {
   })
 
   private fun openStartPickingActivity(item: PickingListDto) {
+    startTask()
     val startPickingIntent = Intent(this, StartPickingActivity::class.java)
     startPickingIntent.putExtra(StartPickingActivity.PICKING_TASK_ID, item.id)
     startActivity(startPickingIntent)
@@ -40,6 +41,10 @@ class PickingListActivity : MyAppCompatActivity() {
     observeViewModel()
     onRefreshReloadList()
     bindListAdapter()
+  }
+
+  override fun onResume() {
+    super.onResume()
     loadPickings()
   }
 

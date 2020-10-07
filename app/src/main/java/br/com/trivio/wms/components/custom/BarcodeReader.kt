@@ -119,6 +119,10 @@ class BarcodeReader @JvmOverloads constructor(
     }
   }
 
+  fun setInputType(inputType: Int) {
+    input_barcode_result.inputType = inputType
+  }
+
   fun startRead() {
     codeScanner.startPreview()
   }

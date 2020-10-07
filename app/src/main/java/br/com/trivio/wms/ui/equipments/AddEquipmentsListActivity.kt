@@ -162,20 +162,16 @@ class AddEquipmentsListActivity : MyAppCompatActivity() {
       equipmentNameTextView.text = dto.name
       equipmentCodeTextView.text = dto.code
       btnSelectEquipment.apply {
-        text = view.context.getString(
-          if (dto.selected) {
-            R.string.remove
-          } else {
-            R.string.select
-          }
-        )
         background = view.context.getDrawable(
           if (dto.selected) {
-            R.drawable.light_red_rounded
+            R.drawable.ic_baseline_check_box_24
           } else {
-            R.drawable.light_blue_rounded
+            R.drawable.ic_baseline_check_box_outline_blank_24
           }
         )
+      }
+      view.setOnClickListener {
+        onClickToSelect(dto)
       }
       btnSelectEquipment.setOnClickListener {
         onClickToSelect(dto)

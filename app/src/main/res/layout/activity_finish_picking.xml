@@ -91,7 +91,7 @@
     </LinearLayout>
 
     <Button
-      android:id="@+id/btn_finish_counting"
+      android:id="@+id/btn_finish_picking"
       style="@style/button_action.ok"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

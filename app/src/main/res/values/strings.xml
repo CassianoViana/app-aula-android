@@ -351,4 +351,6 @@
     <string name="locale_item_picking">L%d - %s</string>
   <string name="picked_partially">Separados parcialmente</string>
     <string name="separeds_totaly">Separados totalmente</string>
+  <string name="finishing_picking">Finalizando separação</string>
+  <string name="the_picking_was_finished">A separação foi finalizada</string>
 </resources>

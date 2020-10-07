@@ -71,11 +71,19 @@ class ServerBackend {
 
   fun getPickingTask(taskId: Long): PickingTaskDto = dataApi.getPickingTask(taskId)
   fun getEquipments(taskId: Long): List<EquipmentDto> = dataApi.getEquipments(taskId)
-  fun startPicking(taskId: Long): StatusDto = FakeApi.startPicking(taskId);
-  fun pickItem(item: PickingItemDto, quantity: BigDecimal): PickingItemDto =
-    FakeApi.pickItem(item, quantity)
+  fun startPicking(taskId: Long): StatusDto = dataApi.startPickingTask(taskId);
+  fun pickItem(item: PickingItemDto, position: String, quantity: BigDecimal): PickingItemDto =
+    dataApi.pickItem(
+      item,
+      quantity,
+      position,
+    )
 
-  fun addEquipments(equipmentsIds: List<Long>, taskId: Long): List<Long> = dataApi.setSelectedEquipments(taskId, equipmentsIds)
+  fun addEquipments(equipmentsIds: List<Long>, taskId: Long): List<Long> =
+    dataApi.setSelectedEquipments(taskId, equipmentsIds)
+
   fun removeEquipment(id: Long) = dataApi.removeEquipment(id)
+
+  fun finishPickingTask(taskId:Long):StatusDto = dataApi.finishPickingTask(taskId);
 
 }

@@ -3,6 +3,7 @@ package br.com.trivio.wms.ui.picking
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -151,6 +152,9 @@ class PickingActivity : MyAppCompatActivity() {
       hideDefaultInputView = true,
       inputViewFn = { dialog ->
         barcodeReader.apply {
+          val positionOnlyContainsNumbers = item.position.matches(Regex("[0-9.]+"))
+          if (!positionOnlyContainsNumbers)
+            setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
           setOnReadListener { position ->
             validatePosition(item, position,
               onValid = { onValidPositionCode(dialog) },
@@ -450,8 +454,12 @@ class PickingActivity : MyAppCompatActivity() {
             inputNumber.showError()
             return
           }
-          viewModel.pickItem(item, quantity) { it ->
-            onResult(it, onSuccess = {
+          viewModel.pickItem(
+            item = item,
+            quantity = quantity,
+            position = item.position
+          ) { result ->
+            onResult(result, onSuccess = {
               showMessageSuccess(R.string.item_separed_with_success, say = true) {
                 onFinishPickItem(item)
                 delay {

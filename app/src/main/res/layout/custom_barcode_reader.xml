@@ -30,7 +30,8 @@
   <com.budiyev.android.codescanner.CodeScannerView
     android:id="@+id/scanner_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0"
     app:autoFocusButtonColor="@android:color/white"
     app:autoFocusButtonVisible="true"
     app:flashButtonColor="@android:color/white"

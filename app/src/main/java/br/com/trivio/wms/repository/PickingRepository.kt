@@ -22,4 +22,14 @@ class PickingRepository {
   fun finishPicking(taskId: Long): Result<StatusDto> =
     Result.call { serverBackend.finishPickingTask(taskId) }
 
+  fun cancelPickingRepositionRequest(item: PickingItemDto): Result<PickingItemDto> =
+    Result.call { serverBackend.cancelPickingRepositionRequest(item) }
+
+  fun requestPickingReposition(item: PickingItemDto): Result<PickingItemDto> =
+    Result.call { serverBackend.requestPickingReposition(item) }
+
+  fun informItemNotFound(item: PickingItemDto): Result<PickingItemDto> =
+    Result.call { serverBackend.informItemNotFound(item) }
+
+
 }

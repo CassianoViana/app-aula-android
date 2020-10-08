@@ -11,10 +11,7 @@ import br.com.trivio.wms.R
 import br.com.trivio.wms.components.custom.Message
 import br.com.trivio.wms.data.dto.EquipmentDto
 import br.com.trivio.wms.data.dto.PickingTaskDto
-import br.com.trivio.wms.extensions.inflateToViewHolder
-import br.com.trivio.wms.extensions.setLoading
-import br.com.trivio.wms.extensions.setVisible
-import br.com.trivio.wms.extensions.showMessageSuccess
+import br.com.trivio.wms.extensions.*
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.viewmodel.picking.PickingViewModel
 import kotlinx.android.synthetic.main.activity_finish_picking.*
@@ -41,8 +38,6 @@ class FinishPickingActivity : MyAppCompatActivity() {
     listenClickEvents()
     listenRefresh()
     loadPickingTaskDetails()
-    /*layout_success.setVisible(false)
-    layout_fail.setVisible(false)*/
   }
 
   private fun bindListAdapter() {
@@ -71,18 +66,21 @@ class FinishPickingActivity : MyAppCompatActivity() {
     if (!loading) {
       used_equipments_list.setLoading(loading)
       refresh_picking_task.isRefreshing = loading
+    } else {
+      alert_partial_picked_order.setVisible(false)
     }
   }
 
   private fun updateUi(data: PickingTaskDto) {
-    label_info_picking_task.text = data.orderNumber.toString()
+    label_info_picking_task.text = coalesce(data.orderNumber, "--")
     label_input_number_total.value = data.quantityItems.toString()
     label_input_number_separeds.value = data.quantityCompletelyPickedItems.toString()
     label_input_number_not_found.value = data.quantityNotFound.toString()
     alert_partial_picked_order.message =
       getString(R.string.partial_pick_final_message, data.quantityPartiallyPicked)
-    setEquipmetnsListData(data.equipments)
+    setEquipmentsListData(data.equipments)
     label_input_number_not_found.setVisible(data.quantityNotFound > 0)
+    alert_partial_picked_order.setVisible()
     if (data.valid()) {
       alert_partial_picked_order.message = getString(R.string.all_items_were_picked_correctly)
       alert_partial_picked_order.setType(Message.TYPE_SUCCESS)
@@ -91,7 +89,9 @@ class FinishPickingActivity : MyAppCompatActivity() {
     }
   }
 
-  private fun setEquipmetnsListData(equipments: List<EquipmentDto>) {
+  private fun setEquipmentsListData(equipments: List<EquipmentDto>) {
+    equipments_label.setVisible(equipments.isNotEmpty())
+    used_equipments_list.setVisible(equipments.isNotEmpty())
     equipmentsAdapter.items = equipments
     equipmentsAdapter.notifyDataSetChanged()
   }

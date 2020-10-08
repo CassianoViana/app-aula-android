@@ -28,7 +28,6 @@ class PickingViewModel(
   val countsHistoryList = MutableLiveData<Result<List<ConferenceCountDto>>>()
   */
 
-
   fun loadPickingTask(id: Long, callback: (Result<PickingTaskDto>) -> Unit = {}) {
     viewModelScope.launch {
       val result = asyncRequest {
@@ -162,6 +161,30 @@ class PickingViewModel(
         pickingRepository.finishPicking(taskId)
       }
       callback(status)
+    }
+  }
+
+  fun togglePickingRepositionRequest(
+    item: PickingItemDto,
+    callback: (Result<PickingItemDto>) -> Unit
+  ) {
+    viewModelScope.launch {
+      val pickingItemToggleRequestRepositionResult = asyncRequest {
+        if (item.hasRequestedPickingReposition)
+          pickingRepository.cancelPickingRepositionRequest(item)
+        else
+          pickingRepository.requestPickingReposition(item)
+      }
+      callback(pickingItemToggleRequestRepositionResult)
+    }
+  }
+
+  fun reportItemNotFound(item: PickingItemDto, callback: (Result<PickingItemDto>) -> Unit = {}) {
+    viewModelScope.launch {
+      val itemNotFoundReportResult = asyncRequest {
+        pickingRepository.informItemNotFound(item)
+      }
+      callback(itemNotFoundReportResult)
     }
   }
 

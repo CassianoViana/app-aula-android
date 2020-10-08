@@ -21,9 +21,9 @@ fun coalesce(value1: String?, alternative: Int): String {
   return globalData.appContext.getString(alternative)
 }
 
-fun coalesce(value1: String?, alternative: String): String {
-  return if (!value1.isNullOrBlank()) {
-    value1
+fun coalesce(value1: Any?, alternative: String): String {
+  return if (!(value1 == null || value1.toString().isBlank())) {
+    value1.toString()
   } else alternative
 }
 

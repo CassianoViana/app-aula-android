@@ -35,4 +35,7 @@ interface DataApi {
   fun startPickingTask(taskId: Long): StatusDto
   fun pickItem(item: PickingItemDto, quantity: BigDecimal, position: String): PickingItemDto
   fun finishPickingTask(taskId: Long): StatusDto;
+  fun cancelPickingRepositionRequest(item:PickingItemDto): PickingItemDto
+  fun requestPickingReposition(item:PickingItemDto): PickingItemDto
+  fun informItemNotFound(item: PickingItemDto): PickingItemDto
 }

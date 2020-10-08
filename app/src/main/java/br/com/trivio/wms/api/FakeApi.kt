@@ -181,6 +181,24 @@ object FakeApi : DataApi {
     )
   }
 
+  override fun cancelPickingRepositionRequest(item: PickingItemDto): PickingItemDto {
+    return item.apply {
+      this.hasRequestedPickingReposition = false
+    }
+  }
+
+  override fun requestPickingReposition(item: PickingItemDto): PickingItemDto {
+    return item.apply {
+      this.hasRequestedPickingReposition = true
+    }
+  }
+
+  override fun informItemNotFound(item: PickingItemDto): PickingItemDto {
+    return item.apply {
+      this.hasRequestedPickingReposition = !this.hasRequestedPickingReposition
+    }
+  }
+
   fun startPicking(taskId: Long): StatusDto {
     return StatusDto(name = "DOING", color = "#ff0000")
   }

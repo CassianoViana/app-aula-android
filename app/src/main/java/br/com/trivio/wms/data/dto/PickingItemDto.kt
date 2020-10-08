@@ -17,7 +17,7 @@ class PickingItemDto(
   var pickedQuantity: BigDecimal? = BigDecimal.ZERO,
   var status: StatusDto = StatusDto(),
   val stockPositions: List<PickStockPositionDto> = mutableListOf(),
-  val hasRequestedPickingReposition: Boolean = false
+  var hasRequestedPickingReposition: Boolean = false
 ) {
 
   fun getSearchString(): String {

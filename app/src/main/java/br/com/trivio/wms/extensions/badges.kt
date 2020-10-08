@@ -2,6 +2,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.widget.TextView
 import br.com.trivio.wms.data.dto.TaskDto
+import br.com.trivio.wms.extensions.coalesce
 
 object UiUtils {
   fun setTaskStatusStyle(textView: TextView, taskDto: TaskDto) {
@@ -22,3 +23,4 @@ fun TextView.setTagBackground(color: String?) {
     }
   }
 }
+

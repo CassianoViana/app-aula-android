@@ -42,7 +42,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          app:labelled_number_label="@string/total"
+          app:labelled_number_label="@string/items"
           app:labelled_number_value="000" />
 
         <br.com.trivio.wms.components.custom.LabelledNumber
@@ -50,7 +50,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          app:labelled_number_label="@string/separeds"
+          app:labelled_number_label="@string/separeds_totaly"
           app:labelled_number_value="000" />
 
         <br.com.trivio.wms.components.custom.LabelledNumber
@@ -73,6 +73,7 @@
         app:message_type="warning" />
 
       <TextView
+        android:id="@+id/equipments_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_half"

@@ -125,6 +125,15 @@ object RealApi : DataApi {
   override fun finishPickingTask(taskId: Long): StatusDto =
     executeAndReturn(api.finishPickingTask(taskId))
 
+  override fun cancelPickingRepositionRequest(item: PickingItemDto): PickingItemDto
+    = executeAndReturn(api.cancelPickingRepositionRequest(item.id))
+
+  override fun requestPickingReposition(item: PickingItemDto): PickingItemDto
+  = executeAndReturn(api.requestPickingReposition(item.id))
+
+  override fun informItemNotFound(item: PickingItemDto): PickingItemDto
+    = executeAndReturn(api.informItemNotFound(item.id))
+
   override fun getUserDetails(): UserDetails = executeAndReturn(api.userDetails)
 
   override fun getTasksByUser(userId: Long): List<TaskDto> =

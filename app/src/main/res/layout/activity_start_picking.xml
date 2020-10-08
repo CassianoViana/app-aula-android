@@ -106,7 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:labelled_number_label="@string/to_pick"
+        app:labelled_number_label="@string/not_picked"
         app:labelled_number_value="000" />
 
     </LinearLayout>

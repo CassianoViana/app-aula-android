@@ -95,7 +95,7 @@ class PickingActivity : MyAppCompatActivity() {
       setInputVisible()
       setToggleable()
       startRead()
-      setMarginVertical(margin = 20, height = 400)
+      setMarginVertical(margin = 20, height = 300)
     }
   }
 
@@ -121,7 +121,7 @@ class PickingActivity : MyAppCompatActivity() {
                   onResult(result, onSuccess = { success ->
                     val pickingTask = success.data
                     if (pickingTask.items.all { item -> item.hasItemsPicked() }) {
-                      showMessageSuccess(R.string.all_items_were_picked)
+                      showMessageSuccess(R.string.all_items_were_picked, say = true)
                     } else {
                       showMessageSuccess(
                         getString(
@@ -156,6 +156,7 @@ class PickingActivity : MyAppCompatActivity() {
           if (!positionOnlyContainsNumbers)
             setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
           setOnReadListener { position ->
+            setInputResultValue(position)
             validatePosition(item, position,
               onValid = { onValidPositionCode(dialog) },
               onInvalid = {
@@ -180,7 +181,7 @@ class PickingActivity : MyAppCompatActivity() {
     item: PickingItemDto,
     onCloseProductDialogListener: () -> Unit = {}
   ) {
-    val barcodeReader = createBarcodeReader(hint = "Código de barras")
+    val barcodeReader = createBarcodeReader(hint = getString(R.string.barcode))
     val productInput = barcodeReader.getInput()
     val onValidProductCode: (Dialog) -> Any = { productDialog ->
       openPickItemDialog(item,
@@ -196,6 +197,7 @@ class PickingActivity : MyAppCompatActivity() {
       inputViewFn = { dialog ->
         barcodeReader.apply {
           setOnReadListener { productCode ->
+            setInputResultValue(productCode)
             validateProductCode(item, productCode,
               onValid = { onValidProductCode(dialog) },
               onInvalid = {
@@ -276,19 +278,6 @@ class PickingActivity : MyAppCompatActivity() {
     super.onFinish()
   }
 
-  override fun onResume() {
-    super.onResume()
-    resetReadingState()
-  }
-
-  override fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<out String>,
-    grantResults: IntArray
-  ) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-  }
-
   private fun onClickFinishGoToReleaseEquipmentsActivity() {
     btn_finish_picking.setOnClickListener {
       openReleaseEquipmentsActivity()
@@ -354,22 +343,6 @@ class PickingActivity : MyAppCompatActivity() {
     })
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    when (resultCode) {
-      /*EndConferenceActivity.END_CONFERENCE_ACTIVITY -> {
-        data?.let {
-          pickingTaskId =
-            it.getLongExtra(EndConferenceActivity.RESTARTING_TASK, pickingTaskId)
-          loadPickingTask()
-        }
-      }
-      ConferenceCountsActivity.END_COUNT_HISTORY_ACTIVITY -> {
-        loadPickingTask()
-      }*/
-    }
-  }
-
   private fun updateUi(cargoConferenceDto: PickingTaskDto) {
     updateCargoItems(cargoConferenceDto.items)
     updateUiLabelItemsCounted(cargoConferenceDto)
@@ -386,7 +359,7 @@ class PickingActivity : MyAppCompatActivity() {
 
   private fun updateStatusCargo(dto: PickingTaskDto) {
     if (dto.getStatusPicking() == STATUS_PICKING_ALL_PICKED) {
-      showMessageSuccess(R.string.all_items_are_counted)
+      showMessageSuccess(R.string.all_items_were_picked)
     }
   }
 
@@ -445,7 +418,7 @@ class PickingActivity : MyAppCompatActivity() {
         inputNumber
       },
       negativeButtonText = getString(R.string.check_stock),
-      positiveButtonText = getString(R.string.next),
+      positiveButtonText = getString(R.string.pick),
       drawableConfirmButtonResId = R.drawable.ic_baseline_arrow_forward_18,
       positiveAction = fun(dialog: Dialog, _) {
         inputNumber.value?.let { quantity ->
@@ -459,18 +432,19 @@ class PickingActivity : MyAppCompatActivity() {
             quantity = quantity,
             position = item.position
           ) { result ->
-            onResult(result, onSuccess = {
-              showMessageSuccess(R.string.item_separed_with_success, say = true) {
-                onFinishPickItem(item)
-                delay {
-                  dialog.hide()
+            onResult(result,
+              onSuccess = {
+                showMessageSuccess(R.string.item_separed_with_success, say = true) {
+                  onFinishPickItem(item)
+                  delay {
+                    dialog.hide()
+                  }
                 }
-              }
-            })
+              })
           }
         }
       },
-      negativeAction = { dialog ->
+      negativeAction = {
         openStockDialog(item)
       },
     )
@@ -501,29 +475,25 @@ class PickingActivity : MyAppCompatActivity() {
             inputNumber.showError()
             return
           }
-          viewModel.devolveItem(item, quantity) { it ->
-            onResult(it, onSuccess = {
-              showMessageSuccess(
-                getString(R.string.the_item_was_devolved, quantity.toInt()),
-                say = true
-              ) {
-                onFinishPickItem(item)
-                delay {
-                  dialog.hide()
+          viewModel.devolveItem(item, quantity) { devolveResult ->
+            onResult(devolveResult,
+              onSuccess = {
+                showMessageSuccess(
+                  getString(R.string.the_item_was_devolved, quantity.toInt()),
+                  say = true
+                ) {
+                  onFinishPickItem(item)
+                  delay {
+                    dialog.hide()
+                  }
                 }
-              }
-            })
+              })
           }
         }
       },
     )
   }
 
-  @Deprecated("O campo será removido")
-  private fun resetReadingState() {
-    //barcode_search_input.reset()
-    //barcode_reader.startRead()
-  }
 
   private fun openStockDialog(
     item: PickingItemDto,
@@ -550,9 +520,32 @@ class PickingActivity : MyAppCompatActivity() {
       ),
       negativeButtonText = getString(R.string.not_localized),
       positiveAction = { dialog, _: String ->
+        viewModel.togglePickingRepositionRequest(item) { result ->
+          onResult(result,
+            onSuccess = {
+              if (it.data.hasRequestedPickingReposition) {
+                showMessageSuccess(
+                  R.string.success_on_request_picking_reposition,
+                  say = true
+                )
+              } else {
+                showMessageSuccess(
+                  R.string.success_on_cancel_picking_request_reposition,
+                  say = true
+                )
+              }
+              item.hasRequestedPickingReposition = it.data.hasRequestedPickingReposition
+              dialog.hide()
+            })
+        }
       },
-      negativeAction = {
-
+      negativeAction = { dialog ->
+        viewModel.reportItemNotFound(item) { result ->
+          onResult(result, onSuccess = {
+            showMessageSuccess(R.string.not_found_success_reported, say = true)
+            dialog.hide()
+          })
+        }
       },
     )
   }
@@ -659,7 +652,7 @@ class PickingActivity : MyAppCompatActivity() {
       fun bind(
         index: Int,
         item: PickingItemDto,
-        onClickPickingItem: PickingItemsAdapter.OnClickItem
+        onClickPickingItem: OnClickItem
       ) {
         productPositionTextView.text =
           view.context.getString(R.string.locale_item_picking, index + 1, item.position)

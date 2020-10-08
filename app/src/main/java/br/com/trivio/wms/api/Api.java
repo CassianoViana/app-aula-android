@@ -93,4 +93,13 @@ interface Api {
 
   @POST("picking/{taskId}/finish")
   Call<StatusDto> finishPickingTask(@Path("taskId") Long taskId);
+
+  @POST("picking/cancelPickingRepositionRequest/{itemId}")
+  Call<PickingItemDto> cancelPickingRepositionRequest(@Path("itemId") Long pickingTaskItemId);
+
+  @POST("picking/requestPickingReposition/{itemId}")
+  Call<PickingItemDto> requestPickingReposition(@Path("itemId") Long pickingTaskItemId);
+
+  @POST("picking/informItemNotFound/{itemId}")
+  Call<PickingItemDto> informItemNotFound(@Path("itemId") Long pickingTaskItemId);
 }

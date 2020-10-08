@@ -84,6 +84,13 @@ class ServerBackend {
 
   fun removeEquipment(id: Long) = dataApi.removeEquipment(id)
 
-  fun finishPickingTask(taskId:Long):StatusDto = dataApi.finishPickingTask(taskId);
+  fun finishPickingTask(taskId: Long): StatusDto = dataApi.finishPickingTask(taskId);
+
+  fun cancelPickingRepositionRequest(item: PickingItemDto) =
+    dataApi.cancelPickingRepositionRequest(item)
+
+  fun requestPickingReposition(item: PickingItemDto) = dataApi.requestPickingReposition(item)
+
+  fun informItemNotFound(item: PickingItemDto) = dataApi.informItemNotFound(item)
 
 }

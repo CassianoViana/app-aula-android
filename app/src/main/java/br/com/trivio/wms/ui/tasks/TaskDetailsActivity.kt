@@ -14,6 +14,7 @@ import br.com.trivio.wms.data.model.TaskStatus
 import br.com.trivio.wms.data.model.TaskType
 import br.com.trivio.wms.onResult
 import br.com.trivio.wms.ui.cargos.conference.CargoConferenceActivity
+import br.com.trivio.wms.ui.picking.PickingActivity
 import kotlinx.android.synthetic.main.activity_task_details.*
 import kotlinx.android.synthetic.main.custom_top_bar.*
 
@@ -88,6 +89,11 @@ class TaskDetailsActivity : MyAppCompatActivity() {
           TaskType.CARGO_CONFERENCE -> {
             val intent = Intent(this, CargoConferenceActivity::class.java)
             intent.putExtra(CargoConferenceActivity.CARGO_TASK_ID, taskRetrieved.id)
+            intent
+          }
+          TaskType.PICKING -> {
+            val intent = Intent(this, PickingActivity::class.java)
+            intent.putExtra(PickingActivity.PICKING_TASK_ID, taskRetrieved.id)
             intent
           }
           else -> null

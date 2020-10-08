@@ -82,7 +82,7 @@
   <string name="items">itens</string>
   <string name="counted_items">itens contados</string>
   <string name="xItens">%1$ itens</string>
-  <string name="no_gtin">Gtin não informado</string>
+  <string name="no_gtin">GTIN não informado</string>
   <string name="search">Pesquisa</string>
   <string name="finish_task_label">Finalizar tarefa</string>
   <string name="counting_finished_message">Todos os itens foram contados. Deseja finalizar a tarefa?</string>
@@ -276,7 +276,7 @@
   <string name="seller">Vendedor</string>
   <string name="separeds">Separados</string>
   <string name="separadas">Separadas</string>
-  <string name="to_pick">À separar</string>
+  <string name="not_picked">Não separados</string>
   <string name="pick">Separar</string>
   <string name="choose_equipments">Escolher equipamentos</string>
   <string name="continue_picking">Continuar separação</string>
@@ -343,14 +343,17 @@
   <string name="voice">Voz</string>
   <string name="assistant">Assistente</string>
   <string name="barcode_reader">Leitor de códigos</string>
-    <string name="use_voice_to_instructions">Utilizar voz para instruções</string>
+  <string name="use_voice_to_instructions">Utilizar voz para instruções</string>
   <string name="message_settings_summary_use_camera_off">Os campos de leitura de códigos devem ser digitados ou lidos por leitor bluetooth</string>
   <string name="message_settings_summary_use_camera_on">Abre automaticamente os campos de leitura de código de barra</string>
   <string name="use_camera_per_default">Utilizar câmera por padrão</string>
-    <string name="priority">Prioridade: %s</string>
-    <string name="locale_item_picking">L%d - %s</string>
+  <string name="priority">Prioridade: %s</string>
+  <string name="locale_item_picking">L%d - %s</string>
   <string name="picked_partially">Separados parcialmente</string>
-    <string name="separeds_totaly">Separados totalmente</string>
+  <string name="separeds_totaly">Separados totalmente</string>
   <string name="finishing_picking">Finalizando separação</string>
   <string name="the_picking_was_finished">A separação foi finalizada</string>
+  <string name="success_on_request_picking_reposition">O pedido de reposição de picking foi enviado</string>
+  <string name="success_on_cancel_picking_request_reposition">O pedido de reposição de picking foi cancelado</string>
+  <string name="not_found_success_reported">A indicação de item não encontrado foi enviada</string>
 </resources>

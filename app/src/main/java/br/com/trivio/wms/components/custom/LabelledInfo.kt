@@ -12,12 +12,13 @@ class LabelledInfo @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-  var text: String? = ""
+  var text: String? = null
     set(value) {
       valueTextView.text = value
       loading = false
       field = value
     }
+
   private var titleTextView: TextView
   private var valueTextView: TextView
 

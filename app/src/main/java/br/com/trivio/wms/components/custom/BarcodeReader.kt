@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import br.com.trivio.wms.R
 import br.com.trivio.wms.extensions.setVisible
@@ -36,9 +37,13 @@ class BarcodeReader @JvmOverloads constructor(
     }
 
     codeScanner.decodeCallback = DecodeCallback {
-      setInputResultValue(it.text)
-      if (isVisible)
-        onRead(it.text)
+      if (context is AppCompatActivity) {
+        context.runOnUiThread {
+          setInputResultValue(it.text)
+          if (isVisible)
+            onRead(it.text)
+        }
+      }
     }
     codeScanner.errorCallback = ErrorCallback {
       onError(it)
@@ -78,7 +83,7 @@ class BarcodeReader @JvmOverloads constructor(
     }
   }*/
 
-  private fun setInputResultValue(text: String?) {
+  fun setInputResultValue(text: String) {
     input_barcode_result.setText(text)
   }
 
@@ -138,4 +143,5 @@ class BarcodeReader @JvmOverloads constructor(
   fun getInput(): EditText {
     return input_barcode_result
   }
+
 }

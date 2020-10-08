@@ -8,6 +8,7 @@ import br.com.trivio.wms.MyAppCompatActivity
 import br.com.trivio.wms.R
 import br.com.trivio.wms.data.dto.PickingTaskDto
 import br.com.trivio.wms.data.model.TaskStatus
+import br.com.trivio.wms.extensions.coalesce
 import br.com.trivio.wms.extensions.formatTo
 import br.com.trivio.wms.extensions.setLoading
 import br.com.trivio.wms.extensions.setVisible
@@ -72,11 +73,12 @@ class StartPickingActivity : MyAppCompatActivity() {
   }
 
   private fun updateUi(data: PickingTaskDto) {
-    order_number.text = data.orderNumber.toString()
-    customer_name_info.text = data.customerName
+    order_number.text = coalesce(data.orderNumber, "--")
+    customer_name_info.text = coalesce(data.customerName, "--")
     cargo_info.text = data.cargoNumber
-    emited_at_info.text = data.orderDate?.formatTo("dd/MM/yyyy")
-    seller_info.text = "${data.sellerCode} - ${data.sellerName}"
+    emited_at_info.text = coalesce(data.orderDate?.formatTo("dd/MM/yyyy"), "--")
+    seller_info.text =
+      if (data.sellerName != null) "${data.sellerCode} - ${data.sellerName}" else "--"
     qtd_completely_picked_items.value = data.quantityCompletelyPickedItems.toString()
     qtd_picked_partially_items.value = data.quantityPartiallyPicked.toString()
     qtd_items_to_pick.value = data.quantityItemsNotPicked.toString()
@@ -115,7 +117,6 @@ class StartPickingActivity : MyAppCompatActivity() {
   private fun openPickingActivity() {
     val intent = Intent(this, PickingActivity::class.java)
     intent.putExtra(PickingActivity.PICKING_TASK_ID, taskId)
-    finish()
     startActivity(intent)
   }
 

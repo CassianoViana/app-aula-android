@@ -18,12 +18,13 @@ class PickingTaskDto(
   val progress: Int = 0,
   val quantityCompletelyPickedItems: Int = 0,
   val quantityItemsNotPicked: Int = 0,
+  val quantityNotFound:Int=0,
   val quantityPartiallyPicked: Int = 0,
   val items: List<PickingItemDto> = listOf(),
   val equipments: List<EquipmentDto> = listOf()
 ) {
 
-  val quantityNotFound = this.quantityItemsNotPicked - this.quantityCompletelyPickedItems
+
 
   companion object {
     const val STATUS_PICKING_ALL_PICKED = 0
